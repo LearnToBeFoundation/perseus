@@ -5,9 +5,8 @@ import Likert1 from "./likert-scale/likert-face-1.svg";
 import Likert2 from "./likert-scale/likert-face-2.svg";
 import Likert3 from "./likert-scale/likert-face-3.svg";
 import Likert4 from "./likert-scale/likert-face-4.svg";
-import Likert5 from "./likert-scale/likert-face-5.svg";
 
-export const LikertFaces = [Likert1, Likert2, Likert3, Likert4, Likert5];
+export const LikertFaces = [Likert1, Likert2, Likert3, Likert4];
 
 const styles = StyleSheet.create({
     container: {
@@ -78,7 +77,7 @@ class LikertChoice extends React.PureComponent {
             type="button"
             role="radio"
             aria-checked={isSelected}
-            className={css(styles.choice, this.props.value === 1 && styles.first, this.props.value === 5 && styles.last, isSelected && styles.selectedChoice)}
+            className={css(styles.choice, this.props.value === 1 && styles.first, this.props.value === 4 && styles.last, isSelected && styles.selectedChoice)}
             onClick={this._handleSelect}
         >
             <img className={css(styles.face)} src={this.props.image} alt={this.props.alt} title={this.props.alt} />
@@ -94,7 +93,7 @@ class LikertChoice extends React.PureComponent {
 class LikertScale extends React.PureComponent {
     static propTypes = {
         labels: PropTypes.arrayOf(PropTypes.string).isRequired,
-        selected: PropTypes.oneOf([null, 1, 2, 3, 4, 5]),
+        selected: PropTypes.oneOf([null, 1, 2, 3, 4]),
         onChange: PropTypes.func.isRequired,
     };
 
