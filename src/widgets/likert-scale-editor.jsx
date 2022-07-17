@@ -20,7 +20,7 @@ class LikertScaleEditor extends React.Component {
     };
 
     static defaultProps = {
-        labels: ["", "", "", "", ""],
+        labels: ["", "", "", ""],
     };
 
     constructor(props) {
