@@ -146,6 +146,18 @@ class LikertScale extends React.PureComponent {
     };
 }
 
+const propUpgrades = {
+    1: v0props => {
+        const labels = v0props.labels;
+        const shortenedLabels = labels.slice(0,2).concat(labels.slice(3));
+
+        return {
+            ...v0props,
+            labels: shortenedLabels,
+        };
+    },
+};
+
 const editorPropsToWidgetProps = (editorProps) => {
     return {
         labels: editorProps.labels
@@ -155,6 +167,7 @@ const editorPropsToWidgetProps = (editorProps) => {
 
 const LikertScaleInfo = {
     name: "likert-scale",
+    version: {major: 1, minor: 0},
     displayName: "Likert Scale",
 
     // Tell the renderer what type of `display:` style we would like
@@ -164,6 +177,7 @@ const LikertScaleInfo = {
     widget: LikertScale,
 
     transform: editorPropsToWidgetProps,
+    propUpgrades: propUpgrades,
 };
 
 export default LikertScaleInfo;
