@@ -52433,7 +52433,7 @@ _2$1.extend(Measurer, {
   }
 });
 
-var propUpgrades$2 = {
+var propUpgrades$3 = {
   1: v0props => {
     var v1props = _2$1.chain(v0props).omit("imageUrl", "imageTop", "imageLeft").extend({
       image: {
@@ -52454,7 +52454,7 @@ _module_$X.exports = {
     major: 1,
     minor: 0
   },
-  propUpgrades: propUpgrades$2
+  propUpgrades: propUpgrades$3
 };
 var _widgetsMeasurerJsx = _module_$X.exports;
 
@@ -63486,17 +63486,15 @@ var CategorizerEditor = createReactClass({
 _module_$j.exports = CategorizerEditor;
 var _widgetsCategorizerEditorJsx = _module_$j.exports;
 
-var img$4 = "data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='480' height='480'%3e%3cpath style='fill:%23f70000%3bmix-blend-mode:source-over%3bfill-opacity:1%3bvector-effect:non-scaling-stroke' d='M240.3 0a240.3 240.3 0 1 1 0 480.5 240.3 240.3 0 0 1 0-480.5z' transform='rotate(.1) scale(.9959)'/%3e%3cpath style='fill:%231f1f1f%3bstroke:black%3bmix-blend-mode:source-over%3bpaint-order:stroke fill markers%3bfill-opacity:1%3bstroke-dasharray:none%3bstroke-dashoffset:0%3bstroke-linecap:round%3bstroke-linejoin:miter%3bstroke-miterlimit:4%3bstroke-opacity:1%3bstroke-width:2%3bvector-effect:non-scaling-stroke' d='M19.4 0a19.4 19.4 0 1 1 0 38.8 19.4 19.4 0 0 1 0-38.8z' transform='rotate(-11.9 805.5 -556.9) scale(1.46454)'/%3e%3cpath style='fill:%231f1f1f%3bstroke:black%3bmix-blend-mode:source-over%3bpaint-order:stroke fill markers%3bfill-opacity:1%3bstroke-dasharray:none%3bstroke-dashoffset:0%3bstroke-linecap:round%3bstroke-linejoin:miter%3bstroke-miterlimit:4%3bstroke-opacity:1%3bstroke-width:2%3bvector-effect:non-scaling-stroke' d='M19.4 0a19.4 19.4 0 1 1 0 38.8 19.4 19.4 0 0 1 0-38.8z' transform='rotate(-11.9 874 -1214.8) scale(1.46454)'/%3e%3cpath style='fill:black%3bmix-blend-mode:source-over%3bfill-opacity:1%3bvector-effect:non-scaling-stroke' d='M168.4 24a102.5 102.5 0 0 1 0 157l-7.2-8.6a91.2 91.2 0 0 0 0-139.8z' transform='matrix(0 -1.47737 1 0 135.8 592.2)'/%3e%3c/svg%3e";
+var img$3 = "data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='480' height='480'%3e%3cpath style='fill:%23f70000%3bmix-blend-mode:source-over%3bfill-opacity:1%3bvector-effect:non-scaling-stroke' d='M240.3 0a240.3 240.3 0 1 1 0 480.5 240.3 240.3 0 0 1 0-480.5z' transform='rotate(.1) scale(.9959)'/%3e%3cpath style='fill:%231f1f1f%3bstroke:black%3bmix-blend-mode:source-over%3bpaint-order:stroke fill markers%3bfill-opacity:1%3bstroke-dasharray:none%3bstroke-dashoffset:0%3bstroke-linecap:round%3bstroke-linejoin:miter%3bstroke-miterlimit:4%3bstroke-opacity:1%3bstroke-width:2%3bvector-effect:non-scaling-stroke' d='M19.4 0a19.4 19.4 0 1 1 0 38.8 19.4 19.4 0 0 1 0-38.8z' transform='rotate(-11.9 805.5 -556.9) scale(1.46454)'/%3e%3cpath style='fill:%231f1f1f%3bstroke:black%3bmix-blend-mode:source-over%3bpaint-order:stroke fill markers%3bfill-opacity:1%3bstroke-dasharray:none%3bstroke-dashoffset:0%3bstroke-linecap:round%3bstroke-linejoin:miter%3bstroke-miterlimit:4%3bstroke-opacity:1%3bstroke-width:2%3bvector-effect:non-scaling-stroke' d='M19.4 0a19.4 19.4 0 1 1 0 38.8 19.4 19.4 0 0 1 0-38.8z' transform='rotate(-11.9 874 -1214.8) scale(1.46454)'/%3e%3cpath style='fill:black%3bmix-blend-mode:source-over%3bfill-opacity:1%3bvector-effect:non-scaling-stroke' d='M168.4 24a102.5 102.5 0 0 1 0 157l-7.2-8.6a91.2 91.2 0 0 0 0-139.8z' transform='matrix(0 -1.47737 1 0 135.8 592.2)'/%3e%3c/svg%3e";
 
-var img$3 = "data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='480' height='480'%3e%3cpath style='fill:%23ff8f00%3bmix-blend-mode:source-over%3bfill-opacity:1%3bvector-effect:non-scaling-stroke' d='M240.3 0a240.3 240.3 0 1 1 0 480.5 240.3 240.3 0 0 1 0-480.5z' transform='rotate(.1) scale(.9959)'/%3e%3cpath style='fill:%231f1f1f%3bstroke:black%3bmix-blend-mode:source-over%3bpaint-order:stroke fill markers%3bfill-opacity:1%3bstroke-dasharray:none%3bstroke-dashoffset:0%3bstroke-linecap:round%3bstroke-linejoin:miter%3bstroke-miterlimit:4%3bstroke-opacity:1%3bstroke-width:2%3bvector-effect:non-scaling-stroke' d='M19.4 0a19.4 19.4 0 1 1 0 38.8 19.4 19.4 0 0 1 0-38.8z' transform='rotate(-11.9 805.5 -556.9) scale(1.46454)'/%3e%3cpath style='fill:%231f1f1f%3bstroke:black%3bmix-blend-mode:source-over%3bpaint-order:stroke fill markers%3bfill-opacity:1%3bstroke-dasharray:none%3bstroke-dashoffset:0%3bstroke-linecap:round%3bstroke-linejoin:miter%3bstroke-miterlimit:4%3bstroke-opacity:1%3bstroke-width:2%3bvector-effect:non-scaling-stroke' d='M19.4 0a19.4 19.4 0 1 1 0 38.8 19.4 19.4 0 0 1 0-38.8z' transform='rotate(-11.9 874 -1214.8) scale(1.46454)'/%3e%3cpath style='fill:black%3bmix-blend-mode:source-over%3bfill-opacity:1%3bvector-effect:non-scaling-stroke' d='M168.4 24a102.5 102.5 0 0 1 0 157l-7.2-8.6a91.2 91.2 0 0 0 0-139.8z' transform='matrix(-.00032 -.798 1 -.0004 136 453)'/%3e%3c/svg%3e";
-
-var img$2 = "data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='480' height='480'%3e%3cpath style='fill:%23ffd300%3bvector-effect:non-scaling-stroke' d='M240.3 0a240.3 240.3 0 1 1 0 480.5 240.3 240.3 0 0 1 0-480.5z' transform='rotate(.1) scale(.9959)'/%3e%3cpath style='fill:%231f1f1f%3bstroke:black%3bmix-blend-mode:source-over%3bpaint-order:stroke fill markers%3bfill-opacity:1%3bstroke-dasharray:none%3bstroke-dashoffset:0%3bstroke-linecap:round%3bstroke-linejoin:miter%3bstroke-miterlimit:4%3bstroke-opacity:1%3bstroke-width:2%3bvector-effect:non-scaling-stroke' d='M19.4 0a19.4 19.4 0 1 1 0 38.8 19.4 19.4 0 0 1 0-38.8z' transform='rotate(-11.9 805.5 -556.9) scale(1.46454)'/%3e%3cpath style='fill:%231f1f1f%3bstroke:black%3bmix-blend-mode:source-over%3bpaint-order:stroke fill markers%3bfill-opacity:1%3bstroke-dasharray:none%3bstroke-dashoffset:0%3bstroke-linecap:round%3bstroke-linejoin:miter%3bstroke-miterlimit:4%3bstroke-opacity:1%3bstroke-width:2%3bvector-effect:non-scaling-stroke' d='M19.4 0a19.4 19.4 0 1 1 0 38.8 19.4 19.4 0 0 1 0-38.8z' transform='rotate(-11.9 874 -1214.8) scale(1.46454)'/%3e%3cpath style='fill:black%3bstroke:black%3bmix-blend-mode:source-over%3bpaint-order:stroke fill markers%3bfill-opacity:1%3bstroke-dasharray:none%3bstroke-dashoffset:0%3bstroke-linecap:round%3bstroke-linejoin:miter%3bstroke-miterlimit:4%3bstroke-opacity:1%3bstroke-width:2%3bvector-effect:non-scaling-stroke' d='M0 0h144v20H0z' transform='matrix(1.34949 0 0 .61332 142 321.7)'/%3e%3c/svg%3e";
+var img$2 = "data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='480' height='480'%3e%3cpath style='fill:%23ff8f00%3bmix-blend-mode:source-over%3bfill-opacity:1%3bvector-effect:non-scaling-stroke' d='M240.3 0a240.3 240.3 0 1 1 0 480.5 240.3 240.3 0 0 1 0-480.5z' transform='rotate(.1) scale(.9959)'/%3e%3cpath style='fill:%231f1f1f%3bstroke:black%3bmix-blend-mode:source-over%3bpaint-order:stroke fill markers%3bfill-opacity:1%3bstroke-dasharray:none%3bstroke-dashoffset:0%3bstroke-linecap:round%3bstroke-linejoin:miter%3bstroke-miterlimit:4%3bstroke-opacity:1%3bstroke-width:2%3bvector-effect:non-scaling-stroke' d='M19.4 0a19.4 19.4 0 1 1 0 38.8 19.4 19.4 0 0 1 0-38.8z' transform='rotate(-11.9 805.5 -556.9) scale(1.46454)'/%3e%3cpath style='fill:%231f1f1f%3bstroke:black%3bmix-blend-mode:source-over%3bpaint-order:stroke fill markers%3bfill-opacity:1%3bstroke-dasharray:none%3bstroke-dashoffset:0%3bstroke-linecap:round%3bstroke-linejoin:miter%3bstroke-miterlimit:4%3bstroke-opacity:1%3bstroke-width:2%3bvector-effect:non-scaling-stroke' d='M19.4 0a19.4 19.4 0 1 1 0 38.8 19.4 19.4 0 0 1 0-38.8z' transform='rotate(-11.9 874 -1214.8) scale(1.46454)'/%3e%3cpath style='fill:black%3bmix-blend-mode:source-over%3bfill-opacity:1%3bvector-effect:non-scaling-stroke' d='M168.4 24a102.5 102.5 0 0 1 0 157l-7.2-8.6a91.2 91.2 0 0 0 0-139.8z' transform='matrix(-.00032 -.798 1 -.0004 136 453)'/%3e%3c/svg%3e";
 
 var img$1 = "data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='480' height='480'%3e%3cpath style='fill:%23aeee00%3bmix-blend-mode:source-over%3bfill-opacity:1%3bvector-effect:non-scaling-stroke' d='M240.3 0a240.3 240.3 0 1 1 0 480.5 240.3 240.3 0 0 1 0-480.5z' transform='rotate(.1) scale(.9959)'/%3e%3cpath style='fill:%231f1f1f%3bstroke:black%3bmix-blend-mode:source-over%3bpaint-order:stroke fill markers%3bfill-opacity:1%3bstroke-dasharray:none%3bstroke-dashoffset:0%3bstroke-linecap:round%3bstroke-linejoin:miter%3bstroke-miterlimit:4%3bstroke-opacity:1%3bstroke-width:2%3bvector-effect:non-scaling-stroke' d='M19.4 0a19.4 19.4 0 1 1 0 38.8 19.4 19.4 0 0 1 0-38.8z' transform='rotate(-11.9 805.5 -556.9) scale(1.46454)'/%3e%3cpath style='fill:%231f1f1f%3bstroke:black%3bmix-blend-mode:source-over%3bpaint-order:stroke fill markers%3bfill-opacity:1%3bstroke-dasharray:none%3bstroke-dashoffset:0%3bstroke-linecap:round%3bstroke-linejoin:miter%3bstroke-miterlimit:4%3bstroke-opacity:1%3bstroke-width:2%3bvector-effect:non-scaling-stroke' d='M19.4 0a19.4 19.4 0 1 1 0 38.8 19.4 19.4 0 0 1 0-38.8z' transform='rotate(-11.9 874 -1214.8) scale(1.46454)'/%3e%3cpath style='fill:black%3bmix-blend-mode:source-over%3bfill-opacity:1%3bvector-effect:non-scaling-stroke' d='M168.4 24a102.5 102.5 0 0 1 0 157l-7.2-8.6a91.2 91.2 0 0 0 0-139.8z' transform='matrix(-.00163 .798 -1 -.00204 342.1 212.6)'/%3e%3c/svg%3e";
 
 var img = "data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='480' height='480'%3e%3cpath style='fill:%2302aa1e%3bmix-blend-mode:source-over%3bfill-opacity:1%3bvector-effect:non-scaling-stroke' d='M240.3 0a240.3 240.3 0 1 1 0 480.5 240.3 240.3 0 0 1 0-480.5z' transform='rotate(.1) scale(.9959)'/%3e%3cpath style='fill:%231f1f1f%3bstroke:black%3bmix-blend-mode:source-over%3bpaint-order:stroke fill markers%3bfill-opacity:1%3bstroke-dasharray:none%3bstroke-dashoffset:0%3bstroke-linecap:round%3bstroke-linejoin:miter%3bstroke-miterlimit:4%3bstroke-opacity:1%3bstroke-width:2%3bvector-effect:non-scaling-stroke' d='M19.4 0a19.4 19.4 0 1 1 0 38.8 19.4 19.4 0 0 1 0-38.8z' transform='rotate(-11.9 805.5 -556.9) scale(1.46454)'/%3e%3cpath style='fill:%231f1f1f%3bstroke:black%3bmix-blend-mode:source-over%3bpaint-order:stroke fill markers%3bfill-opacity:1%3bstroke-dasharray:none%3bstroke-dashoffset:0%3bstroke-linecap:round%3bstroke-linejoin:miter%3bstroke-miterlimit:4%3bstroke-opacity:1%3bstroke-width:2%3bvector-effect:non-scaling-stroke' d='M19.4 0a19.4 19.4 0 1 1 0 38.8 19.4 19.4 0 0 1 0-38.8z' transform='rotate(-11.9 874 -1214.8) scale(1.46454)'/%3e%3cpath style='fill:black%3bmix-blend-mode:source-over%3bfill-opacity:1%3bvector-effect:non-scaling-stroke' d='M168.4 24a102.5 102.5 0 0 1 0 157l-7.2-8.6a91.2 91.2 0 0 0 0-139.8z' transform='matrix(.00018 1.47737 -1 .00012 341 76)'/%3e%3c/svg%3e";
 
-var LikertFaces = [img$4, img$3, img$2, img$1, img];
+var LikertFaces = [img$3, img$2, img$1, img];
 var styles$5 = aphrodite.StyleSheet.create({
   container: {
     // create a new stacking context:
@@ -63563,7 +63561,7 @@ class LikertChoice extends _react__namespace.PureComponent {
         type: "button",
         role: "radio",
         "aria-checked": isSelected,
-        className: aphrodite.css(styles$5.choice, this.props.value === 1 && styles$5.first, this.props.value === 5 && styles$5.last, isSelected && styles$5.selectedChoice),
+        className: aphrodite.css(styles$5.choice, this.props.value === 1 && styles$5.first, this.props.value === 4 && styles$5.last, isSelected && styles$5.selectedChoice),
         onClick: this._handleSelect
       }, /*#__PURE__*/_react__namespace.createElement("img", {
         className: aphrodite.css(styles$5.face),
@@ -63637,13 +63635,23 @@ class LikertScale extends _react__namespace.PureComponent {
 
 _defineProperty(LikertScale, "propTypes", {
   labels: PropTypes__default["default"].arrayOf(PropTypes__default["default"].string).isRequired,
-  selected: PropTypes__default["default"].oneOf([null, 1, 2, 3, 4, 5]),
+  selected: PropTypes__default["default"].oneOf([null, 1, 2, 3, 4]),
   onChange: PropTypes__default["default"].func.isRequired
 });
 
 _defineProperty(LikertScale, "defaultProps", {
   selected: null
 });
+
+var propUpgrades$2 = {
+  1: v0props => {
+    var labels = v0props.labels;
+    var shortenedLabels = labels.slice(0, 2).concat(labels.slice(3));
+    return _objectSpread2(_objectSpread2({}, v0props), {}, {
+      labels: shortenedLabels
+    });
+  }
+};
 
 var editorPropsToWidgetProps = editorProps => {
   return {
@@ -63653,12 +63661,17 @@ var editorPropsToWidgetProps = editorProps => {
 
 var LikertScaleInfo = {
   name: "likert-scale",
+  version: {
+    major: 1,
+    minor: 0
+  },
   displayName: "Likert Scale",
   // Tell the renderer what type of `display:` style we would like
   // for the component wrapping this one.
   defaultAlignment: "block",
   widget: LikertScale,
-  transform: editorPropsToWidgetProps
+  transform: editorPropsToWidgetProps,
+  propUpgrades: propUpgrades$2
 };
 
 var styles$4 = aphrodite.StyleSheet.create({
@@ -63709,7 +63722,7 @@ _defineProperty(LikertScaleEditor, "propTypes", {
 });
 
 _defineProperty(LikertScaleEditor, "defaultProps", {
-  labels: ["", "", "", "", ""]
+  labels: ["", "", "", ""]
 });
 
 // webapp perseus/traversal.py so they can be properly translated.
