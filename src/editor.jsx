@@ -1,6 +1,7 @@
 import _mixinsWidgetPropBlacklistJsx from "./mixins/widget-prop-blacklist.jsx";
 import _perseusEditorJsx from "./perseus-editor.jsx";
 import _utilKatexPreprocessJs from "./util/katex-preprocess.js";
+import _utilTexJs from "./util/tex.js";
 import _widgetsJs from "./widgets.js";
 import _utilJs from "./util.js";
 import _componentsPropCheckBoxJsx from "./components/prop-check-box.jsx";
@@ -955,7 +956,7 @@ var Editor = createReactClass({
                         if (node.type === "math" || node.type === "blockMath") {
                             const content = preprocessTex(node.content);
                             try {
-                                katex.renderToString(content);
+                                katex.renderToString(content, _utilTexJs.getStandardOptions());
                             } catch (e) {
                                 katexErrorList.push({
                                     math: content,

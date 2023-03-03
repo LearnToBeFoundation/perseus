@@ -89,7 +89,7 @@ _module_.exports = {
             if (Exercises.useKatex) {
                 // Try to process the nodes with KaTeX first
                 try {
-                    katex.render(text, $katexHolder[0]);
+                    katex.render(text, $katexHolder[0], this.getStandardOptions());
                     // If that worked, and we previously formatted with
                     // mathjax, do some mathjax cleanup
                     if ($elem.attr("data-math-type") === "mathjax") {
@@ -166,6 +166,16 @@ _module_.exports = {
                     });
                 }
             }
+        }
+    },
+
+    getStandardOptions: function(inputOptions={}) {
+        return {
+            ...inputOptions,
+            // the default value for minRuleThickness seems to be 0.04 which is too thin
+            // and can result in lines being 0.5px. 
+            // https://github.com/KaTeX/KaTeX/issues/2491
+            minRuleThickness:0.06
         }
     },
 
