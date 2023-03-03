@@ -11726,7 +11726,11 @@ var TeX$9 = createReactClass$8({
     // use MathJAX instead.
     try {
       return {
-        __html: katex$1.renderToString(props.children, props.katexOptions)
+        __html: katex$1.renderToString(props.children, // the default value for minRuleThickness seems to be 0.04 which is too thin
+        // and can result in lines being 0.5px. 
+        _objectSpread2(_objectSpread2({}, props.katexOptions), {}, {
+          minRuleThickness: 0.06
+        }))
       };
     } catch (e) {
       // By catching the exception here and returning null
@@ -15839,7 +15843,7 @@ _module_$2j.exports = {
       if (Exercises.useKatex) {
         // Try to process the nodes with KaTeX first
         try {
-          katex.render(text, $katexHolder[0]); // If that worked, and we previously formatted with
+          katex.render(text, $katexHolder[0], this.getStandardOptions()); // If that worked, and we previously formatted with
           // mathjax, do some mathjax cleanup
 
           if ($elem.attr("data-math-type") === "mathjax") {
@@ -15911,6 +15915,15 @@ _module_$2j.exports = {
         }
       }
     }
+  },
+  getStandardOptions: function getStandardOptions() {
+    var inputOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    return _objectSpread2(_objectSpread2({}, inputOptions), {}, {
+      // the default value for minRuleThickness seems to be 0.04 which is too thin
+      // and can result in lines being 0.5px. 
+      // https://github.com/KaTeX/KaTeX/issues/2491
+      minRuleThickness: 0.06
+    });
   },
   processAllMath: function processAllMath(elem, force) {
     var $elem = $__default["default"](elem);
@@ -43110,7 +43123,7 @@ var Editor$b = createReactClass({
               var content = preprocessTex(node.content);
 
               try {
-                katex.renderToString(content);
+                katex.renderToString(content, _utilTexJs.getStandardOptions());
               } catch (e) {
                 katexErrorList.push({
                   math: content,
