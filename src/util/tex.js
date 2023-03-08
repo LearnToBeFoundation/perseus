@@ -89,7 +89,7 @@ _module_.exports = {
             if (Exercises.useKatex) {
                 // Try to process the nodes with KaTeX first
                 try {
-                    katex.render(text, $katexHolder[0], this.getStandardOptions());
+                    katex.render(text, $katexHolder[0], _module_.exports.getStandardOptions());
                     // If that worked, and we previously formatted with
                     // mathjax, do some mathjax cleanup
                     if ($elem.attr("data-math-type") === "mathjax") {
