@@ -67582,6 +67582,8 @@ var focusedStyleMixin = {
   // Render the outline higher than the next element's border
   zIndex: 1
 };
+var intermediateCheckboxHorizPadding = "8px 8px";
+var intermediateCheckboxHorizMargin = "8px 8px";
 var intermediateCheckboxPadding = "16px 16px";
 var intermediateCheckboxPaddingPhone = "12px 16px";
 var Choice$1 = createReactClass({
@@ -67628,7 +67630,8 @@ var Choice$1 = createReactClass({
     // an object with two keys: `checked` and `crossedOut`. Each contains a
     // boolean value specifying the new checked and crossed-out value of
     // this choice.
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    horizontalChoices: PropTypes.bool
   },
   statics: {
     styles: aphrodite.StyleSheet.create({
@@ -67697,6 +67700,9 @@ var Choice$1 = createReactClass({
         //     when answer text gets long.
         flexShrink: 0
       },
+      choiceIconWrapperHorizontal: {
+        display: "flex"
+      },
       optionStatusContainer: {
         display: "block"
       },
@@ -67737,6 +67743,12 @@ var Choice$1 = createReactClass({
       intermediateResponsiveCheckboxReview: {
         alignItems: 'flex-start'
       },
+      intermediateResponsiveCheckboxHorizontal: {
+        padding: intermediateCheckboxHorizPadding,
+        margin: intermediateCheckboxHorizMargin,
+        border: "2px solid black",
+        borderRadius: "4px"
+      },
       crossOutLink: {
         textAlign: "right",
         alignSelf: "center",
@@ -67752,7 +67764,8 @@ var Choice$1 = createReactClass({
       editMode: false,
       showRationale: false,
       type: "radio",
-      pos: 0
+      pos: 0,
+      horizontalChoices: false
     };
   },
   getInitialState: function getInitialState() {
@@ -67975,8 +67988,8 @@ var Choice$1 = createReactClass({
     var satCorrectChoice = sat && reviewMode && correct;
     var satIncorrectChecked = sat && reviewMode && !correct && checked;
     var descriptionClassName = classNames$1("description", satCorrectChoice && "sat-correct", satIncorrectChecked && "sat-incorrect", aphrodite.css(!sat && styles.description, sat && this.state.isInputFocused && styles.satDescriptionInputFocused, sat && this.state.isInputActive && styles.satDescriptionInputActive, sat && styles.satDescription, satCorrectChoice && styles.satDescriptionCorrect, satCorrectChoice && checked && styles.satDescriptionCorrectChecked, satIncorrectChecked && styles.satDescriptionIncorrectChecked, sat && isLastChoice && styles.satDescriptionLastChoice));
-    var checkboxContentClassName = classNames$1("checkbox", aphrodite.css(sharedStyles$1.perseusInteractive, !sat && styles.choiceIconWrapper, sat && styles.satCheckboxOptionContent));
-    var checkboxAndOptionClassName = classNames$1("checkbox-and-option", aphrodite.css(!sat && styles.intermediateResponsiveCheckbox, !sat && reviewMode && styles.intermediateResponsiveCheckboxReview));
+    var checkboxContentClassName = classNames$1("checkbox", aphrodite.css(sharedStyles$1.perseusInteractive, !sat && this.props.horizontalChoices ? styles.choiceIconWrapperHorizontal : styles.choiceIconWrapper, sat && styles.satCheckboxOptionContent));
+    var checkboxAndOptionClassName = classNames$1("checkbox-and-option", aphrodite.css(!sat && styles.intermediateResponsiveCheckbox, !sat && reviewMode && styles.intermediateResponsiveCheckboxReview, !sat && this.props.horizontalChoices && styles.intermediateResponsiveCheckboxHorizontal));
     var rationaleClassName = classNames$1("perseus-radio-rationale-content", aphrodite.css(styles.rationale, !sat && styles.nonSatRationale, sat && styles.satReviewRationale)); // In edit mode, we must allow selection of the contentEditable
     // element inside, therefore we cannot use a label, which makes
     // selection of anything inside automatically select the input
@@ -68011,10 +68024,13 @@ var Choice$1 = createReactClass({
       onTouchStart: this.onInputMouseDown,
       onTouchEnd: this.onInputMouseUp
     }, /*#__PURE__*/React$4.createElement("div", {
-      className: checkboxAndOptionClassName
+      className: checkboxAndOptionClassName,
+      style: this.props.checked && this.props.horizontalChoices ? {
+        backgroundColor: kaGreen
+      } : {}
     }, /*#__PURE__*/React$4.createElement("span", {
       className: checkboxContentClassName
-    }, input, this.renderChoiceIcon()), /*#__PURE__*/React$4.createElement("span", {
+    }, input, !this.props.horizontalChoices && this.renderChoiceIcon()), /*#__PURE__*/React$4.createElement("span", {
       className: classNames$1(ClassNames.RADIO.OPTION_CONTENT, ClassNames.INTERACTIVE, aphrodite.css(sat && styles.satRadioOptionContent, sat && reviewMode && styles.satReviewRadioOptionContent)),
       style: {
         cursor: "default"
@@ -68115,6 +68131,7 @@ var BaseRadio$2 = createReactClass({
     countChoices: PropTypes.bool,
     numCorrect: PropTypes.number,
     multipleSelect: PropTypes.bool,
+    horizontalChoices: PropTypes.bool,
     reviewModeRubric: PropTypes.shape({
       choices: ChoicesType
     }),
@@ -68334,7 +68351,7 @@ var BaseRadio$2 = createReactClass({
     var choices = this.props.choices;
     var firstChoiceHighlighted = choices[0].highlighted;
     var lastChoiceHighlighted = choices[choices.length - 1].highlighted;
-    var className = classNames("perseus-widget-radio", !this.props.editMode && "perseus-rendered-radio", aphrodite.css(styles.radio, // SAT doesn't use the "responsive styling" as it conflicts
+    var className = classNames("perseus-widget-radio", !this.props.editMode && "perseus-rendered-radio", this.props.horizontalChoices && "perseus-widget-radio-horizontal", aphrodite.css(styles.radio, // SAT doesn't use the "responsive styling" as it conflicts
     // with their custom theming.
     !sat && styles.responsiveRadioContainer, !sat && firstChoiceHighlighted && isMobile && styles.radioContainerFirstHighlighted, !sat && lastChoiceHighlighted && isMobile && styles.radioContainerLastHighlighted, sat && styles.satRadio));
     var instructionsClassName = classNames("instructions", aphrodite.css(styles.instructions, isMobile && styles.instructionsMobile));
@@ -68372,7 +68389,8 @@ var BaseRadio$2 = createReactClass({
         deselectEnabled: this.deselectEnabled(),
         onChange: newValues => {
           this.updateChoice(i, newValues);
-        }
+        },
+        horizontalChoices: this.props.horizontalChoices
       };
 
       if (choice.isNoneOfTheAbove) {
@@ -68536,6 +68554,7 @@ var RadioEditor = createReactClass({
     hasNoneOfTheAbove: PropTypes.bool,
     multipleSelect: PropTypes.bool,
     countChoices: PropTypes.bool,
+    horizontalOptions: PropTypes.bool,
     // TODO(kevinb): DEPRECATED: This is be used to force deselectEnabled
     // behavior on mobile but not on desktop.  When enabled, the user can
     // deselect a radio input by tapping on it again.
@@ -68550,7 +68569,8 @@ var RadioEditor = createReactClass({
       hasNoneOfTheAbove: false,
       multipleSelect: false,
       countChoices: false,
-      deselectEnabled: false
+      deselectEnabled: false,
+      horizontalChoices: false
     };
   },
   render: function render() {
@@ -68566,17 +68586,24 @@ var RadioEditor = createReactClass({
     }, "Multiple choice style guide"), /*#__PURE__*/React$2.createElement("br", null), /*#__PURE__*/React$2.createElement("div", {
       className: "perseus-widget-left-col"
     }, /*#__PURE__*/React$2.createElement(PropCheckBox, {
-      label: "Multiple selections",
-      labelAlignment: "right",
-      multipleSelect: this.props.multipleSelect,
-      onChange: this.onMultipleSelectChange
-    })), /*#__PURE__*/React$2.createElement("div", {
-      className: "perseus-widget-right-col"
-    }, /*#__PURE__*/React$2.createElement(PropCheckBox, {
       label: "Randomize order",
       labelAlignment: "right",
       randomize: this.props.randomize,
       onChange: this.props.onChange
+    })), /*#__PURE__*/React$2.createElement("div", {
+      className: "perseus-widget-left-col"
+    }, /*#__PURE__*/React$2.createElement(PropCheckBox, {
+      label: "Horizontal Choices",
+      labelAlignment: "right",
+      horizontalChoices: this.props.horizontalChoices,
+      onChange: this.props.onChange
+    })), /*#__PURE__*/React$2.createElement("div", {
+      className: "perseus-widget-right-col"
+    }, /*#__PURE__*/React$2.createElement(PropCheckBox, {
+      label: "Multiple selections",
+      labelAlignment: "right",
+      multipleSelect: this.props.multipleSelect,
+      onChange: this.onMultipleSelectChange
     })), this.props.multipleSelect && /*#__PURE__*/React$2.createElement("div", {
       className: "perseus-widget-left-col"
     }, /*#__PURE__*/React$2.createElement(PropCheckBox, {
@@ -68748,7 +68775,7 @@ var RadioEditor = createReactClass({
     return [];
   },
   serialize: function serialize() {
-    return _$2.pick(this.props, "choices", "randomize", "multipleSelect", "countChoices", "displayCount", "hasNoneOfTheAbove", "deselectEnabled");
+    return _$2.pick(this.props, "choices", "randomize", "multipleSelect", "countChoices", "displayCount", "hasNoneOfTheAbove", "deselectEnabled", "horizontalChoices");
   }
 });
 _module_$3.exports = RadioEditor;
@@ -68783,6 +68810,7 @@ var Radio$1 = createReactClass({
     findWidgets: PropTypes.func,
     multipleSelect: PropTypes.bool,
     countChoices: PropTypes.bool,
+    horizontalChoices: PropTypes.bool,
     numCorrect: PropTypes.number,
     onChange: PropTypes.func.isRequired,
     questionCompleted: PropTypes.bool,
@@ -68814,6 +68842,7 @@ var Radio$1 = createReactClass({
       multipleSelect: false,
       countChoices: false,
       deselectEnabled: false,
+      horizontalChoices: false,
       linterContext: linterContextDefault
     };
   },
@@ -69114,6 +69143,7 @@ var Radio$1 = createReactClass({
       labelWrap: true,
       multipleSelect: this.props.multipleSelect,
       countChoices: this.props.countChoices,
+      horizontalChoices: this.props.horizontalChoices,
       numCorrect: this.props.numCorrect,
       choices: choices,
       onChange: this.updateChoices,
@@ -69236,7 +69266,8 @@ var transform = (editorProps, problemNum) => {
     multipleSelect,
     countChoices,
     correctAnswer,
-    deselectEnabled
+    deselectEnabled,
+    horizontalChoices
   } = editorProps;
   return {
     numCorrect,
@@ -69245,6 +69276,7 @@ var transform = (editorProps, problemNum) => {
     countChoices,
     correctAnswer,
     deselectEnabled,
+    horizontalChoices,
     choices,
     selectedChoices: _2.pluck(choices, "correct")
   };

@@ -33,6 +33,8 @@ const focusedStyleMixin = {
     zIndex: 1,
 };
 
+const intermediateCheckboxHorizPadding = `8px 8px`;
+const intermediateCheckboxHorizMargin = `8px 8px`;
 const intermediateCheckboxPadding = `16px 16px`;
 const intermediateCheckboxPaddingPhone = `12px 16px`;
 
@@ -84,6 +86,7 @@ const Choice = createReactClass({
         // boolean value specifying the new checked and crossed-out value of
         // this choice.
         onChange: PropTypes.func,
+        horizontalChoices: PropTypes.bool,
     },
 
     statics: {
@@ -171,6 +174,10 @@ const Choice = createReactClass({
                 flexShrink: 0,
             },
 
+            choiceIconWrapperHorizontal: {
+                display: "flex",
+            },
+
             optionStatusContainer: {
                 display: "block",
             },
@@ -219,7 +226,12 @@ const Choice = createReactClass({
             intermediateResponsiveCheckboxReview: {
                 alignItems: 'flex-start',
             },
-
+            intermediateResponsiveCheckboxHorizontal: {
+                padding: intermediateCheckboxHorizPadding,
+                margin: intermediateCheckboxHorizMargin,
+                border: "2px solid black",
+                borderRadius: "4px",
+            }, 
             crossOutLink: {
                 textAlign: "right",
                 alignSelf: "center",
@@ -237,6 +249,7 @@ const Choice = createReactClass({
             showRationale: false,
             type: "radio",
             pos: 0,
+            horizontalChoices: false,
         };
     },
 
@@ -503,8 +516,8 @@ const Choice = createReactClass({
             "checkbox",
             css(
                 sharedStyles.perseusInteractive,
-                !sat && styles.choiceIconWrapper,
-                sat && styles.satCheckboxOptionContent
+                !sat && this.props.horizontalChoices ? styles.choiceIconWrapperHorizontal : styles.choiceIconWrapper,
+                sat && styles.satCheckboxOptionContent,
             )
         );
 
@@ -512,7 +525,9 @@ const Choice = createReactClass({
             "checkbox-and-option",
             css(!sat && styles.intermediateResponsiveCheckbox,
                 !sat && reviewMode &&
-                styles.intermediateResponsiveCheckboxReview)
+                styles.intermediateResponsiveCheckboxReview,
+                !sat && this.props.horizontalChoices &&
+                    styles.intermediateResponsiveCheckboxHorizontal)
         );
 
         const rationaleClassName = classNames(
@@ -564,10 +579,11 @@ const Choice = createReactClass({
                     onTouchStart={this.onInputMouseDown}
                     onTouchEnd={this.onInputMouseUp}
                 >
-                    <div className={checkboxAndOptionClassName}>
+                    <div className={checkboxAndOptionClassName}
+                        style={this.props.checked && this.props.horizontalChoices? {backgroundColor: styleConstants.kaGreen} : {}}>
                         <span className={checkboxContentClassName}>
                             {input}
-                            {this.renderChoiceIcon()}
+                            {!this.props.horizontalChoices && this.renderChoiceIcon()}
                         </span>
                         {/* A pseudo-label. <label> is slightly broken on iOS,
                         so this works around that. Unfortunately, it is
