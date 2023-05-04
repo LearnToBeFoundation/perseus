@@ -10681,6 +10681,8 @@ var blue = "#1C758A"; // @gray:                  #aaa;
 var red = "#FFBABA"; // @questionWidth:         480px;
 
 var grayLight = "#AAAAAA"; // @grayLighter:           #ddd;
+
+var ltbBlue = "#2563EB";
 var white = '#FFFFFF';
 var gray97 = '#F6F7F7';
 var gray95 = '#F0F1F2';
@@ -67401,7 +67403,7 @@ class ChoiceIcon$1 extends React$6.Component {
 }
 
 _defineProperty(ChoiceIcon$1, "defaultProps", {
-  primaryProductColor: kaGreen
+  primaryProductColor: ltbBlue
 });
 
 var styles = aphrodite.StyleSheet.create({
@@ -67746,7 +67748,7 @@ var Choice$1 = createReactClass({
       intermediateResponsiveCheckboxHorizontal: {
         padding: intermediateCheckboxHorizPadding,
         margin: intermediateCheckboxHorizMargin,
-        border: "2px solid black",
+        border: "1px solid black",
         borderRadius: "4px"
       },
       crossOutLink: {
@@ -68024,10 +68026,7 @@ var Choice$1 = createReactClass({
       onTouchStart: this.onInputMouseDown,
       onTouchEnd: this.onInputMouseUp
     }, /*#__PURE__*/React$4.createElement("div", {
-      className: checkboxAndOptionClassName,
-      style: this.props.checked && this.props.horizontalChoices ? {
-        backgroundColor: kaGreen
-      } : {}
+      className: classNames$1(checkboxAndOptionClassName, this.props.horizontalChoices ? "perseus-radio-horizontal-checkbox" : false)
     }, /*#__PURE__*/React$4.createElement("span", {
       className: checkboxContentClassName
     }, input, !this.props.horizontalChoices && this.renderChoiceIcon()), /*#__PURE__*/React$4.createElement("span", {

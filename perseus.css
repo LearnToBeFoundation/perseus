@@ -4713,6 +4713,7 @@ body.sat-section .perseus-widget-passage {
 }
 .perseus-widget-radio.perseus-widget-radio-horizontal {
   display: flex;
+  flex-wrap: wrap;
 }
 .perseus-widget-radio.perseus-widget-radio-horizontal li {
   list-style: none;
@@ -4737,6 +4738,12 @@ body.sat-section .perseus-widget-passage {
 }
 .perseus-widget-radio li table {
   border: 1px solid #ccc;
+}
+.perseus-widget-radio li.perseus-radio-selected .perseus-radio-horizontal-checkbox {
+  background-color: #2563EB;
+}
+.perseus-widget-radio li.perseus-radio-selected .perseus-radio-horizontal-checkbox .paragraph .paragraph {
+  color: white !important;
 }
 .reaction {
   display: table-row;
