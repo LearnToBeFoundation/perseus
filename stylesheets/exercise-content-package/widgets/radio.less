@@ -26,6 +26,7 @@
 
     &.perseus-widget-radio-horizontal {
         display: flex;
+        flex-wrap: wrap;
 
         li {
             list-style: none;
@@ -56,6 +57,17 @@
 
         table {
             border: 1px solid #ccc;
+        }
+
+        &.perseus-radio-selected {
+            .perseus-radio-horizontal-checkbox {
+                background-color: @ltbBlue;
+                .paragraph {
+                    .paragraph {
+                        color: white !important;
+                    }
+                }
+            }
         }
     }
 }

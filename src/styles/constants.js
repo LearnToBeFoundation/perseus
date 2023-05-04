@@ -22,6 +22,8 @@ export const grayLight = "#AAAAAA";
 export const grayLighter = "#DDDDDD";
     // @learnstormBlue:        #4898fc;
 export const learnstormBlue = "#4898FC";
+    // @ltbBlue:                #2563EB;
+export const ltbBlue = "#2563EB";
 
 export const white = '#FFFFFF';
 export const gray98 = '#FAFAFA';

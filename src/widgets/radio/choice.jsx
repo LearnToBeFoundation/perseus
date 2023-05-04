@@ -229,7 +229,7 @@ const Choice = createReactClass({
             intermediateResponsiveCheckboxHorizontal: {
                 padding: intermediateCheckboxHorizPadding,
                 margin: intermediateCheckboxHorizMargin,
-                border: "2px solid black",
+                border: "1px solid black",
                 borderRadius: "4px",
             }, 
             crossOutLink: {
@@ -579,8 +579,9 @@ const Choice = createReactClass({
                     onTouchStart={this.onInputMouseDown}
                     onTouchEnd={this.onInputMouseUp}
                 >
-                    <div className={checkboxAndOptionClassName}
-                        style={this.props.checked && this.props.horizontalChoices? {backgroundColor: styleConstants.kaGreen} : {}}>
+                    <div className={classNames(
+                        checkboxAndOptionClassName, 
+                        this.props.horizontalChoices ? "perseus-radio-horizontal-checkbox" : false)}>
                         <span className={checkboxContentClassName}>
                             {input}
                             {!this.props.horizontalChoices && this.renderChoiceIcon()}
