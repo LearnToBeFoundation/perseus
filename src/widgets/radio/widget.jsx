@@ -42,6 +42,7 @@ const Radio = createReactClass({
         findWidgets: PropTypes.func,
         multipleSelect: PropTypes.bool,
         countChoices: PropTypes.bool,
+        horizontalChoices: PropTypes.bool,
         numCorrect: PropTypes.number,
         onChange: PropTypes.func.isRequired,
 
@@ -79,6 +80,7 @@ const Radio = createReactClass({
             multipleSelect: false,
             countChoices: false,
             deselectEnabled: false,
+            horizontalChoices: false,
             linterContext: linterContextDefault,
         };
     },
@@ -423,6 +425,7 @@ const Radio = createReactClass({
                 labelWrap={true}
                 multipleSelect={this.props.multipleSelect}
                 countChoices={this.props.countChoices}
+                horizontalChoices={this.props.horizontalChoices}
                 numCorrect={this.props.numCorrect}
                 choices={choices}
                 onChange={this.updateChoices}

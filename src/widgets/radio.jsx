@@ -73,6 +73,7 @@ var transform = (editorProps, problemNum) => {
         countChoices,
         correctAnswer,
         deselectEnabled,
+        horizontalChoices,
     } = editorProps;
 
     return {
@@ -82,6 +83,7 @@ var transform = (editorProps, problemNum) => {
         countChoices,
         correctAnswer,
         deselectEnabled,
+        horizontalChoices,
         choices,
         selectedChoices: _.pluck(choices, "correct"),
     };
