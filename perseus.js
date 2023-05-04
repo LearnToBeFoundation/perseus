@@ -33074,6 +33074,7 @@ var _itemRendererJsx = _module_$1V.exports;
  * As well as check answer, grading, and hints buttons built in
  */
 
+var colorLtbBlue = "#2563EB";
 var styles$o = aphrodite.StyleSheet.create({
   hintsContainer: {
     marginLeft: 50
@@ -33394,7 +33395,7 @@ var QuestionRenderer$1 = createReactClass({
       type: "submit",
       className: "check-answer-button " + aphrodite.css(styles$o.checkAnswerButton),
       style: {
-        backgroundColor: this.state.answerState === "incorrect" ? "orange" : "green"
+        backgroundColor: this.state.answerState === "incorrect" ? "orange" : colorLtbBlue
       },
       disabled: this.state.answerState === "correct"
     }, /*#__PURE__*/_react__namespace.createElement("span", {

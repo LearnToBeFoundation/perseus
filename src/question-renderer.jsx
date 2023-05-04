@@ -17,6 +17,8 @@ import { StyleSheet, css } from "aphrodite";
  * As well as check answer, grading, and hints buttons built in
  */
 
+const colorLtbBlue = "#2563EB"
+
 const styles = StyleSheet.create({
     hintsContainer: {
         marginLeft: 50,
@@ -388,7 +390,7 @@ const QuestionRenderer = createReactClass({
                         type="submit"
                         className={"check-answer-button " + css(styles.checkAnswerButton)}
                         style={{
-                            backgroundColor: this.state.answerState === "incorrect" ? "orange" : "green",
+                            backgroundColor: this.state.answerState === "incorrect" ? "orange" : colorLtbBlue,
                         }}
                         disabled={this.state.answerState === "correct"}
                     >
