@@ -1,8 +1,3 @@
-/* Perseus CSS
-// commit d23bbe0c89497660bf638dacded73b6ea7f848a6
-// branch wip
-// @generated
-*/
 .perseus-sr-only {
   border: 0;
   clip: rect(0, 0, 0, 0);
@@ -203,28 +198,28 @@
   font-family: inherit;
   font-size: 14px;
   line-height: 1.25;
-  color: #21242c;
+  color: #21242C;
 }
 .framework-perseus:not(.perseus-article):not(.perseus-mobile) .perseus-radio-option-content .perseus-renderer > .paragraph .paragraph {
   font-family: inherit;
   font-size: 14px;
   line-height: 1.25;
-  color: #21242c;
+  color: #21242C;
 }
 .framework-perseus:not(.perseus-article):not(.perseus-mobile) .perseus-radio-rationale-content .perseus-renderer > .paragraph {
   font-family: inherit;
   font-size: 14px;
   line-height: 1.25;
-  color: #888d93;
+  color: #888D93;
 }
 .framework-perseus:not(.perseus-article):not(.perseus-mobile) .perseus-radio-rationale-content .perseus-renderer > .paragraph .paragraph {
   font-family: inherit;
   font-size: 14px;
   line-height: 1.25;
-  color: #888d93;
+  color: #888D93;
 }
 .framework-perseus:not(.perseus-article):not(.perseus-mobile) .perseus-radio-rationale-content .perseus-renderer > .paragraph .paragraph .katex {
-  color: #888d93;
+  color: #888D93;
 }
 .bibliotron-article.framework-perseus.perseus-article.perseus-mobile :not(blockquote) > div.paragraph,
 .framework-perseus:not(.perseus-article).perseus-mobile :not(blockquote) > div.paragraph {
@@ -293,7 +288,7 @@
     font-family: inherit;
     font-size: 24px;
     line-height: 1.2;
-    color: #21242c;
+    color: #21242C;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile h2,
   .framework-perseus:not(.perseus-article).perseus-mobile h2 {
@@ -302,7 +297,7 @@
     font-family: inherit;
     font-size: 24px;
     line-height: 1.2;
-    color: #3b3e40;
+    color: #3B3E40;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile h3,
   .framework-perseus:not(.perseus-article).perseus-mobile h3,
@@ -356,7 +351,7 @@
     font-size: 18px;
     line-height: 1.4;
     color: #626569;
-    color: #888d93;
+    color: #888D93;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile table,
   .framework-perseus:not(.perseus-article).perseus-mobile table {
@@ -370,49 +365,49 @@
     font-family: inherit;
     font-size: 16px;
     line-height: 1.25;
-    color: #21242c;
+    color: #21242C;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile .perseus-radio-option-content .perseus-renderer > .paragraph .paragraph,
   .framework-perseus:not(.perseus-article).perseus-mobile .perseus-radio-option-content .perseus-renderer > .paragraph .paragraph {
     font-family: inherit;
     font-size: 16px;
     line-height: 1.25;
-    color: #21242c;
+    color: #21242C;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile .perseus-radio-rationale-content .perseus-renderer > .paragraph,
   .framework-perseus:not(.perseus-article).perseus-mobile .perseus-radio-rationale-content .perseus-renderer > .paragraph {
     font-family: inherit;
     font-size: 16px;
     line-height: 1.25;
-    color: #888d93;
+    color: #888D93;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile .perseus-radio-rationale-content .perseus-renderer > .paragraph .paragraph,
   .framework-perseus:not(.perseus-article).perseus-mobile .perseus-radio-rationale-content .perseus-renderer > .paragraph .paragraph {
     font-family: inherit;
     font-size: 16px;
     line-height: 1.25;
-    color: #888d93;
+    color: #888D93;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile .perseus-radio-rationale-content .perseus-renderer > .paragraph .paragraph .katex,
   .framework-perseus:not(.perseus-article).perseus-mobile .perseus-radio-rationale-content .perseus-renderer > .paragraph .paragraph .katex {
-    color: #888d93;
+    color: #888D93;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile .perseus-image-caption .paragraph .paragraph,
   .framework-perseus:not(.perseus-article).perseus-mobile .perseus-image-caption .paragraph .paragraph {
-    color: #888d93;
+    color: #888D93;
     font-size: 14px;
     line-height: 1.3;
     text-align: left;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile .perseus-image-caption.has-title .paragraph .paragraph strong:first-child,
   .framework-perseus:not(.perseus-article).perseus-mobile .perseus-image-caption.has-title .paragraph .paragraph strong:first-child {
-    color: #3b3e40;
+    color: #3B3E40;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile .katex,
   .framework-perseus:not(.perseus-article).perseus-mobile .katex {
     font-size: 21px;
     line-height: 1.2;
-    color: #21242c;
+    color: #21242C;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile .perseus-block-math .katex,
   .framework-perseus:not(.perseus-article).perseus-mobile .perseus-block-math .katex {
@@ -429,11 +424,11 @@
     font-family: Courier;
     font-size: 18px;
     line-height: 1.6;
-    color: #21242c;
+    color: #21242C;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile pre,
   .framework-perseus:not(.perseus-article).perseus-mobile pre {
-    background-color: #f0f1f2;
+    background-color: #F0F1F2;
     border-radius: 4px;
     padding: 16px;
     white-space: pre-wrap;
@@ -457,7 +452,7 @@
     font-family: inherit;
     font-size: 30px;
     line-height: 1.1;
-    color: #21242c;
+    color: #21242C;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile h2,
   .framework-perseus:not(.perseus-article).perseus-mobile h2 {
@@ -466,7 +461,7 @@
     font-family: inherit;
     font-size: 30px;
     line-height: 1.1;
-    color: #3b3e40;
+    color: #3B3E40;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile h3,
   .framework-perseus:not(.perseus-article).perseus-mobile h3,
@@ -520,7 +515,7 @@
     font-size: 20px;
     line-height: 1.5;
     color: #626569;
-    color: #888d93;
+    color: #888D93;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile table,
   .framework-perseus:not(.perseus-article).perseus-mobile table {
@@ -534,49 +529,49 @@
     font-family: inherit;
     font-size: 18px;
     line-height: 1.25;
-    color: #21242c;
+    color: #21242C;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile .perseus-radio-option-content .perseus-renderer > .paragraph .paragraph,
   .framework-perseus:not(.perseus-article).perseus-mobile .perseus-radio-option-content .perseus-renderer > .paragraph .paragraph {
     font-family: inherit;
     font-size: 18px;
     line-height: 1.25;
-    color: #21242c;
+    color: #21242C;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile .perseus-radio-rationale-content .perseus-renderer > .paragraph,
   .framework-perseus:not(.perseus-article).perseus-mobile .perseus-radio-rationale-content .perseus-renderer > .paragraph {
     font-family: inherit;
     font-size: 18px;
     line-height: 1.25;
-    color: #888d93;
+    color: #888D93;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile .perseus-radio-rationale-content .perseus-renderer > .paragraph .paragraph,
   .framework-perseus:not(.perseus-article).perseus-mobile .perseus-radio-rationale-content .perseus-renderer > .paragraph .paragraph {
     font-family: inherit;
     font-size: 18px;
     line-height: 1.25;
-    color: #888d93;
+    color: #888D93;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile .perseus-radio-rationale-content .perseus-renderer > .paragraph .paragraph .katex,
   .framework-perseus:not(.perseus-article).perseus-mobile .perseus-radio-rationale-content .perseus-renderer > .paragraph .paragraph .katex {
-    color: #888d93;
+    color: #888D93;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile .perseus-image-caption .paragraph .paragraph,
   .framework-perseus:not(.perseus-article).perseus-mobile .perseus-image-caption .paragraph .paragraph {
-    color: #888d93;
+    color: #888D93;
     font-size: 17px;
     line-height: 1.4;
     text-align: left;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile .perseus-image-caption.has-title .paragraph .paragraph strong:first-child,
   .framework-perseus:not(.perseus-article).perseus-mobile .perseus-image-caption.has-title .paragraph .paragraph strong:first-child {
-    color: #3b3e40;
+    color: #3B3E40;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile .katex,
   .framework-perseus:not(.perseus-article).perseus-mobile .katex {
     font-size: 23px;
     line-height: 1.3;
-    color: #21242c;
+    color: #21242C;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile .perseus-block-math .katex,
   .framework-perseus:not(.perseus-article).perseus-mobile .perseus-block-math .katex {
@@ -593,11 +588,11 @@
     font-family: Courier;
     font-size: 23px;
     line-height: 1.3;
-    color: #21242c;
+    color: #21242C;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile pre,
   .framework-perseus:not(.perseus-article).perseus-mobile pre {
-    background-color: #f0f1f2;
+    background-color: #F0F1F2;
     border-radius: 4px;
     padding: 16px;
     white-space: pre-wrap;
@@ -621,7 +616,7 @@
     font-family: inherit;
     font-size: 35px;
     line-height: 1.1;
-    color: #21242c;
+    color: #21242C;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile h2,
   .framework-perseus:not(.perseus-article).perseus-mobile h2 {
@@ -630,7 +625,7 @@
     font-family: inherit;
     font-size: 35px;
     line-height: 1.1;
-    color: #3b3e40;
+    color: #3B3E40;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile h3,
   .framework-perseus:not(.perseus-article).perseus-mobile h3,
@@ -684,7 +679,7 @@
     font-size: 22px;
     line-height: 1.4;
     color: #626569;
-    color: #888d93;
+    color: #888D93;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile table,
   .framework-perseus:not(.perseus-article).perseus-mobile table {
@@ -698,49 +693,49 @@
     font-family: inherit;
     font-size: 20px;
     line-height: 1.25;
-    color: #21242c;
+    color: #21242C;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile .perseus-radio-option-content .perseus-renderer > .paragraph .paragraph,
   .framework-perseus:not(.perseus-article).perseus-mobile .perseus-radio-option-content .perseus-renderer > .paragraph .paragraph {
     font-family: inherit;
     font-size: 20px;
     line-height: 1.25;
-    color: #21242c;
+    color: #21242C;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile .perseus-radio-rationale-content .perseus-renderer > .paragraph,
   .framework-perseus:not(.perseus-article).perseus-mobile .perseus-radio-rationale-content .perseus-renderer > .paragraph {
     font-family: inherit;
     font-size: 20px;
     line-height: 1.25;
-    color: #888d93;
+    color: #888D93;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile .perseus-radio-rationale-content .perseus-renderer > .paragraph .paragraph,
   .framework-perseus:not(.perseus-article).perseus-mobile .perseus-radio-rationale-content .perseus-renderer > .paragraph .paragraph {
     font-family: inherit;
     font-size: 20px;
     line-height: 1.25;
-    color: #888d93;
+    color: #888D93;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile .perseus-radio-rationale-content .perseus-renderer > .paragraph .paragraph .katex,
   .framework-perseus:not(.perseus-article).perseus-mobile .perseus-radio-rationale-content .perseus-renderer > .paragraph .paragraph .katex {
-    color: #888d93;
+    color: #888D93;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile .perseus-image-caption .paragraph .paragraph,
   .framework-perseus:not(.perseus-article).perseus-mobile .perseus-image-caption .paragraph .paragraph {
-    color: #888d93;
+    color: #888D93;
     font-size: 20px;
     line-height: 1.4;
     text-align: left;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile .perseus-image-caption.has-title .paragraph .paragraph strong:first-child,
   .framework-perseus:not(.perseus-article).perseus-mobile .perseus-image-caption.has-title .paragraph .paragraph strong:first-child {
-    color: #3b3e40;
+    color: #3B3E40;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile .katex,
   .framework-perseus:not(.perseus-article).perseus-mobile .katex {
     font-size: 25px;
     line-height: 1.2;
-    color: #21242c;
+    color: #21242C;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile .perseus-block-math .katex,
   .framework-perseus:not(.perseus-article).perseus-mobile .perseus-block-math .katex {
@@ -757,11 +752,11 @@
     font-family: Courier;
     font-size: 23px;
     line-height: 1.3;
-    color: #21242c;
+    color: #21242C;
   }
   .bibliotron-article.framework-perseus.perseus-article.perseus-mobile pre,
   .framework-perseus:not(.perseus-article).perseus-mobile pre {
-    background-color: #f0f1f2;
+    background-color: #F0F1F2;
     border-radius: 4px;
     padding: 16px;
     white-space: pre-wrap;
@@ -1484,7 +1479,7 @@ body.mobile .categorizer-container td.category input[type="radio"] + span:active
   white-space: nowrap;
 }
 .perseus-matrix .matrix-bracket {
-  border-color: #666666;
+  border-color: #666;
   border-style: solid;
   border-bottom-width: 2px;
   border-top-width: 2px;
@@ -1493,12 +1488,12 @@ body.mobile .categorizer-container td.category input[type="radio"] + span:active
   width: 6px;
 }
 .perseus-matrix .matrix-bracket.bracket-left {
-  border-color: #666666;
+  border-color: #666;
   border-left-width: 2px;
   left: 3px;
 }
 .perseus-matrix .matrix-bracket.bracket-right {
-  border-color: #666666;
+  border-color: #666;
   border-right-width: 2px;
   margin-left: -3px;
 }
@@ -1748,7 +1743,7 @@ body.sat-section .perseus-widget-passage {
   font-size: 14px;
 }
 .perseus-mobile .perseus-widget-plotter {
-  border: solid 0.5px #babec2;
+  border: solid 0.5px #BABEC2;
   border-radius: 4px;
 }
 .perseus-mobile .perseus-widget-plotter .graphie-label .katex {
@@ -1765,6 +1760,14 @@ body.sat-section .perseus-widget-passage {
 }
 .perseus-widget-radio.perseus-rendered-radio .perseus-radio-rationale-content > .perseus-renderer > .paragraph:not(:last-child) {
   margin-bottom: 8px;
+}
+.perseus-widget-radio.perseus-widget-radio-horizontal {
+  display: flex;
+  flex-wrap: wrap;
+}
+.perseus-widget-radio.perseus-widget-radio-horizontal li {
+  list-style: none;
+  border-bottom: none !important;
 }
 .perseus-widget-radio .unresponsive-svg-image div,
 .perseus-widget-radio .svg-image div {
@@ -1785,6 +1788,12 @@ body.sat-section .perseus-widget-passage {
 }
 .perseus-widget-radio li table {
   border: 1px solid #ccc;
+}
+.perseus-widget-radio li.perseus-radio-selected .perseus-radio-horizontal-checkbox {
+  background-color: #2563EB;
+}
+.perseus-widget-radio li.perseus-radio-selected .perseus-radio-horizontal-checkbox .paragraph .paragraph {
+  color: white !important;
 }
 .reaction {
   display: table-row;
@@ -2382,8 +2391,135 @@ body.mobile .framework-perseus table.perseus-widget-table-of-values.non-markdown
   }
 }
 /* math-input CSS */
-.echo-slide-and-fade-enter{opacity:1!important;-webkit-transform:translate3d(0,0,0)!important;-moz-transform:translate3d(0,0,0)!important;transform:translate3d(0,0,0)!important}.echo-slide-and-fade-enter.echo-slide-and-fade-enter-active{opacity:0!important;-webkit-transform:translate3d(0,-33%,0)!important;-moz-transform:translate3d(0,-33%,0)!important;transform:translate3d(0,-33%,0)!important;-webkit-transition:opacity .4s cubic-bezier(1,0,.9,1),-webkit-transform .8s cubic-bezier(0,1,.25,1)!important;-moz-transition:transform .8s cubic-bezier(0,1,.25,1),opacity .4s cubic-bezier(1,0,.9,1),-moz-transform .8s cubic-bezier(0,1,.25,1)!important;transition:transform .8s cubic-bezier(0,1,.25,1),opacity .4s cubic-bezier(1,0,.9,1)!important;transition:transform .8s cubic-bezier(0,1,.25,1),opacity .4s cubic-bezier(1,0,.9,1),-webkit-transform .8s cubic-bezier(0,1,.25,1),-moz-transform .8s cubic-bezier(0,1,.25,1)!important}.echo-fade-only-enter{opacity:1!important}.echo-fade-only-enter.echo-fade-only-enter-active{opacity:0!important;-webkit-transition:opacity .3s cubic-bezier(.25,0,.75,1)!important;-moz-transition:opacity .3s cubic-bezier(.25,0,.75,1)!important;transition:opacity .3s cubic-bezier(.25,0,.75,1)!important}.echo-long-fade-only-enter{opacity:1!important}.echo-long-fade-only-enter.echo-long-fade-only-enter-active{opacity:0!important;-webkit-transition:opacity .4s cubic-bezier(.75,0,.75,1)!important;-moz-transition:opacity .4s cubic-bezier(.75,0,.75,1)!important;transition:opacity .4s cubic-bezier(.75,0,.75,1)!important}.keypad-input .mq-editable-field .mq-cursor:not(:only-child),.keypad-input .mq-editable-field .mq-root-block.mq-hasCursor>.mq-cursor:only-child{height:20px!important;margin-top:-5px!important;vertical-align:middle!important}.keypad-input .mq-editable-field .mq-cursor{border-color:#78C008;border-left:2px solid #78C008!important;margin-left:-1px!important;margin-right:-1px!important;opacity:1!important;-webkit-transition:opacity .5s ease-out!important;-moz-transition:opacity .5s ease-out!important;transition:opacity .5s ease-out!important;visibility:visible!important}.keypad-input .mq-editable-field .mq-cursor.mq-blink{opacity:0!important;-webkit-transition:opacity .5s ease-in!important;-moz-transition:opacity .5s ease-in!important;transition:opacity .5s ease-in!important;visibility:visible!important}.keypad-input .mq-editable-field .mq-non-leaf .mq-cursor:only-child{border:2px solid #78C008!important;-webkit-border-radius:1px;-moz-border-radius:1px;border-radius:1px;opacity:1!important;padding:0 4px;-webkit-transition:border-color .5s ease-out!important;-moz-transition:border-color .5s ease-out!important;transition:border-color .5s ease-out!important}.keypad-input .mq-editable-field .mq-non-leaf .mq-cursor:only-child.mq-blink{border-color:#CCC!important;opacity:1!important;-webkit-transition:border-color .5s ease-in!important;-moz-transition:border-color .5s ease-in!important;transition:border-color .5s ease-in!important}.keypad-input .mq-empty{background:0 0!important}.keypad-input .mq-empty:not(.mq-root-block):after,.keypad-input .mq-hasCursor:empty:not(.mq-root-block):after{border:2px solid #CCC;-webkit-border-radius:1px;-moz-border-radius:1px;border-radius:1px;color:transparent;display:inline-block;margin-left:-1px;margin-right:-1px;padding:0 4px;visibility:visible!important}.keypad-input .mq-selection .mq-empty:not(.mq-root-block):after{border-color:#fff}.keypad-input .mq-hasCursor:empty:not(.mq-root-block):after{content:'c'}.keypad-input .mq-editable-field .mq-selection .mq-non-leaf,.keypad-input .mq-math-mode .mq-selection .mq-non-leaf{background:#78C008!important;border-color:#fff!important;color:#fff!important}.keypad-input .mq-editable-field .mq-selection .mq-scaled,.keypad-input .mq-math-mode .mq-selection .mq-scaled{background:0 0!important;border-color:transparent!important;color:#fff!important}.keypad-input .mq-selection{background:#78C008!important;border-color:#fff!important;color:#fff!important;display:inline-block!important}.keypad-container .katex{color:inherit!important}.popover-enter{opacity:0!important}.popover-enter.popover-enter-active{opacity:1!important;-webkit-transition:opacity .2s ease-out!important;-moz-transition:opacity .2s ease-out!important;transition:opacity .2s ease-out!important}
-
+.echo-slide-and-fade-enter {
+  opacity: 1!important;
+  -webkit-transform: translate3d(0, 0, 0) !important;
+  -moz-transform: translate3d(0, 0, 0) !important;
+  transform: translate3d(0, 0, 0) !important;
+}
+.echo-slide-and-fade-enter.echo-slide-and-fade-enter-active {
+  opacity: 0!important;
+  -webkit-transform: translate3d(0, -33%, 0) !important;
+  -moz-transform: translate3d(0, -33%, 0) !important;
+  transform: translate3d(0, -33%, 0) !important;
+  -webkit-transition: opacity 0.4s cubic-bezier(1, 0, 0.9, 1), -webkit-transform 0.8s cubic-bezier(0, 1, 0.25, 1) !important;
+  -moz-transition: transform 0.8s cubic-bezier(0, 1, 0.25, 1), opacity 0.4s cubic-bezier(1, 0, 0.9, 1), -moz-transform 0.8s cubic-bezier(0, 1, 0.25, 1) !important;
+  transition: transform 0.8s cubic-bezier(0, 1, 0.25, 1), opacity 0.4s cubic-bezier(1, 0, 0.9, 1) !important;
+  transition: transform 0.8s cubic-bezier(0, 1, 0.25, 1), opacity 0.4s cubic-bezier(1, 0, 0.9, 1), -webkit-transform 0.8s cubic-bezier(0, 1, 0.25, 1), -moz-transform 0.8s cubic-bezier(0, 1, 0.25, 1) !important;
+}
+.echo-fade-only-enter {
+  opacity: 1 !important;
+}
+.echo-fade-only-enter.echo-fade-only-enter-active {
+  opacity: 0!important;
+  -webkit-transition: opacity 0.3s cubic-bezier(0.25, 0, 0.75, 1) !important;
+  -moz-transition: opacity 0.3s cubic-bezier(0.25, 0, 0.75, 1) !important;
+  transition: opacity 0.3s cubic-bezier(0.25, 0, 0.75, 1) !important;
+}
+.echo-long-fade-only-enter {
+  opacity: 1 !important;
+}
+.echo-long-fade-only-enter.echo-long-fade-only-enter-active {
+  opacity: 0!important;
+  -webkit-transition: opacity 0.4s cubic-bezier(0.75, 0, 0.75, 1) !important;
+  -moz-transition: opacity 0.4s cubic-bezier(0.75, 0, 0.75, 1) !important;
+  transition: opacity 0.4s cubic-bezier(0.75, 0, 0.75, 1) !important;
+}
+.keypad-input .mq-editable-field .mq-cursor:not(:only-child),
+.keypad-input .mq-editable-field .mq-root-block.mq-hasCursor > .mq-cursor:only-child {
+  height: 20px!important;
+  margin-top: -5px !important;
+  vertical-align: middle !important;
+}
+.keypad-input .mq-editable-field .mq-cursor {
+  border-color: #78C008;
+  border-left: 2px solid #78C008 !important;
+  margin-left: -1px !important;
+  margin-right: -1px !important;
+  opacity: 1!important;
+  -webkit-transition: opacity 0.5s ease-out !important;
+  -moz-transition: opacity 0.5s ease-out !important;
+  transition: opacity 0.5s ease-out !important;
+  visibility: visible !important;
+}
+.keypad-input .mq-editable-field .mq-cursor.mq-blink {
+  opacity: 0!important;
+  -webkit-transition: opacity 0.5s ease-in !important;
+  -moz-transition: opacity 0.5s ease-in !important;
+  transition: opacity 0.5s ease-in !important;
+  visibility: visible !important;
+}
+.keypad-input .mq-editable-field .mq-non-leaf .mq-cursor:only-child {
+  border: 2px solid #78C008 !important;
+  -webkit-border-radius: 1px;
+  -moz-border-radius: 1px;
+  border-radius: 1px;
+  opacity: 1!important;
+  padding: 0 4px;
+  -webkit-transition: border-color 0.5s ease-out !important;
+  -moz-transition: border-color 0.5s ease-out !important;
+  transition: border-color 0.5s ease-out !important;
+}
+.keypad-input .mq-editable-field .mq-non-leaf .mq-cursor:only-child.mq-blink {
+  border-color: #CCC !important;
+  opacity: 1!important;
+  -webkit-transition: border-color 0.5s ease-in !important;
+  -moz-transition: border-color 0.5s ease-in !important;
+  transition: border-color 0.5s ease-in !important;
+}
+.keypad-input .mq-empty {
+  background: 0 0 !important;
+}
+.keypad-input .mq-empty:not(.mq-root-block):after,
+.keypad-input .mq-hasCursor:empty:not(.mq-root-block):after {
+  border: 2px solid #CCC;
+  -webkit-border-radius: 1px;
+  -moz-border-radius: 1px;
+  border-radius: 1px;
+  color: transparent;
+  display: inline-block;
+  margin-left: -1px;
+  margin-right: -1px;
+  padding: 0 4px;
+  visibility: visible !important;
+}
+.keypad-input .mq-selection .mq-empty:not(.mq-root-block):after {
+  border-color: #fff;
+}
+.keypad-input .mq-hasCursor:empty:not(.mq-root-block):after {
+  content: 'c';
+}
+.keypad-input .mq-editable-field .mq-selection .mq-non-leaf,
+.keypad-input .mq-math-mode .mq-selection .mq-non-leaf {
+  background: #78C008 !important;
+  border-color: #fff !important;
+  color: #fff !important;
+}
+.keypad-input .mq-editable-field .mq-selection .mq-scaled,
+.keypad-input .mq-math-mode .mq-selection .mq-scaled {
+  background: 0 0!important;
+  border-color: transparent!important;
+  color: #fff !important;
+}
+.keypad-input .mq-selection {
+  background: #78C008 !important;
+  border-color: #fff !important;
+  color: #fff !important;
+  display: inline-block !important;
+}
+.keypad-container .katex {
+  color: inherit !important;
+}
+.popover-enter {
+  opacity: 0 !important;
+}
+.popover-enter.popover-enter-active {
+  opacity: 1!important;
+  -webkit-transition: opacity 0.2s ease-out !important;
+  -moz-transition: opacity 0.2s ease-out !important;
+  transition: opacity 0.2s ease-out !important;
+}
+/*@import (inline) "../../node_modules/@khanacademy/math-input/build/math-input.css";*/
 /* fix ported from later version of katex. Currently can't upgrade past 0.11 because of
    peer dep set by math-input */
 .katex * {
