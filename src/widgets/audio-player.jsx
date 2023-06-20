@@ -2,6 +2,7 @@ import _componentsFixedToResponsiveJsx from "../components/fixed-to-responsive.j
 import _mixinsChangeableJsx from "../mixins/changeable.jsx";
 import _underscore from "underscore";
 import _react from "react";
+import {ltbBlue} from "../styles/constants.js"
 
 var _module_ = {
     exports: {}
@@ -24,6 +25,15 @@ var Changeable = _mixinsChangeableJsx;
 
 var IS_URL = /^https?:\/\//;
 
+var buttonStyle = {
+    backgroundColor: ltbBlue,
+    padding: "10px",
+    color: "white",
+    border: "none",
+    borderRadius: "3px",
+    fontSize: "20px",
+}
+
 /**
  * Audio Player.
  */
@@ -35,6 +45,8 @@ var Audio = createReactClass({
     },
 
     getInitialState: function() {
+        this.audioplayer = React.createRef();
+
         return {
             play: false
         };
@@ -52,11 +64,21 @@ var Audio = createReactClass({
         return Changeable.change.apply(this, args);
     },
 
+    onEndedListener() {
+        this.setState({
+            play: false
+        })
+    },
+
     togglePlayPause() {
         if (this.state.play) {
-            this.refs.audioplayer.pause()
+            this.audioplayer.current.pause()
+            this.audioplayer.current.removeEventListener("ended", this.onEndedListener)
         } else {
-            this.refs.audioplayer.play()
+            this.audioplayer.current.play()
+            if (this.audioplayer.current && this.audioplayer.current.addEventListener) {
+                this.audioplayer.current.addEventListener("ended", this.onEndedListener)
+            }
         }
         
         this.setState({
@@ -80,26 +102,11 @@ var Audio = createReactClass({
 
         return (
             <div className="perseus-audio-widget">
-                <audio ref="audioplayer" src={url} preload="auto" loop />
-                <button onClick={this.togglePlayPause}>{this.state.play?"pause":"play"}</button>
+                <audio ref={this.audioplayer} src={url} preload="auto" />
+                <button onClick={this.togglePlayPause} style={buttonStyle}>
+                    {this.state.play? "▮▮" : "▶"}
+                </button>
             </div>
-
-            /*<FixedToResponsive // @Nolint this is fine, the linter is wrong
-                width={DEFAULT_WIDTH}
-                height={DEFAULT_HEIGHT}
-                // The key is here for the benefit of the editor, to ensure that
-                // any changes cause a re-rendering of the frame.
-                key={location + this.props.alignment}
-            >
-                <iframe
-                    className="perseus-audio-widget"
-                    sandbox="allow-same-origin allow-scripts"
-                    width={DEFAULT_WIDTH}
-                    height={DEFAULT_HEIGHT}
-                    src={url}
-                    allowFullScreen={true}
-                />
-            </FixedToResponsive>*/
         );
     },
 });
