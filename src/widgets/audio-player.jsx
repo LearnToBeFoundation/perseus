@@ -103,7 +103,7 @@ var Audio = createReactClass({
         return (
             <div className="perseus-audio-widget">
                 <audio ref={this.audioplayer} src={url} preload="auto" />
-                <button onClick={this.togglePlayPause} style={buttonStyle}>
+                <button aria-label={this.state.play? "pause" : "play"} onClick={this.togglePlayPause} style={buttonStyle}>
                     {this.state.play? "▮▮" : "▶"}
                 </button>
             </div>
