@@ -155,7 +155,7 @@ var ExpressionEditor = createReactClass({
         );
 
         // checkboxes to choose which sets of input buttons are shown
-        var buttonSetChoices = TexButtons.buttonSets.map((set, name) => {
+        var buttonSetChoices = _.map(TexButtons.buttonSets, ((set, name) => {
             // The first one gets special cased to always be checked, disabled,
             // and float left.
             var isFirst = name === "basic";
@@ -174,7 +174,7 @@ var ExpressionEditor = createReactClass({
                     {name}
                 </label>
             );
-        });
+        }));
 
         buttonSetChoices.splice(
             1,
