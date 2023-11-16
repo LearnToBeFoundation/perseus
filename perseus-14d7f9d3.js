@@ -8990,7 +8990,12 @@ var Util$q = {
    * Deep approximate equality on primitives, numbers, arrays, and objects.
    */
   deepEq: function deepEq(x, y) {
-    if (_$1J.isArray(x) && _$1J.isArray(y)) {
+    // _owner on React objects contains circular references so we must avoid it.
+    var bannedReactField = (fieldName, obj) => fieldName == "_owner" && obj.$$typeof;
+
+    if (x === y) {
+      return true;
+    } else if (_$1J.isArray(x) && _$1J.isArray(y)) {
       if (x.length !== y.length) {
         return false;
       }
@@ -9010,9 +9015,9 @@ var Util$q = {
       return false;
     } else if (_$1J.isObject(x) && _$1J.isObject(y)) {
       return x === y || _$1J.all(x, function (v, k) {
-        return Util$q.deepEq(y[k], v);
+        return bannedReactField(k, x) || Util$q.deepEq(y[k], v);
       }) && _$1J.all(y, function (v, k) {
-        return Util$q.deepEq(x[k], v);
+        return bannedReactField(k, y) || Util$q.deepEq(x[k], v);
       });
     } else if (_$1J.isObject(x) || _$1J.isObject(y)) {
       return false;
@@ -63727,7 +63732,8 @@ _defineProperty(LikertScale, "propTypes", {
 });
 
 _defineProperty(LikertScale, "defaultProps", {
-  selected: null
+  selected: null,
+  labels: ["", "", "", ""]
 });
 
 var propUpgrades$2 = {
