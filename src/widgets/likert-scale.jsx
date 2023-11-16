@@ -99,6 +99,7 @@ class LikertScale extends React.PureComponent {
 
     static defaultProps = {
         selected: null,
+        labels: ["", "", "", ""]
     };
 
     constructor(props) {
