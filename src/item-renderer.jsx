@@ -88,6 +88,13 @@ const ItemRenderer = createReactClass({
         };
     },
 
+    getQuestionRenderer: function () {
+        if (this.questionRenderer === null) {
+            this.update();
+        }
+        return this.questionRenderer;
+    },
+
     getInitialState: function() {
         return {
             ...ProvideKeypad.getInitialState(),
@@ -314,7 +321,7 @@ const ItemRenderer = createReactClass({
 
         // TODO(charlie): Extend this API to support inputs in the
         // HintsRenderer as well.
-        var caller = this.questionRenderer;
+        var caller = this.getQuestionRenderer();
 
         return caller[functionName].apply(caller, functionArgs);
     },
@@ -340,7 +347,7 @@ const ItemRenderer = createReactClass({
     },
 
     getInputPaths: function() {
-        var questionAreaInputPaths = this.questionRenderer.getInputPaths();
+        var questionAreaInputPaths = this.getQuestionRenderer().getInputPaths();
         return questionAreaInputPaths;
     },
 
@@ -359,7 +366,7 @@ const ItemRenderer = createReactClass({
     },
 
     focus: function() {
-        return this.questionRenderer.focus();
+        return this.getQuestionRenderer().focus();
     },
 
     blur: function() {
@@ -391,7 +398,7 @@ const ItemRenderer = createReactClass({
      * }
      */
     scoreInput: function() {
-        var guessAndScore = this.questionRenderer.guessAndScore();
+        var guessAndScore = this.getQuestionRenderer().guessAndScore();
         var guess = guessAndScore[0];
         var score = guessAndScore[1];
 
@@ -403,10 +410,10 @@ const ItemRenderer = createReactClass({
         var keScore = Util.keScoreFromPerseusScore(
             score,
             maxCompatGuess,
-            this.questionRenderer.getSerializedState()
+            this.getQuestionRenderer().getSerializedState(),
         );
 
-        var emptyQuestionAreaWidgets = this.questionRenderer.emptyWidgets();
+        var emptyQuestionAreaWidgets = this.getQuestionRenderer().emptyWidgets();
 
         this.setState({
             questionCompleted: keScore.correct,
@@ -421,7 +428,7 @@ const ItemRenderer = createReactClass({
      * the question content.
      */
     getWidgetIds: function() {
-        return this.questionRenderer.getWidgetIds();
+        return this.getQuestionRenderer().getWidgetIds();
     },
 
     /**
@@ -430,9 +437,9 @@ const ItemRenderer = createReactClass({
      * from `getWidgetIds`.
      */
     scoreWidgets: function() {
-        var qScore = this.questionRenderer.scoreWidgets();
-        var qGuess = this.questionRenderer.getUserInputForWidgets();
-        var state = this.questionRenderer.getSerializedState();
+        var qScore = this.getQuestionRenderer().scoreWidgets();
+        var qGuess = this.getQuestionRenderer().getUserInputForWidgets();
+        var state = this.getQuestionRenderer().getSerializedState();
         return mapObject(qScore, (score, id) => {
             return Util.keScoreFromPerseusScore(score, qGuess[id], state);
         });
@@ -443,7 +450,7 @@ const ItemRenderer = createReactClass({
      */
     getSerializedState: function() {
         return {
-            question: this.questionRenderer.getSerializedState(),
+            question: this.getQuestionRenderer().getSerializedState(),
             hints: this.hintsRenderer.getSerializedState(),
         };
     },
@@ -459,7 +466,7 @@ const ItemRenderer = createReactClass({
             }
         };
 
-        this.questionRenderer.restoreSerializedState(
+        this.getQuestionRenderer().restoreSerializedState(
             state.question,
             fireCallback
         );
@@ -467,11 +474,11 @@ const ItemRenderer = createReactClass({
     },
 
     showRationalesForCurrentlySelectedChoices() {
-        this.questionRenderer.showRationalesForCurrentlySelectedChoices();
+        this.getQuestionRenderer().showRationalesForCurrentlySelectedChoices();
     },
 
     deselectIncorrectSelectedChoices() {
-        this.questionRenderer.deselectIncorrectSelectedChoices();
+        this.getQuestionRenderer().deselectIncorrectSelectedChoices();
     },
 
     render: function() {
