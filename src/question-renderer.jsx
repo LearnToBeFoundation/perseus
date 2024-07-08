@@ -16,6 +16,7 @@ import { StyleSheet, css } from "aphrodite";
  *
  * As well as check answer, grading, and hints buttons built in
  */
+const colorLtbBlue = "#2563EB"
 
 const styles = StyleSheet.create({
     hintsContainer: {
