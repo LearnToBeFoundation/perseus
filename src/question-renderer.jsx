@@ -382,9 +382,6 @@ const QuestionRenderer = createReactClass({
         const showSubmitButton = this.props.showSubmitButton;
         const showHintButton = this.props.showHintButton;
 
-        console.log("showHintButton ", showHintButton);
-        console.log("showSubmitButton ", showSubmitButton);
-
         return (
             <form
                 className="framework-perseus"
