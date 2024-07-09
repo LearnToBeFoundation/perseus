@@ -21,7 +21,7 @@
     "prebuild": "lessc stylesheets/exercise-content-package/perseus.less > src/lib/perseus.css",
     "build": "rollup -c && react-scripts build",
     "postbuild": "rm -rf ./docs/; mv ./build/ ./docs",
-    "prepare": "rollup -c",
+    "prepare": "npm run prebuild && rollup -c",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
