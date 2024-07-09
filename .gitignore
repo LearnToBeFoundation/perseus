@@ -7,3 +7,9 @@ perseus.sublime-workspace
 
 # Ignore emacs backup files
 *~
+/editor-perseus.js
+/perseus.css
+/perseus.js
+/rollup-stats.html
+/docs
+/perseus-*.js
