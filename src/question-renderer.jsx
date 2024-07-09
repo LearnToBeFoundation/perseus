@@ -16,7 +16,6 @@ import { StyleSheet, css } from "aphrodite";
  *
  * As well as check answer, grading, and hints buttons built in
  */
-
 const colorLtbBlue = "#2563EB"
 
 const styles = StyleSheet.create({
@@ -57,6 +56,8 @@ const QuestionRenderer = createReactClass({
         reviewMode: PropTypes.bool,
         onAnswer: PropTypes.func,
         onHint: PropTypes.func,
+        showSubmitButton: PropTypes.bool,
+        showHintButton: PropTypes.bool,
     },
 
     getDefaultProps: function() {
@@ -67,6 +68,8 @@ const QuestionRenderer = createReactClass({
             reviewMode: false,
             onAnswer: () => {},
             onHint: () => {},
+            showSubmitButton: true,
+            showHintButton: true,
         };
     },
 
@@ -376,6 +379,8 @@ const QuestionRenderer = createReactClass({
         );
 
         const isOutOfHints = this.state.hintsVisible >= this.getNumHints()
+        const showSubmitButton = this.props.showSubmitButton;
+        const showHintButton = this.props.showHintButton;
 
         return (
             <form
@@ -386,54 +391,61 @@ const QuestionRenderer = createReactClass({
                     {questionRenderer}
                 </div>
                 <div style={{ paddingTop: 10, paddingBottom: 10 }}>
-                    <button
-                        type="submit"
-                        className={"check-answer-button " + css(styles.checkAnswerButton)}
-                        style={{
-                            backgroundColor: this.state.answerState === "incorrect" ? "orange" : colorLtbBlue,
-                        }}
-                        disabled={this.state.answerState === "correct"}
-                    >
-                        <span className={css(styles.checkAnswerText)} style={{ visibility: this.state.answerState === "correct" ? "visible" : "hidden"}}>
-                            🌟 Yes! You got it!
-                        </span>
-                        <span className={css(styles.checkAnswerText)} style={{ visibility: this.state.answerState === "incorrect" ? "visible" : "hidden"}}>
-                            Try again
-                        </span>
-                        <span className={css(styles.checkAnswerText)} style={{ visibility: this.state.answerState === "unanswered" ? "visible" : "hidden"}}>
-                            Check answer
-                        </span>
-                    </button>
+                    {showSubmitButton && (
+                        <button
+                            type="submit"
+                            className={"check-answer-button " + css(styles.checkAnswerButton)}
+                            style={{
+                                backgroundColor: this.state.answerState === "incorrect" ? "orange" : colorLtbBlue,
+                            }}
+                            disabled={this.state.answerState === "correct"}
+                        >
+                            <span className={css(styles.checkAnswerText)} style={{ visibility: this.state.answerState === "correct" ? "visible" : "hidden"}}>
+                                🌟 Yes! You got it!
+                            </span>
+                            <span className={css(styles.checkAnswerText)} style={{ visibility: this.state.answerState === "incorrect" ? "visible" : "hidden"}}>
+                                Try again
+                            </span>
+                            <span className={css(styles.checkAnswerText)} style={{ visibility: this.state.answerState === "unanswered" ? "visible" : "hidden"}}>
+                                Check answer
+                            </span>
+                        </button>
+                    )}
                     <div style={{ display: 'inline-block', width: 10 }} />
-                    <button
-                        type="button"
-                        style={{
-                            padding: 10,
-                            backgroundColor: isOutOfHints ? "darkgray" : "orange",
-                            color: "white",
-                            fontSize: 14,
-                            borderRadius: 5,
-                        }}
-                        disabled={isOutOfHints}
-                        onClick={this.showHint}
-                    >
-                        {isOutOfHints ?
-                            "We're out of hints!" :
-                            "I'd like a hint!"
+
+                    {showHintButton && (
+                        <button
+                            type="button"
+                            style={{
+                                padding: 10,
+                                backgroundColor: isOutOfHints ? "darkgray" : "orange",
+                                color: "white",
+                                fontSize: 14,
+                                borderRadius: 5,
+                            }}
+                            disabled={isOutOfHints}
+                            onClick={this.showHint}
+                        >
+                            {isOutOfHints ?
+                                "We're out of hints!" :
+                                "I'd like a hint!"
+                            }
+                        </button>
+                    )}
+                </div>
+                { showHintButton && (
+                    <div
+                        className={
+                            // Avoid adding any horizontal padding when applying the
+                            // mobile hint styles, which are flush to the left.
+                            // NOTE(charlie): We may still want to apply this
+                            // padding for desktop exercises.
+                            !apiOptions.isMobile && css(styles.hintsContainer)
                         }
-                    </button>
-                </div>
-                <div
-                    className={
-                        // Avoid adding any horizontal padding when applying the
-                        // mobile hint styles, which are flush to the left.
-                        // NOTE(charlie): We may still want to apply this
-                        // padding for desktop exercises.
-                        !apiOptions.isMobile && css(styles.hintsContainer)
-                    }
-                >
-                    {hintsRenderer}
-                </div>
+                    >
+                        {hintsRenderer}
+                    </div>
+                )}
             </form>
         );
     },
