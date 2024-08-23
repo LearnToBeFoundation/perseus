@@ -56,8 +56,12 @@ const QuestionRenderer = createReactClass({
         reviewMode: PropTypes.bool,
         onAnswer: PropTypes.func,
         onHint: PropTypes.func,
+        checkAnswerLabel: PropTypes.string,
+        tryAgainButtonText: PropTypes.string,
+        correctButtonText: PropTypes.string,
         showSubmitButton: PropTypes.bool,
         showHintButton: PropTypes.bool,
+        showOutcome: PropTypes.bool,
     },
 
     getDefaultProps: function() {
@@ -68,8 +72,12 @@ const QuestionRenderer = createReactClass({
             reviewMode: false,
             onAnswer: () => {},
             onHint: () => {},
+            checkAnswerButtonText: 'Check answer',
+            tryAgainButtonText: 'Try again',
+            correctButtonText: '🌟 Yes! You got it!',
             showSubmitButton: true,
             showHintButton: true,
+            showOutcome: true,
         };
     },
 
@@ -379,8 +387,7 @@ const QuestionRenderer = createReactClass({
         );
 
         const isOutOfHints = this.state.hintsVisible >= this.getNumHints()
-        const showSubmitButton = this.props.showSubmitButton;
-        const showHintButton = this.props.showHintButton;
+        const { showSubmitButton, showHintButton, showOutcome } = this.props
 
         return (
             <form
@@ -396,19 +403,27 @@ const QuestionRenderer = createReactClass({
                             type="submit"
                             className={"check-answer-button " + css(styles.checkAnswerButton)}
                             style={{
-                                backgroundColor: this.state.answerState === "incorrect" ? "orange" : colorLtbBlue,
+                                backgroundColor: showOutcome && this.state.answerState === "incorrect" ? "orange" : colorLtbBlue,
                             }}
                             disabled={this.state.answerState === "correct"}
                         >
-                            <span className={css(styles.checkAnswerText)} style={{ visibility: this.state.answerState === "correct" ? "visible" : "hidden"}}>
-                                🌟 Yes! You got it!
-                            </span>
-                            <span className={css(styles.checkAnswerText)} style={{ visibility: this.state.answerState === "incorrect" ? "visible" : "hidden"}}>
-                                Try again
-                            </span>
-                            <span className={css(styles.checkAnswerText)} style={{ visibility: this.state.answerState === "unanswered" ? "visible" : "hidden"}}>
-                                Check answer
-                            </span>
+                            {showOutcome ? (
+                                <>
+                                    <span className={css(styles.checkAnswerText)} style={{ visibility: this.state.answerState === "correct" ? "visible" : "hidden"}}>
+                                        {this.props.correctButtonText}
+                                    </span>
+                                    <span className={css(styles.checkAnswerText)} style={{ visibility: this.state.answerState === "incorrect" ? "visible" : "hidden"}}>
+                                        {this.props.tryAgainButtonText}
+                                    </span>
+                                    <span className={css(styles.checkAnswerText)} style={{ visibility: this.state.answerState === "unanswered" ? "visible" : "hidden"}}>
+                                        {this.props.checkAnswerButtonText}
+                                    </span>
+                                </>
+                            ) : (
+                                <span className={css(styles.checkAnswerText)}>
+                                    {this.props.checkAnswerButtonText}
+                                </span>
+                            )}
                         </button>
                     )}
                     <div style={{ display: 'inline-block', width: 10 }} />

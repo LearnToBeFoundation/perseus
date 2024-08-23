@@ -151,7 +151,7 @@ endif
 install:
 ifneq ("$(SUPPRESSINSTALL)","TRUE")
 	$(SUBMODULE_UPDATE)
-	npm install
+	npm install --no-save --legacy-peer-deps
 	rm -rf node_modules/react-components
 	ln -s ../react-components/js node_modules/react-components
 	rm -rf node_modules/kmath
@@ -167,13 +167,12 @@ ifneq ("$(SUPPRESSINSTALL)","TRUE")
 	rm -rf react-components/node_modules
 # Use --production so that math-input doesn't install any devDepedencies, which
 # include React and friends.
-	cd math-input && npm install --production && cd ..
+#	cd math-input && npm install --production && cd ..
 
 # Cleans up node modules in math-input that are added through npm install in the
 # submodule, but shouldn't be used because Perseus's copy should be used instead.
-	rm -rf math-input/node_modules/react
-	rm -rf math-input/node_modules/react-dom
-	rm -rf math-input/node_modules/react-addons-*
+#	rm -rf math-input/node_modules/react-dom
+#	rm -rf math-input/node_modules/react-addons-*
 endif
 
 clean:
