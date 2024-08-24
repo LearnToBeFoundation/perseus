@@ -377,7 +377,7 @@ var NumericInput = createReactClass({
         if (this.props.apiOptions.staticRender) {
             return "tex";
         } else {
-            return "text";
+            return "numeric";
         }
     },
 

@@ -3,6 +3,7 @@ import { linterContextProps, linterContextDefault } from "../gorgon/proptypes.js
 import _gorgonGorgonJs from "../gorgon/gorgon.js";
 import _componentsMathOutputJsx from "../components/math-output.jsx";
 import _textInputJsx from "./text-input.jsx";
+import _telInputJsx from "./tel-input.jsx";
 import _rendererJsx from "../renderer.jsx";
 import _mathInputJsx from "./math-input.jsx";
 import _perseusApiJsx from "../perseus-api.jsx";
@@ -25,6 +26,7 @@ const ApiClassNames = _perseusApiJsx.ClassNames;
 const MathInput = _mathInputJsx;
 const Renderer = _rendererJsx;
 const TextInput = _textInputJsx;
+const TelInput = _telInputJsx;
 const MathOutput = _componentsMathOutputJsx;
 
 const Gorgon = _gorgonGorgonJs;
@@ -34,6 +36,7 @@ const captureScratchpadTouchStart = _utilJs
 
 const MATH = "math";
 const TEXT = "text";
+const NUMERIC = "numeric";
 const TEX = "tex";
 
 const InputWithExamples = createReactClass({
@@ -153,6 +156,9 @@ const InputWithExamples = createReactClass({
 
             case TEXT:
                 return TextInput;
+                
+            case NUMERIC:
+                return TelInput;
 
             default:
                 return null;
