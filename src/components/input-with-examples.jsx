@@ -133,7 +133,7 @@ const InputWithExamples = createReactClass({
                 },
                 inputProps
             );
-        } else if (this.props.type === TEXT) {
+        } else if (this.props.type === TEXT || this.props.type === NUMERIC) {
             return _.extend(
                 {
                     autoCapitalize: "off",
