@@ -38,6 +38,7 @@ const TelInput = createReactClass({
                 type="tel"
                 aria-label={labelText}
                 onChange={e => this.props.onChange(e.target.value)}
+                onInput={e => e.target.closest("form")?.submit()}
             />
         );
     },
