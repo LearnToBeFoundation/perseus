@@ -12,7 +12,7 @@ const React = _react;
 
 const ReactDOM = _reactDom;
 
-const TelInput = createReactClass({
+const TextNumericInput = createReactClass({
     propTypes: {
         value: PropTypes.string,
         onChange: PropTypes.func.isRequired,
@@ -35,7 +35,8 @@ const TelInput = createReactClass({
         return (
             <input
                 {...props}
-                type="tel"
+                type="text"
+                inputmode="numeric"
                 aria-label={labelText}
                 onChange={e => this.props.onChange(e.target.value)}
             />
@@ -74,5 +75,5 @@ const TelInput = createReactClass({
     },
 });
 
-_module_.exports = TelInput;
+_module_.exports = TextNumericInput;
 export default _module_.exports;
