@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var perseus = require('./perseus-d413416e.js');
+var perseus = require('./perseus-eee09be1.js');
 var aphrodite = require('aphrodite');
 var _react = require('react');
 var _underscore = require('underscore');
@@ -52,13 +52,12 @@ var SimpleButton$1 = createReactClass({
   },
   render: function render() {
     var _this$props = this.props,
-        {
-      children,
-      color,
-      onClick
-    } = _this$props,
-        otherProps = perseus._objectWithoutProperties(_this$props, _excluded$1);
-
+      {
+        children,
+        color,
+        onClick
+      } = _this$props,
+      otherProps = perseus._objectWithoutProperties(_this$props, _excluded$1);
     return /*#__PURE__*/React$i.createElement("div", perseus._extends({
       className: aphrodite.css(styles$3.baseButton, styles$3[color]),
       onClick: onClick
@@ -110,9 +109,7 @@ var _module_$p = {
   exports: {}
 };
 /* eslint-disable comma-dangle, no-var, react/jsx-closing-bracket-location, react/prop-types, react/sort-comp, space-infix-ops */
-
 /* TODO(csilvers): fix these lint errors (http://eslint.org/docs/rules): */
-
 /* To fix, remove an entry above, run ka-lint, and fix errors. */
 
 var React$h = _react__default["default"];
@@ -127,7 +124,6 @@ var JsonEditor$3 = createReactClass({
   },
   componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
     var shouldReplaceContent = !this.state.valid || !_$i.isEqual(nextProps.value, JSON.parse(this.state.currentValue));
-
     if (shouldReplaceContent) {
       this.setState(this.getInitialState());
     }
@@ -159,17 +155,15 @@ var JsonEditor$3 = createReactClass({
   },
   handleChange: function handleChange(e) {
     var nextString = e.target.value;
-
     try {
-      var json = JSON.parse(nextString); // Some extra handling to allow copy-pasting from /api/vi
-
+      var json = JSON.parse(nextString);
+      // Some extra handling to allow copy-pasting from /api/vi
       if (_$i.isString(json)) {
         json = JSON.parse(json);
-      } // This callback unfortunately causes multiple renders,
+      }
+      // This callback unfortunately causes multiple renders,
       // but seems to be necessary to avoid componentWillReceiveProps
       // being called before setState has gone through
-
-
       this.setState({
         currentValue: nextString,
         valid: true
@@ -187,17 +181,15 @@ var JsonEditor$3 = createReactClass({
   // when you blur, it will revert to the last valid value.
   handleBlur: function handleBlur(e) {
     var nextString = e.target.value;
-
     try {
-      var json = JSON.parse(nextString); // Some extra handling to allow copy-pasting from /api/vi
-
+      var json = JSON.parse(nextString);
+      // Some extra handling to allow copy-pasting from /api/vi
       if (_$i.isString(json)) {
         json = JSON.parse(json);
-      } // This callback unfortunately causes multiple renders,
+      }
+      // This callback unfortunately causes multiple renders,
       // but seems to be necessary to avoid componentWillReceiveProps
       // being called before setState has gone through
-
-
       this.setState({
         currentValue: JSON.stringify(json, null, 4),
         valid: true
@@ -236,10 +228,11 @@ var React$g = _react__default["default"];
 var nextIframeID = 0;
 var requestIframeData = {};
 var updateIframeHeight = {};
-window.iframeDataStore = {}; // This is called once after Perseus is loaded and the iframe
+window.iframeDataStore = {};
+
+// This is called once after Perseus is loaded and the iframe
 // is ready to render content, then twice a second afterwards
 // to capture the result of animations.
-
 window.addEventListener("message", event => {
   if (typeof event.data === "string") {
     // In Perseus, we expect the callback to exist, as it is added by
@@ -248,7 +241,6 @@ window.addEventListener("message", event => {
     // from there), and Crowdin fires its own "message" events. So we'll
     // just have to ignore the event when we can't find the callback.
     var callback = requestIframeData[event.data];
-
     if (callback) {
       callback();
     }
@@ -281,16 +273,12 @@ var IframeContentRenderer$2 = createReactClass({
   componentDidMount: function componentDidMount() {
     this.iframeID = nextIframeID;
     nextIframeID++;
-
     this._prepareFrame();
-
     requestIframeData[this.iframeID] = () => {
       this.sendNewData(this._lastData);
     };
-
     updateIframeHeight[this.iframeID] = height => {
       this._lastHeight = height;
-
       if (this.isMounted() && this.props.seamless) {
         this.refs.container.style.height = height + "px";
       }
@@ -305,7 +293,6 @@ var IframeContentRenderer$2 = createReactClass({
     } else {
       this.refs.container.style.height = this._lastHeight + "px";
     }
-
     if (prevProps.content !== this.props.content || prevProps.datasetValue !== this.props.datasetValue) {
       // Not just a change in seamless
       this._prepareFrame();
@@ -320,20 +307,16 @@ var IframeContentRenderer$2 = createReactClass({
     if (this._frame) {
       this.refs.container.removeChild(this._frame);
     }
-
     this._frame = document.createElement("iframe");
     this._frame.style.width = "100%";
     this._frame.style.height = "100%";
-
     if (this.props.datasetKey) {
       // If the user has specified a data-* attribute to place on the
       // iframe, we set it here. Right now, this is used to
       // communicate if the iframe should be enabling touch emulation.
       this._frame.dataset[this.props.datasetKey] = this.props.datasetValue;
     }
-
     this._frame.dataset.id = this.iframeID;
-
     if (this.props.seamless) {
       // The seamless prop is the same as the "nochrome" prop that
       // gets passed to DeviceFramer. If it is set, then we're going
@@ -342,38 +325,36 @@ var IframeContentRenderer$2 = createReactClass({
       // as above to pass this information on to the perseus-frame
       // component inside the iframe
       this._frame.dataset.lintGutter = true;
-    } // To make sure the value of location.href inside the iframe is the
+    }
+
+    // To make sure the value of location.href inside the iframe is the
     // same as the location of the parent, we wait for the iframe to
     // load before writing contents. Without the wait, the location
     // inside the iframe becomes "about:blank", which causes problems
     // with loading $LAB.
-
-
     this._frame.onload = () => {
-      this._frame.onload = null; // To prevent an issue with the contents of the iframe not being
+      this._frame.onload = null;
+
+      // To prevent an issue with the contents of the iframe not being
       // loaded properly, where the javascript inside the iframe is
       // not executed, we push the content window write to the end
       // of the event queue.
-
       setTimeout(() => {
         this._frame.contentWindow.document.open();
-
         this._frame.contentWindow.document.write(this.props.content);
-
         this._frame.contentWindow.document.close();
       });
     };
-
     this.refs.container.appendChild(this._frame);
   },
   sendNewData: function sendNewData(data) {
     if (this.isMounted() && data) {
-      this._lastData = data; // We can't use JSON.stringify/parse for this because the apiOptions
+      this._lastData = data;
+
+      // We can't use JSON.stringify/parse for this because the apiOptions
       // includes the functions GroupMetadataEditor, groupAnnotator,
       // onFocusChange, and onInputError.
-
       window.iframeDataStore[this.iframeID] = data;
-
       this._frame.contentWindow.postMessage(this.iframeID, "*");
     }
   },
@@ -394,13 +375,15 @@ var devices = {
   PHONE: "phone",
   TABLET: "tablet",
   DESKTOP: "desktop"
-}; // How many pixels do we reserve on the right-hand side of a preview
+};
+
+// How many pixels do we reserve on the right-hand side of a preview
 // for displaying lint indicators? This space needs to be reserved
 // in DeviceFramer, but it is actually allocated in PerseusFrame
+var lintGutterWidth = 36;
 
-var lintGutterWidth = 36; // How wide a border does PerseusFrame draw? We need to allocate enough
+// How wide a border does PerseusFrame draw? We need to allocate enough
 // space for it in DeviceFramer.
-
 var perseusFrameBorderWidth = 1;
 var _constantsJs = {
   devices: devices,
@@ -444,7 +427,6 @@ var DeviceFramer$2 = createReactClass({
   },
   render: function render() {
     var deviceType = this.props.deviceType;
-
     if (this.props.nochrome) {
       // Render content inside a variable height iframe.  Used on the
       // "edit" table of the content editor. In this mode, PerseusFrame
@@ -457,9 +439,10 @@ var DeviceFramer$2 = createReactClass({
         }
       }, /*#__PURE__*/React$f.createElement("div", null, this.props.children)));
     } else {
-      var scale = SCREEN_SIZES[deviceType].framedWidth / SCREEN_SIZES[deviceType].width; // In this mode we draw our own border and don't reserve
-      // space for a lint gutter.
+      var scale = SCREEN_SIZES[deviceType].framedWidth / SCREEN_SIZES[deviceType].width;
 
+      // In this mode we draw our own border and don't reserve
+      // space for a lint gutter.
       var screenStyle = {
         backgroundColor: "white",
         color: "black",
@@ -482,9 +465,7 @@ _module_$n.exports = DeviceFramer$2;
 var _componentsDeviceFramerJsx = _module_$n.exports;
 
 /* eslint-disable no-var, object-curly-spacing, react/jsx-closing-bracket-location, react/jsx-indent-props, react/prop-types, react/sort-comp */
-
 /* TODO(csilvers): fix these lint errors (http://eslint.org/docs/rules): */
-
 /* To fix, remove an entry above, run ka-lint, and fix errors. */
 
 /* Collection of classes for rendering the hint editor area,
@@ -496,6 +477,7 @@ var _$h = _underscore__default["default"];
 var InfoTip$1 = perseus._componentsInfoTipJsx;
 var ApiOptions$3 = perseus._perseusApiJsx.Options;
 var InlineIcon$3 = perseus._componentsInlineIconJsx;
+
 /* Renders a hint editor box
  *
  * This includes:
@@ -504,7 +486,6 @@ var InlineIcon$3 = perseus._componentsInlineIconJsx;
  *  ~ the "remove this hint" box
  *  ~ the move hint up/down arrows
  */
-
 var HintEditor = createReactClass({
   displayName: "HintEditor",
   propTypes: {
@@ -576,8 +557,8 @@ var HintEditor = createReactClass({
     return this.refs.editor.serialize(options);
   }
 });
-/* A single hint-row containing a hint editor and preview */
 
+/* A single hint-row containing a hint editor and preview */
 var CombinedHintEditor = createReactClass({
   displayName: "CombinedHintEditor",
   propTypes: {
@@ -592,7 +573,8 @@ var CombinedHintEditor = createReactClass({
       highlightLint: false
     };
   },
-  updatePreview: function updatePreview() {// TODO(aria): decide what to do with this
+  updatePreview: function updatePreview() {
+    // TODO(aria): decide what to do with this
     //const shouldBold =
     //    this.props.isLast && !/\*\*/.test(this.props.hint.content);
     //this.refs.frame.sendNewData({
@@ -651,6 +633,7 @@ var CombinedHintEditor = createReactClass({
     this.refs.editor.focus();
   }
 });
+
 /* The entire hints editing/preview area
  *
  * Includes:
@@ -658,7 +641,6 @@ var CombinedHintEditor = createReactClass({
  *  ~ All the hint previews
  *  ~ The "add a hint" button
  */
-
 var CombinedHintsEditor$1 = createReactClass({
   displayName: "CombinedHintsEditor",
   propTypes: {
@@ -680,7 +662,6 @@ var CombinedHintsEditor$1 = createReactClass({
   },
   render: function render() {
     var hints = this.props.hints;
-
     var hintElems = _$h.map(hints, function (hint, i) {
       return /*#__PURE__*/React$e.createElement(CombinedHintEditor, {
         ref: "hintEditor" + i,
@@ -699,9 +680,8 @@ var CombinedHintsEditor$1 = createReactClass({
         highlightLint: this.props.highlightLint
       });
     }, this);
+
     /* eslint-disable max-len */
-
-
     return /*#__PURE__*/React$e.createElement("div", {
       className: "perseus-hints-editor perseus-editor-table"
     }, hintElems, /*#__PURE__*/React$e.createElement("div", {
@@ -718,7 +698,6 @@ var CombinedHintsEditor$1 = createReactClass({
   handleHintChange: function handleHintChange(i, newProps, cb, silent) {
     // TODO(joel) - lens
     var hints = _$h.clone(this.props.hints);
-
     hints[i] = _$h.extend({}, this.serializeHint(i, {
       keepDeletedWidgets: true
     }), newProps);
@@ -728,7 +707,6 @@ var CombinedHintsEditor$1 = createReactClass({
   },
   handleHintRemove: function handleHintRemove(i) {
     var hints = _$h.clone(this.props.hints);
-
     hints.splice(i, 1);
     this.props.onChange({
       hints: hints
@@ -736,7 +714,6 @@ var CombinedHintsEditor$1 = createReactClass({
   },
   handleHintMove: function handleHintMove(i, dir) {
     var hints = _$h.clone(this.props.hints);
-
     var hint = hints.splice(i, 1)[0];
     hints.splice(i + dir, 0, hint);
     this.props.onChange({
@@ -749,7 +726,6 @@ var CombinedHintsEditor$1 = createReactClass({
     var hints = _$h.clone(this.props.hints).concat([{
       content: ""
     }]);
-
     this.props.onChange({
       hints: hints
     }, () => {
@@ -773,9 +749,9 @@ var CombinedHintsEditor$1 = createReactClass({
 });
 
 var _excluded = ["depth"],
-    _excluded2 = ["shape", "data", "path", "actions", "name", "controls"],
-    _excluded3 = ["shape", "data", "path", "actions"],
-    _excluded4 = ["shape", "data", "path"];
+  _excluded2 = ["shape", "data", "path", "actions", "name", "controls"],
+  _excluded3 = ["shape", "data", "path", "actions"],
+  _excluded4 = ["shape", "data", "path"];
 var _module_$m = {
   exports: {}
 };
@@ -788,13 +764,13 @@ var InlineIcon$2 = perseus._componentsInlineIconJsx;
 var JsonEditor$2 = _jsonEditorJsx;
 var SimpleButton = _simpleButtonJsx;
 var EDITOR_MODES = ["edit", "preview", "json"];
+
 /**
  * Component that displays the mode dropdown.
  *
  * The mode dropdown is the selector at the top of the editor that lets you
  * switch between edit, preview, and dev-only JSON mode.
  */
-
 var ModeDropdown = createReactClass({
   displayName: "ModeDropdown",
   propTypes: {
@@ -820,30 +796,28 @@ var ModeDropdown = createReactClass({
     }, "Dev-only JSON")));
   }
 });
+
 /**
  * Convert a camel-cased string to a human-formatted string.
  * "superCoolThings" -> "super cool things"
  */
-
 function camelCaseToHuman(str) {
   // Decapitalize the capital letters, and add a space before each.
   return str.replace(/[A-Z]/g, s => " " + s.toLowerCase());
 }
+
 /**
  * Capitalize the first letter of the given string.
  * "super cool things" -> "Super cool things"
  */
-
-
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
+
 /**
  * Convert the given pluralized word to a singularized word.
  * "super cool things" -> "super cool thing"
  */
-
-
 function pluralToSingular(str) {
   if (str.charAt(str.length - 1) === "s") {
     // Incredibly weak implementation :P
@@ -855,29 +829,26 @@ function pluralToSingular(str) {
     return str;
   }
 }
+
 /**
  * When iterating through the editors, we don't keep track of the extra
  * `_multi` part at the beginning. This is a helper function which takes a path
  * and prepends that key.
  */
-
-
 function multiPath(path) {
   return ["_multi", ...path];
-} // Return an h1 if depth=0, h2 if depth=1, etc.
+}
 
-
+// Return an h1 if depth=0, h2 if depth=1, etc.
 function Header(_ref) {
   var {
-    depth
-  } = _ref,
-      props = perseus._objectWithoutProperties(_ref, _excluded);
-
+      depth
+    } = _ref,
+    props = perseus._objectWithoutProperties(_ref, _excluded);
   var headerLevel = Math.min(depth, 5) + 1;
   var HeaderTag = "h".concat(headerLevel);
   return /*#__PURE__*/React$d.createElement(HeaderTag, props);
 }
-
 Header.propTypes = {
   depth: PropTypes.number.isRequired
 };
@@ -895,11 +866,13 @@ var nodePropTypes = {
   }).isRequired,
   apiOptions: PropTypes.any.isRequired,
   // TODO(mdr): real proptype?
+
   // For the left-hand column, we use edit mode and leave renderers empty.
   // For the right-hand column, we use preview mode and provide renderers
   // via a MultiRenderer.
   renderers: PropTypes.any
 };
+
 /**
  * Render a node in the editor tree, given the shape of the target
  * node, the data stored in the target node, the path to the target
@@ -914,21 +887,18 @@ var nodePropTypes = {
  * content. Container nodes, like arrays and objects, render a header above
  * their content.
  */
-
 var NodeContainer = props => {
   var {
-    shape,
-    data,
-    path,
-    actions,
-    name: givenName,
-    controls
-  } = props,
-      otherProps = perseus._objectWithoutProperties(props, _excluded2);
-
+      shape,
+      data,
+      path,
+      actions,
+      name: givenName,
+      controls
+    } = props,
+    otherProps = perseus._objectWithoutProperties(props, _excluded2);
   var name = givenName || camelCaseToHuman(path[path.length - 1] || "");
   var Container;
-
   if (shape.type === "array") {
     Container = ArrayContainer;
   } else if (shape.type === "object") {
@@ -936,7 +906,6 @@ var NodeContainer = props => {
   } else {
     Container = LeafContainer;
   }
-
   return /*#__PURE__*/React$d.createElement(Container, {
     key: path.join("."),
     name: name,
@@ -951,11 +920,9 @@ var NodeContainer = props => {
     actions: actions
   })));
 };
-
 NodeContainer.propTypes = perseus._objectSpread2(perseus._objectSpread2({}, nodePropTypes), {}, {
   controls: PropTypes.arrayOf(PropTypes.node)
 });
-
 var LeafContainer = _ref2 => {
   var {
     name,
@@ -985,7 +952,6 @@ var LeafContainer = _ref2 => {
     className: aphrodite.css(styles$2.columnRight)
   }, previewHeading)), children);
 };
-
 LeafContainer.propTypes = {
   name: PropTypes.string,
   controls: PropTypes.node,
@@ -993,7 +959,6 @@ LeafContainer.propTypes = {
   path: PropTypes.arrayOf(PropTypes.any).isRequired,
   shape: perseus.shapePropType
 };
-
 var ArrayContainer = props => {
   var {
     name,
@@ -1014,7 +979,6 @@ var ArrayContainer = props => {
     onClick: () => actions.addArrayElement(path, shape.elementShape)
   }, "Add a ", pluralToSingular(name))));
 };
-
 ArrayContainer.propTypes = {
   name: PropTypes.string,
   controls: PropTypes.node,
@@ -1025,7 +989,6 @@ ArrayContainer.propTypes = {
     addArrayElement: PropTypes.func.isRequired
   }).isRequired
 };
-
 var ObjectContainer = _ref3 => {
   var {
     name,
@@ -1058,13 +1021,13 @@ var ObjectContainer = _ref3 => {
     className: aphrodite.css(path.length > 0 && styles$2.contentIndent)
   }, children));
 };
-
 ObjectContainer.propTypes = {
   name: PropTypes.string,
   controls: PropTypes.node,
   children: PropTypes.node,
   path: PropTypes.arrayOf(PropTypes.any).isRequired
 };
+
 /**
  * Render the content of node in the editor tree, given the shape of
  * the target node, the data stored in the target node, and the path to
@@ -1074,12 +1037,10 @@ ObjectContainer.propTypes = {
  * iterates over the child nodes, and outputs `NodeContainer` for
  * each of them. The two functions are mutually recursive.
  */
-
 var NodeContent = props => {
   var {
     shape
   } = props;
-
   if (shape.type === "content") {
     return /*#__PURE__*/React$d.createElement(ItemNodeContent, props);
   } else if (shape.type === "hint") {
@@ -1092,8 +1053,8 @@ var NodeContent = props => {
     return /*#__PURE__*/React$d.createElement(ObjectNodeContent, props);
   }
 };
-
 NodeContent.propTypes = nodePropTypes;
+
 /**
  * HOC that adds a "sticky" prop to the wrapped component that is true
  * when the rendered component is taller than the window. Since sticky content
@@ -1102,22 +1063,18 @@ NodeContent.propTypes = nodePropTypes;
  *
  * It does so by polling the height and comparing it to the window height.
  */
-
 function withStickiness(Component) {
   return class StickyComponent extends React$d.Component {
     constructor() {
       super(...arguments);
-
       perseus._defineProperty(this, "state", {
         sticky: false
       });
-
       perseus._defineProperty(this, "updateStickiness", () => {
         var domNode = ReactDOM.findDOMNode(this);
         var height = domNode.offsetHeight;
         var windowHeight = window.innerHeight;
         var sticky = height > windowHeight;
-
         if (sticky !== this.state.sticky) {
           this.setState({
             sticky
@@ -1125,29 +1082,25 @@ function withStickiness(Component) {
         }
       });
     }
-
     componentDidMount() {
       this.stickynessTimer = setInterval(this.updateStickiness, 1000);
       this.updateStickiness();
     }
-
     componentWillUnmount() {
       clearInterval(this.stickynessTimer);
     }
-
     render() {
       return /*#__PURE__*/React$d.createElement(Component, perseus._extends({
         sticky: this.state.sticky
       }, this.props));
     }
-
   };
 }
-
 function getChromeVersion() {
   var raw = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
   return raw ? parseInt(raw[2], 10) : null;
 }
+
 /**
  * HOC that makes a textareas in sticky components temporarily fixed when
  * editing in Blink browsers.
@@ -1161,27 +1114,23 @@ function getChromeVersion() {
  *
  * TODO(joshuan): Remove this after December 2017.
  */
-
-
 function withChromeHack(Component) {
   return class ChromeHack extends React$d.Component {
     constructor() {
       super(...arguments);
-
       perseus._defineProperty(this, "_detached", false);
-
       perseus._defineProperty(this, "_reattachTimer", null);
-
       perseus._defineProperty(this, "getTextAreas", () => {
         return ReactDOM.findDOMNode(this).querySelectorAll("textarea");
       });
-
+      /**
+       * Removes all textareas from the container
+       */
       perseus._defineProperty(this, "detach", () => {
         this.getTextAreas().forEach(textarea => {
           if (textarea !== document.activeElement) {
             return;
           }
-
           if (!this._detached) {
             var r = textarea.getBoundingClientRect();
             var style = textarea.style;
@@ -1192,7 +1141,6 @@ function withChromeHack(Component) {
             style.setProperty("height", "".concat(r.height, "px"), "important");
             style.setProperty("z-index", "1", "important");
             style.setProperty("height", "".concat(r.height, "px"), "important");
-
             if (this._reattachTimer) {
               clearTimeout(this._reattachTimer);
             }
@@ -1201,7 +1149,6 @@ function withChromeHack(Component) {
         this._detached = true;
         this._reattachTimer = setTimeout(this.reattach, 1000);
       });
-
       perseus._defineProperty(this, "reattach", () => {
         this.getTextAreas().forEach(textarea => {
           var style = textarea.style;
@@ -1215,36 +1162,28 @@ function withChromeHack(Component) {
         this._detached = false;
       });
     }
-
     render() {
       var _this = this;
-
       var chromeVersion = getChromeVersion();
       var requiresHack = chromeVersion && chromeVersion < 62;
       var isSticky = this.props.sticky;
-
       if (!requiresHack || !isSticky) {
         return /*#__PURE__*/React$d.createElement(Component, this.props);
-      } // We indiscriminately make all textareas fixed whenever anything
+      }
+
+      // We indiscriminately make all textareas fixed whenever anything
       // changes.
-
-
       var actions = perseus._objectSpread2({}, this.props.actions);
-
       actions.mergeValueAtPath = function () {
         _this.props.actions.mergeValueAtPath(...arguments);
-
         _this.detach();
       };
-
       return /*#__PURE__*/React$d.createElement(Component, perseus._extends({}, this.props, {
         actions: actions
       }));
     }
-
   };
 }
-
 var ItemNodeContent = withStickiness(withChromeHack(props => {
   var {
     data,
@@ -1305,7 +1244,6 @@ var HintNodeContent = withStickiness(withChromeHack(props => {
   }, preview)));
 }));
 HintNodeContent.propTypes = nodePropTypes;
-
 var TagsNodeContent = props => {
   var {
     data,
@@ -1326,18 +1264,15 @@ var TagsNodeContent = props => {
     showTitle: false
   })));
 };
-
 TagsNodeContent.propTypes = nodePropTypes;
-
 var ArrayNodeContent = props => {
   var {
-    shape,
-    data,
-    path,
-    actions
-  } = props,
-      otherProps = perseus._objectWithoutProperties(props, _excluded3);
-
+      shape,
+      data,
+      path,
+      actions
+    } = props,
+    otherProps = perseus._objectWithoutProperties(props, _excluded3);
   var collectionName = camelCaseToHuman(path[path.length - 1]);
   var elementName = pluralToSingular(collectionName);
   var elementType = shape.elementShape.type;
@@ -1383,20 +1318,18 @@ var ArrayNodeContent = props => {
   });
   return /*#__PURE__*/React$d.createElement("div", null, children);
 };
-
 ArrayNodeContent.propTypes = nodePropTypes;
-
 var ObjectNodeContent = props => {
   var {
-    shape,
-    data,
-    path
-  } = props,
-      otherProps = perseus._objectWithoutProperties(props, _excluded4); // Object iteration order should automatically match the order in which the
+      shape,
+      data,
+      path
+    } = props,
+    otherProps = perseus._objectWithoutProperties(props, _excluded4);
+
+  // Object iteration order should automatically match the order in which the
   // keys were defined in the object literal. So, whatever order semantically
   // made sense to the shape's author is the order in which we'll iterate :)
-
-
   var children = Object.keys(shape.shape).map(subkey => /*#__PURE__*/React$d.createElement("div", {
     key: subkey,
     className: aphrodite.css(styles$2.objectElement)
@@ -1407,7 +1340,6 @@ var ObjectNodeContent = props => {
   }))));
   return /*#__PURE__*/React$d.createElement("div", null, children);
 };
-
 ObjectNodeContent.propTypes = nodePropTypes;
 var MultiRendererEditor$1 = createReactClass({
   displayName: "MultiRendererEditor",
@@ -1419,7 +1351,6 @@ var MultiRendererEditor$1 = createReactClass({
     editorMode: PropTypes.oneOf(EDITOR_MODES).isRequired,
     onChange: PropTypes.func.isRequired
   },
-
   _renderLayout() {
     var {
       Layout,
@@ -1432,7 +1363,6 @@ var MultiRendererEditor$1 = createReactClass({
       apiOptions: apiOptions
     });
   },
-
   _renderJson() {
     return /*#__PURE__*/React$d.createElement("div", null, /*#__PURE__*/React$d.createElement(ModeDropdown, {
       currentMode: this.props.editorMode,
@@ -1447,7 +1377,6 @@ var MultiRendererEditor$1 = createReactClass({
       })
     }));
   },
-
   _renderPreview() {
     return /*#__PURE__*/React$d.createElement("div", null, /*#__PURE__*/React$d.createElement(ModeDropdown, {
       currentMode: this.props.editorMode,
@@ -1456,19 +1385,16 @@ var MultiRendererEditor$1 = createReactClass({
       })
     }), this._renderLayout());
   },
-
   mergeValueAtPath(path, newValue) {
     this.props.onChange({
       item: lens(this.props.item).merge(multiPath(path), newValue).freeze()
     });
   },
-
   setValueAtPath(path, newValue) {
     this.props.onChange({
       item: lens(this.props.item).set(multiPath(path), newValue).freeze()
     });
   },
-
   addArrayElement(path, shape) {
     var currentLength = lens(this.props.item).get(multiPath(path)).length;
     var newElementPath = path.concat(currentLength);
@@ -1477,13 +1403,11 @@ var MultiRendererEditor$1 = createReactClass({
       item: lens(this.props.item).set(multiPath(newElementPath), newValue).freeze()
     });
   },
-
   removeArrayElement(path) {
     this.props.onChange({
       item: lens(this.props.item).del(multiPath(path)).freeze()
     });
   },
-
   moveArrayElementDown(path) {
     // Moving an element down can also be expressed as swapping it with the
     // following element.
@@ -1496,7 +1420,6 @@ var MultiRendererEditor$1 = createReactClass({
       item: lens(this.props.item).set(multiPath(path), nextElement).set(multiPath(nextElementPath), element).freeze()
     });
   },
-
   moveArrayElementUp(path) {
     // Moving an element up can also be expressed as moving the previous
     // element down.
@@ -1504,10 +1427,8 @@ var MultiRendererEditor$1 = createReactClass({
     var previousElementPath = path.slice(0, -1).concat(index - 1);
     this.moveArrayElementDown(previousElementPath);
   },
-
   _renderEdit() {
     var apiOptions = perseus._objectSpread2(perseus._objectSpread2({}, ApiOptions$2.defaults), this.props.apiOptions);
-
     var item = this.props.item;
     var itemShape = this.props.Layout.shape;
     return /*#__PURE__*/React$d.createElement("div", {
@@ -1536,36 +1457,29 @@ var MultiRendererEditor$1 = createReactClass({
       });
     }));
   },
-
   score() {
     if (this.layout) {
       return this.layout.score();
     }
   },
-
   getSerializedState() {
     if (this.layout) {
       return this.layout.getSerializedState();
     }
   },
-
   restoreSerializedState(state) {
     if (this.layout) {
       this.layout.restoreSerializedState(state);
     }
   },
-
   _renderContent() {
     switch (this.props.editorMode) {
       case "json":
         return this._renderJson();
-
       case "preview":
         return this._renderPreview();
-
       case "edit":
         return this._renderEdit();
-
       default:
         return /*#__PURE__*/React$d.createElement(ModeDropdown, {
           currentMode: this.props.editorMode,
@@ -1575,13 +1489,11 @@ var MultiRendererEditor$1 = createReactClass({
         });
     }
   },
-
   render() {
     return /*#__PURE__*/React$d.createElement("div", {
       id: "perseus"
     }, this._renderContent());
   }
-
 });
 var styles$2 = aphrodite.StyleSheet.create({
   editor: {
@@ -1633,7 +1545,6 @@ var styles$2 = aphrodite.StyleSheet.create({
     border: "1px solid #ddd",
     padding: "5px 10px"
   },
-
   /**
    * A row contains a fixed width editor and a preview that expands as
    * needed.
@@ -1642,7 +1553,6 @@ var styles$2 = aphrodite.StyleSheet.create({
     display: "flex",
     position: "relative"
   },
-
   /**
    * The editor.
    */
@@ -1653,7 +1563,6 @@ var styles$2 = aphrodite.StyleSheet.create({
     // relative to this.
     position: "relative"
   },
-
   /**
    * The preview.
    */
@@ -1662,16 +1571,13 @@ var styles$2 = aphrodite.StyleSheet.create({
     marginLeft: 30,
     position: "relative"
   },
-
   /**
    * Sticks to just under the heading.
    */
   sticky: {
     position: "sticky",
     top: 33 // height of the cute pod for the editor
-
   },
-
   /**
    * Used for sticky headings.
    */
@@ -1766,7 +1672,6 @@ var HUD$2 = createReactClass({
   render: function render() {
     var state;
     var icon;
-
     if (this.props.enabled) {
       state = styles$1.enabled;
       icon = this.renderVisibleIcon();
@@ -1774,7 +1679,6 @@ var HUD$2 = createReactClass({
       state = styles$1.disabled;
       icon = this.renderHiddenIcon();
     }
-
     return /*#__PURE__*/React$c.createElement("button", {
       className: aphrodite.css(styles$1.hud, state),
       onClick: e => {
@@ -1798,7 +1702,6 @@ var styles$1 = aphrodite.StyleSheet.create({
     color: perseus.white,
     userSelect: "none",
     borderWidth: 0 // <button> gives us a border by default
-
   },
   icon: {
     width: 24,
@@ -1820,7 +1723,6 @@ var styles$1 = aphrodite.StyleSheet.create({
     backgroundColor: perseus.gray76,
     ":hover": {
       backgroundColor: "#a1a5a9" // in between those two grays
-
     },
     ":active": {
       backgroundColor: perseus.gray68
@@ -1856,8 +1758,9 @@ var ViewportResizer$2 = createReactClass({
   render: function render() {
     var phoneButtonContents = /*#__PURE__*/React$b.createElement("span", null, /*#__PURE__*/React$b.createElement(InlineIcon$1, perseus.iconMobilePhone), " Phone");
     var tabletButtonContents = /*#__PURE__*/React$b.createElement("span", null, /*#__PURE__*/React$b.createElement(InlineIcon$1, perseus.iconTablet), " Tablet");
-    var desktopButtonContents = /*#__PURE__*/React$b.createElement("span", null, /*#__PURE__*/React$b.createElement(InlineIcon$1, perseus.iconDesktop), " Desktop"); // TODO(david): Allow input of custom viewport sizes.
+    var desktopButtonContents = /*#__PURE__*/React$b.createElement("span", null, /*#__PURE__*/React$b.createElement(InlineIcon$1, perseus.iconDesktop), " Desktop");
 
+    // TODO(david): Allow input of custom viewport sizes.
     return /*#__PURE__*/React$b.createElement("span", {
       className: "viewport-resizer"
     }, "Viewport:", " ", /*#__PURE__*/React$b.createElement(ButtonGroup, {
@@ -1884,9 +1787,7 @@ var _module_$j = {
   exports: {}
 };
 /* eslint-disable no-var */
-
 /* TODO(csilvers): fix these lint errors (http://eslint.org/docs/rules): */
-
 /* To fix, remove an entry above, run ka-lint, and fix errors. */
 
 var React$a = _react__default["default"];
@@ -1974,9 +1875,7 @@ var _module_$i = {
   exports: {}
 };
 /* eslint-disable no-var, object-curly-spacing, react/prop-types, react/sort-comp */
-
 /* TODO(csilvers): fix these lint errors (http://eslint.org/docs/rules): */
-
 /* To fix, remove an entry above, run ka-lint, and fix errors. */
 
 var React$9 = _react__default["default"];
@@ -2004,7 +1903,6 @@ var ItemEditor$1 = createReactClass({
   // Notify the parent that the question or answer area has been updated.
   updateProps: function updateProps(newProps, cb, silent) {
     var props = _$g.pick(this.props, "question", "answerArea");
-
     this.props.onChange(Object.assign({}, props, newProps), cb, silent);
   },
   render: function render() {
@@ -2053,19 +1951,18 @@ var ItemEditor$1 = createReactClass({
       id: "answer_area"
     }))));
   },
-  triggerPreviewUpdate: function triggerPreviewUpdate(newData) {// TODO(aria): remove this?
+  triggerPreviewUpdate: function triggerPreviewUpdate(newData) {
+    // TODO(aria): remove this?
     //this.refs.frame.sendNewData(newData);
   },
   handleEditorChange: function handleEditorChange(newProps, cb, silent) {
     var question = _$g.extend({}, this.props.question, newProps);
-
     this.updateProps({
       question
     }, cb, silent);
   },
   handleItemExtrasChange: function handleItemExtrasChange(newProps, cb, silent) {
     var answerArea = _$g.extend({}, this.props.answerArea, newProps);
-
     this.updateProps({
       answerArea
     }, cb, silent);
@@ -2091,9 +1988,7 @@ var _module_$h = {
   exports: {}
 };
 /* eslint-disable no-var */
-
 /* TODO(csilvers): fix these lint errors (http://eslint.org/docs/rules): */
-
 /* To fix, remove an entry above, run ka-lint, and fix errors. */
 
 /**
@@ -2111,20 +2006,20 @@ var _module_$h = {
  * more confident in the interface provided first.
  */
 
-var _$f = _underscore__default["default"]; // TODO(aria): Pull this out of interactive2 / replace with new _.mapObject
-
+var _$f = _underscore__default["default"];
+// TODO(aria): Pull this out of interactive2 / replace with new _.mapObject
 var objective_ = perseus._interactive2Objective_Js;
 var Widgets$4 = perseus._widgetsJs;
-
 var noop = function noop() {};
-
 var deepCallbackFor = function deepCallbackFor(contentCallback, widgetCallback, optionsCallback) {
   var deepCallback = function deepCallback(widgetInfo, widgetId) {
     // This doesn't modify the widget info if the widget info
     // is at a later version than is supported, which is important
     // for our latestVersion test below.
     var upgradedWidgetInfo = Widgets$4.upgradeWidgetInfoToLatestVersion(widgetInfo);
-    var latestVersion = Widgets$4.getVersion(upgradedWidgetInfo.type); // Only traverse our children if we can understand this version
+    var latestVersion = Widgets$4.getVersion(upgradedWidgetInfo.type);
+
+    // Only traverse our children if we can understand this version
     // of the widget props.
     // TODO(aria): This will break if the traversal code assumes that
     // any props that usually get defaulted in are present. That is,
@@ -2139,41 +2034,33 @@ var deepCallbackFor = function deepCallbackFor(contentCallback, widgetCallback, 
     // make all of this a little tighter.
     // I think once we use react class defaultProps instead of relying
     // on getDefaultProps, this will become easier.
-
     var newWidgetInfo;
-
     if (latestVersion && upgradedWidgetInfo.version.major === latestVersion.major) {
       newWidgetInfo = Widgets$4.traverseChildWidgets(upgradedWidgetInfo, rendererOptions => {
-        return traverseRenderer$1(rendererOptions, contentCallback, // so that we traverse grandchildren, too:
+        return traverseRenderer$1(rendererOptions, contentCallback,
+        // so that we traverse grandchildren, too:
         deepCallback, optionsCallback);
       });
     } else {
       newWidgetInfo = upgradedWidgetInfo;
     }
-
     var userWidgetInfo = widgetCallback(newWidgetInfo, widgetId);
-
     if (userWidgetInfo !== undefined) {
       return userWidgetInfo;
     } else {
       return newWidgetInfo;
     }
   };
-
   return deepCallback;
 };
-
 var traverseRenderer$1 = function traverseRenderer(rendererOptions, contentCallback, deepWidgetCallback, optionsCallback) {
   var newContent = rendererOptions.content;
-
   if (rendererOptions.content != null) {
     var modifiedContent = contentCallback(rendererOptions.content);
-
     if (modifiedContent !== undefined) {
       newContent = modifiedContent;
     }
   }
-
   var newWidgets = objective_.mapObject(rendererOptions.widgets || {}, function (widgetInfo, widgetId) {
     // Widgets without info or a type are empty widgets, and
     // should always be renderable. It's also annoying to write
@@ -2182,31 +2069,25 @@ var traverseRenderer$1 = function traverseRenderer(rendererOptions, contentCallb
     if (widgetInfo == null || widgetInfo.type == null) {
       return widgetInfo;
     }
-
     return deepWidgetCallback(widgetInfo, widgetId);
   });
-
   var newOptions = _$f.extend({}, rendererOptions, {
     content: newContent,
     widgets: newWidgets
   });
-
   var userOptions = optionsCallback(newOptions);
-
   if (userOptions !== undefined) {
     return userOptions;
   } else {
     return newOptions;
   }
 };
-
 var traverseRendererDeep = function traverseRendererDeep(rendererOptions, contentCallback, widgetCallback, optionsCallback) {
   contentCallback = contentCallback || noop;
   widgetCallback = widgetCallback || noop;
   optionsCallback = optionsCallback || noop;
   return traverseRenderer$1(rendererOptions, contentCallback, deepCallbackFor(contentCallback, widgetCallback, optionsCallback), optionsCallback);
 };
-
 _module_$h.exports = {
   traverseRendererDeep: traverseRendererDeep
 };
@@ -2216,31 +2097,33 @@ var _module_$g = {
   exports: {}
 };
 /* eslint-disable comma-dangle, no-var */
-
 /* TODO(csilvers): fix these lint errors (http://eslint.org/docs/rules): */
-
 /* To fix, remove an entry above, run ka-lint, and fix errors. */
 
 var _$e = _underscore__default["default"];
 var Traversal$2 = _traversalJsx;
-var findPassageRefR = new RegExp( // [[ passage-ref 1]]
+var findPassageRefR = new RegExp(
+// [[ passage-ref 1]]
 // capture 1: widget markdown
 // capture 2: widgetId
-"(\\[\\[\u2603 (passage-ref [0-9]+)\\]\\])" + // spaces between the ref and the summary
-"\\s" + // opening paren + quote
-'\\(["\u201C]' + // summary of passage reference text
+"(\\[\\[\u2603 (passage-ref [0-9]+)\\]\\])" +
+// spaces between the ref and the summary
+"\\s" +
+// opening paren + quote
+'\\(["\u201C]' +
+// summary of passage reference text
 // capture 3: summaryText
-"([\\s\\S]*)" + // closing quote + paren
+"([\\s\\S]*)" +
+// closing quote + paren
 '["\u201D]\\)', "g");
-
 var fixWholeOptions = options => {
   // This parsing is technically illegal and should be done via
   // PerseusMarkdown, but because of the snowperson it's safe
   // in practice.
   // We should probably just get rid of this code once all the
   // passage-refs have been converted.
-  var newWidgets = _$e.clone(options.widgets || {});
 
+  var newWidgets = _$e.clone(options.widgets || {});
   var newContent = (options.content || "").replace(findPassageRefR, (passageRefText, widgetMarkdown, widgetId, summaryText) => {
     newWidgets[widgetId] = _$e.extend({}, newWidgets[widgetId], {
       options: _$e.extend({}, newWidgets[widgetId].options, {
@@ -2254,67 +2137,60 @@ var fixWholeOptions = options => {
     widgets: newWidgets
   });
 };
-
-var findRadioRefsR = new RegExp( // passage-ref notation
-"\\{\\{(passage-ref \\d+ \\d+)}}" + // a space
-"\\s+" + // ("
-'\\(["\\u201C]' + // <capture the content>
-'([^"]*)' + // ")
-'["\\u201D]\\)', // find all passage-refs
+var findRadioRefsR = new RegExp(
+// passage-ref notation
+"\\{\\{(passage-ref \\d+ \\d+)}}" +
+// a space
+"\\s+" +
+// ("
+'\\(["\\u201C]' +
+// <capture the content>
+'([^"]*)' +
+// ")
+'["\\u201D]\\)',
+// find all passage-refs
 "g");
-
 var replaceRadioRefs = (fullText, reference, summaryText) => {
   if (/\n\n/.test(summaryText)) {
     return fullText;
   }
-
   return "{{" + reference + ' "' + summaryText + '"}}';
 };
-
 var fixRadioWidget = widgetInfo => {
   if (widgetInfo.type !== "radio" || !widgetInfo.options || !widgetInfo.options.choices) {
     return widgetInfo;
   }
-
   var newChoices = _$e.map(widgetInfo.options.choices, choice => {
     if (!choice.content) {
       return choice;
     }
-
     var newChoice = choice.content.replace(findRadioRefsR, replaceRadioRefs);
     return _$e.extend({}, choice, {
       content: newChoice
     });
   });
-
   return _$e.extend({}, widgetInfo, {
     options: _$e.extend({}, widgetInfo.options, {
       choices: newChoices
     })
   });
 };
-
 var fixRendererPassageRefs = options => {
   return Traversal$2.traverseRendererDeep(options, null, fixRadioWidget, fixWholeOptions);
 };
-
 var FixPassageRefs$1 = itemData => {
   if (itemData._multi) {
     // We're in a multi-item. Don't do anything, just return the original
     // item data.
     return itemData;
   }
-
   var newQuestion = fixRendererPassageRefs(itemData.question);
-
   var newHints = _$e.map(itemData.hints, hint => fixRendererPassageRefs(hint));
-
   return _$e.extend({}, itemData, {
     question: newQuestion,
     hints: newHints
   });
 };
-
 _module_$g.exports = FixPassageRefs$1;
 var _utilFixPassageRefsJsx = _module_$g.exports;
 
@@ -2322,9 +2198,7 @@ var _module_$f = {
   exports: {}
 };
 /* eslint-disable no-var, react/sort-comp */
-
 /* TODO(csilvers): fix these lint errors (http://eslint.org/docs/rules): */
-
 /* To fix, remove an entry above, run ka-lint, and fix errors. */
 
 var React$8 = _react__default["default"];
@@ -2342,11 +2216,13 @@ var EditorPage$2 = createReactClass({
   propTypes: perseus._objectSpread2(perseus._objectSpread2({}, ApiOptionsProps.propTypes), {}, {
     answerArea: PropTypes.any,
     // related to the question
+
     developerMode: PropTypes.bool,
     // Source HTML for the iframe to render
     frameSource: PropTypes.string.isRequired,
     hints: PropTypes.any,
     // related to the question
+
     // A function which takes a file object (guaranteed to be an image) and
     // a callback, then calls the callback with the url where the image
     // will be hosted. Image drag and drop is disabled when imageUploader
@@ -2412,11 +2288,9 @@ var EditorPage$2 = createReactClass({
     // anything has actually been mounted, which causes problems here. We
     // just ensure don't update until we've mounted
     var hasEditor = !this.props.developerMode || !this.props.jsonMode;
-
     if (!this.isMounted() || !hasEditor) {
       return;
     }
-
     var touch = this.props.previewDevice === "phone" || this.props.previewDevice === "tablet";
     var deviceBasedApiOptions = Object.assign(this.getApiOptions(), {
       customKeypad: touch,
@@ -2439,16 +2313,12 @@ var EditorPage$2 = createReactClass({
       }, _$d.pick(this.props, "workAreaSelector", "solutionAreaSelector", "hintsAreaSelector", "problemNum"))
     });
   },
-
   getApiOptions() {
     return ApiOptionsProps.getApiOptions.call(this);
   },
-
   handleChange: function handleChange(toChange, cb, silent) {
     var newProps = _$d.pick(this.props, "question", "hints", "answerArea");
-
     _$d.extend(newProps, toChange);
-
     this.props.onChange(newProps, cb, silent);
   },
   changeJSON: function changeJSON(newJson) {
@@ -2479,11 +2349,9 @@ var EditorPage$2 = createReactClass({
       customKeypad: touch,
       isMobile: touch
     });
-
     if (deviceBasedApiOptions.isMobile) {
       className += " " + ApiClassNames.MOBILE;
     }
-
     return /*#__PURE__*/React$8.createElement("div", {
       id: "perseus",
       className: className
@@ -2558,6 +2426,7 @@ var _editorPageJsx = _module_$f.exports;
 var _module_$e = {
   exports: {}
 };
+
 /**
  * An article editor. Articles are long-form pieces of content, composed of
  * multiple (Renderer) sections concatenated together.
@@ -2595,7 +2464,6 @@ var SectionControlButton = createReactClass({
       className: "section-control-button " + "simple-button " + "simple-button--small " + "orange",
       onClick: e => {
         e.preventDefault();
-
         _onClick();
       },
       title: title
@@ -2681,17 +2549,14 @@ var ArticleEditor$2 = createReactClass({
       imageUploader,
       sectionImageUploadGenerator
     } = this.props;
-
     var apiOptions = perseus._objectSpread2(perseus._objectSpread2(perseus._objectSpread2({}, ApiOptions.defaults), this.props.apiOptions), {}, {
       // Alignment options are always available in article editors
       showAlignmentOptions: true,
       isArticle: true
     });
-
     var sections = this._sections();
+
     /* eslint-disable max-len */
-
-
     return /*#__PURE__*/React$7.createElement("div", {
       className: "perseus-editor-table"
     }, sections.map((section, i) => {
@@ -2729,12 +2594,10 @@ var ArticleEditor$2 = createReactClass({
         onClick: () => {
           var msg = "Are you sure you " + "want to delete section " + (i + 1) + "?";
           /* eslint-disable no-alert */
-
           if (confirm(msg)) {
             this._handleRemoveSection(i);
           }
           /* eslint-enable no-alert */
-
         },
         title: "Delete this section"
       }))), /*#__PURE__*/React$7.createElement(Editor$1, perseus._extends({}, section, {
@@ -2799,7 +2662,6 @@ var ArticleEditor$2 = createReactClass({
   },
   _handleEditorChange: function _handleEditorChange(i, newProps) {
     var sections = _$c.clone(this._sections());
-
     sections[i] = _$c.extend({}, sections[i], newProps);
     this.props.onChange({
       json: sections
@@ -2809,9 +2671,7 @@ var ArticleEditor$2 = createReactClass({
     if (i === 0) {
       return;
     }
-
     var sections = _$c.clone(this._sections());
-
     var section = sections[i];
     sections.splice(i, 1);
     sections.splice(i - 1, 0, section);
@@ -2821,11 +2681,9 @@ var ArticleEditor$2 = createReactClass({
   },
   _handleMoveSectionLater: function _handleMoveSectionLater(i) {
     var sections = _$c.clone(this._sections());
-
     if (i + 1 === sections.length) {
       return;
     }
-
     var section = sections[i];
     sections.splice(i, 1);
     sections.splice(i + 1, 0, section);
@@ -2836,14 +2694,13 @@ var ArticleEditor$2 = createReactClass({
   _handleAddSectionAfter: function _handleAddSectionAfter(i) {
     // We do a full serialization here because we
     // might be copying widgets:
-    var sections = _$c.clone(this.serialize()); // Here we do magic to allow you to copy-paste
+    var sections = _$c.clone(this.serialize());
+    // Here we do magic to allow you to copy-paste
     // things from the previous section into the new
     // section while preserving widgets.
     // To enable this, we preserve the widgets
     // object for the new section, but wipe out
     // the content.
-
-
     var newSection = i >= 0 ? {
       widgets: sections[i].widgets
     } : {};
@@ -2854,7 +2711,6 @@ var ArticleEditor$2 = createReactClass({
   },
   _handleRemoveSection: function _handleRemoveSection(i) {
     var sections = _$c.clone(this._sections());
-
     sections.splice(i, 1);
     this.props.onChange({
       json: sections
@@ -2871,7 +2727,6 @@ var ArticleEditor$2 = createReactClass({
       throw new Error("Could not serialize; mode " + this.props.mode + " not found");
     }
   },
-
   /**
    * Returns an array, with one element be section.
    * Each element is an array of lint warnings present in that section.
@@ -2884,7 +2739,6 @@ var ArticleEditor$2 = createReactClass({
       // preview mode.
       throw new Error("Cannot only get save warnings in edit mode.");
     }
-
     return this._sections().map((section, i) => {
       return this.refs["editor" + i].getSaveWarnings();
     });
@@ -2912,11 +2766,11 @@ var _module_$d = {
 /**
  * Functions for extracting data from items for use in i18n.
  */
-
 var _$b = _underscore__default["default"];
 var traversal = _traversalJsx;
-var PerseusMarkdown = perseus._perseusMarkdownJsx; // Takes a renderer content and parses the markdown for images
+var PerseusMarkdown = perseus._perseusMarkdownJsx;
 
+// Takes a renderer content and parses the markdown for images
 function findImagesInContent(content, images) {
   var parsed = PerseusMarkdown.parse(content);
   PerseusMarkdown.traverseContent(parsed, function (node) {
@@ -2924,33 +2778,32 @@ function findImagesInContent(content, images) {
       images.push(node.target);
     }
   });
-} // Background images in some widgets are annoying to deal with because
+}
+
+// Background images in some widgets are annoying to deal with because
 // sometimes the objects aren't full when there isn't an image. So, we do some
 // extra checking to make sure we don't cause an error or push an empty image.
-
-
 function handleBackgroundImage(graph, images) {
   if (graph && graph.backgroundImage && graph.backgroundImage.url) {
     images.push(graph.backgroundImage.url);
   }
-} // The callback called for each widget. We check each of the areas of each
+}
+
+// The callback called for each widget. We check each of the areas of each
 // widget where they contain a renderer for images by calling
 // findImagesInContent. We don't have to recurse through child widgets, because
 // traverseRendererDeep does that for us.
-
-
 function widgetCallback(widgetInfo, images) {
   if (!widgetInfo.options) {
     return;
-  } // TODO(emily/aria): Move this into the widget files, so we don't have the
+  }
+
+  // TODO(emily/aria): Move this into the widget files, so we don't have the
   // logic out here.
-
-
   if (widgetInfo.type === "categorizer") {
     _$b.each(widgetInfo.options.items, function (item) {
       findImagesInContent(item, images);
     });
-
     _$b.each(widgetInfo.options.categories, function (category) {
       findImagesInContent(category, images);
     });
@@ -2961,11 +2814,9 @@ function widgetCallback(widgetInfo, images) {
     _$b.each(widgetInfo.options.left, function (option) {
       findImagesInContent(option, images);
     });
-
     _$b.each(widgetInfo.options.right, function (option) {
       findImagesInContent(option, images);
     });
-
     _$b.each(widgetInfo.options.labels, function (label) {
       findImagesInContent(label, images);
     });
@@ -2991,7 +2842,6 @@ function widgetCallback(widgetInfo, images) {
       findImagesInContent(header, images);
     });
   }
-
   if (widgetInfo.type === "grapher") {
     handleBackgroundImage(widgetInfo.options.graph, images);
   } else if (widgetInfo.type === "image") {
@@ -3006,24 +2856,20 @@ function widgetCallback(widgetInfo, images) {
     handleBackgroundImage(widgetInfo.options.graph, images);
   }
 }
-
 function findImagesInRenderers(renderers) {
   var images = [];
-
   _$b.each(renderers, renderer => {
     traversal.traverseRendererDeep(renderer, content => {
       findImagesInContent(content, images);
     }, widget => widgetCallback(widget, images));
   });
-
   return images;
-} // Calls findImagesInContent on all of the different content areas for
+}
+
+// Calls findImagesInContent on all of the different content areas for
 // assessment items
-
-
 function findImagesInItemData(itemData) {
   var renderers = [];
-
   if (itemData._multi) {
     var shape = perseus.inferItemShape(itemData);
     perseus.findContentNodesInItem(itemData, shape, node => renderers.push(node));
@@ -3031,16 +2877,14 @@ function findImagesInItemData(itemData) {
   } else {
     renderers = [itemData.question, ...itemData.hints];
   }
-
   return findImagesInRenderers(renderers);
-} // Calls findImagesInContent on all of the different content areas for
+}
+
+// Calls findImagesInContent on all of the different content areas for
 // articles
-
-
 function findImagesInArticles(perseusContent) {
   return findImagesInRenderers(perseusContent);
 }
-
 _module_$d.exports = {
   findImagesInArticles: findImagesInArticles,
   findImagesInItemData: findImagesInItemData
@@ -3057,9 +2901,10 @@ var _module_$c = {
 
 var _$a = _underscore__default["default"];
 var Traversal$1 = _traversalJsx;
-var Widgets$3 = perseus._widgetsJs; // Iterate over a single Perseus renderer, mutating `widgets` by appending
-// violating widget types discovered in this item.
+var Widgets$3 = perseus._widgetsJs;
 
+// Iterate over a single Perseus renderer, mutating `widgets` by appending
+// violating widget types discovered in this item.
 function traverseRenderer(itemData, widgets) {
   Traversal$1.traverseRendererDeep(itemData, null, function (info) {
     if (info.type && !Widgets$3.isAccessible(info)) {
@@ -3067,7 +2912,6 @@ function traverseRenderer(itemData, widgets) {
     }
   });
 }
-
 _module_$c.exports = {
   // Returns a list of widgets that cause a given perseus item to require
   // the use of a screen or mouse.
@@ -3078,15 +2922,14 @@ _module_$c.exports = {
   violatingWidgets: function violatingWidgets(itemData) {
     // TODO(jordan): Hints as well
     var widgets = [];
-
     if (itemData._multi) {
       var shape = perseus.inferItemShape(itemData);
       perseus.findContentNodesInItem(itemData, shape, content => traverseRenderer(content, widgets));
     } else {
       traverseRenderer(itemData.question, widgets);
-    } // Uniquify the list of widgets (by type)
+    }
 
-
+    // Uniquify the list of widgets (by type)
     return _$a.uniq(widgets);
   }
 };
@@ -3097,7 +2940,6 @@ var _module_$b = {
 };
 var Traversal = _traversalJsx;
 var Widgets$2 = perseus._widgetsJs;
-
 var isUpgradedWidgetInfoRenderableBy = function isUpgradedWidgetInfoRenderableBy(widgetInfo, widgetRendererVersion) {
   if (widgetRendererVersion == null) {
     // If the widget does not exist in this version, this will
@@ -3105,12 +2947,10 @@ var isUpgradedWidgetInfoRenderableBy = function isUpgradedWidgetInfoRenderableBy
     // widget (it doesn't even know the widget exists!)
     return false;
   }
-
   var widgetVersion = widgetInfo.version || {
     major: 0,
     minor: 0
   };
-
   if (widgetRendererVersion.major > widgetVersion.major) {
     return true;
   } else if (widgetRendererVersion.major < widgetVersion.major) {
@@ -3123,19 +2963,17 @@ var isUpgradedWidgetInfoRenderableBy = function isUpgradedWidgetInfoRenderableBy
     return widgetRendererVersion.minor >= widgetVersion.minor;
   }
 };
-
 var isRawWidgetInfoRenderableBy = function isRawWidgetInfoRenderableBy(widgetInfo, rendererContentVersion) {
   // Empty/non-existant widgets are always safe to render
   if (widgetInfo == null || widgetInfo.type == null) {
     return true;
-  } // NOTE: This doesn't modify the widget info if the widget info
+  }
+
+  // NOTE: This doesn't modify the widget info if the widget info
   // is at a later version than is supported.
-
-
   var upgradedWidgetInfo = Widgets$2.upgradeWidgetInfoToLatestVersion(widgetInfo);
   return isUpgradedWidgetInfoRenderableBy(upgradedWidgetInfo, rendererContentVersion[upgradedWidgetInfo.type]);
 };
-
 var isRendererContentRenderableBy = function isRendererContentRenderableBy(rendererOptions, rendererContentVersion) {
   var isRenderable = true;
   Traversal.traverseRendererDeep(rendererOptions, null, function (widgetInfo) {
@@ -3143,18 +2981,15 @@ var isRendererContentRenderableBy = function isRendererContentRenderableBy(rende
   });
   return isRenderable;
 };
-
 var isItemRenderableBy = function isItemRenderableBy(itemData, rendererContentVersion) {
   if (itemData == null || rendererContentVersion == null) {
     throw new Error("missing parameter to Perseus.isRenderable.item");
   }
-
   if (itemData._multi) {
     var shape = perseus.inferItemShape(itemData);
     var isRenderable = true;
     perseus.findContentNodesInItem(itemData, shape, node => {
       var nodeIsRenderable = isRendererContentRenderableBy(node, rendererContentVersion);
-
       if (!nodeIsRenderable) {
         isRenderable = false;
       }
@@ -3164,7 +2999,6 @@ var isItemRenderableBy = function isItemRenderableBy(itemData, rendererContentVe
     return isRendererContentRenderableBy(itemData.question, rendererContentVersion);
   }
 };
-
 _module_$b.exports = {
   isItemRenderableByVersion: isItemRenderableBy
 };
@@ -3174,14 +3008,13 @@ var _module_$a = {
   exports: {}
 };
 /* eslint-disable comma-dangle, no-var, react/sort-comp */
-
 /* TODO(csilvers): fix these lint errors (http://eslint.org/docs/rules): */
-
 /* To fix, remove an entry above, run ka-lint, and fix errors. */
 
 var React$6 = _react__default["default"];
 var _$9 = _underscore__default["default"];
 var EditorPage$1 = _editorPageJsx;
+
 /* Renders an EditorPage (or an ArticleEditor) as a non-controlled component.
  *
  * Normally the parent of EditorPage must pass it an onChange callback and then
@@ -3189,7 +3022,6 @@ var EditorPage$1 = _editorPageJsx;
  * changes. With StatefulEditorPage changes are stored in state so you can
  * query them with serialize.
  */
-
 var StatefulEditorPage$1 = createReactClass({
   displayName: "StatefulEditorPage",
   propTypes: {
@@ -3237,6 +3069,7 @@ var _statefulEditorPageJsx = _module_$a.exports;
 var _module_$9 = {
   exports: {}
 };
+
 /**
  * Renders an ArticleEditor as a non-controlled component.
  *
@@ -3356,12 +3189,12 @@ var _$7 = _underscore__default["default"];
 var UNCHANGED$1 = "unchanged";
 var CHANGED = "changed";
 var ADDED = "added";
-var REMOVED = "removed"; // For values which do not have further values nested within them (strings,
-// numbers, and booleans)
+var REMOVED = "removed";
 
+// For values which do not have further values nested within them (strings,
+// numbers, and booleans)
 var valueEntry = function valueEntry(before, after, key) {
   var status;
-
   if (before === after) {
     status = UNCHANGED$1;
   } else if (before === undefined) {
@@ -3371,7 +3204,6 @@ var valueEntry = function valueEntry(before, after, key) {
   } else {
     status = CHANGED;
   }
-
   return {
     after: JSON.stringify(after),
     before: JSON.stringify(before),
@@ -3379,21 +3211,17 @@ var valueEntry = function valueEntry(before, after, key) {
     key: key,
     status: status
   };
-}; // For values which require a more granular diff (objects and arrays)
+};
 
-
+// For values which require a more granular diff (objects and arrays)
 var objectEntry = function objectEntry(before, after, key) {
   var beforeKeys = _$7.isObject(before) ? Object.keys(before) : [];
   var afterKeys = _$7.isObject(after) ? Object.keys(after) : [];
-
   var keys = _$7.union(beforeKeys, afterKeys);
-
   var children = _$7.map(keys, function (key) {
     return performDiff$1((before || {})[key], (after || {})[key], key);
   });
-
   var status;
-
   if (before === undefined) {
     status = ADDED;
   } else if (after === undefined) {
@@ -3402,10 +3230,8 @@ var objectEntry = function objectEntry(before, after, key) {
     var changed = _$7.any(children, function (child) {
       return child.status !== UNCHANGED$1;
     });
-
     status = changed ? CHANGED : UNCHANGED$1;
   }
-
   return {
     after: "",
     before: "",
@@ -3414,17 +3240,13 @@ var objectEntry = function objectEntry(before, after, key) {
     status: status
   };
 };
-
-var performDiff$1 = function performDiff(before, after,
-/* optional */
-key) {
+var performDiff$1 = function performDiff(before, after, /* optional */key) {
   if (typeof before === "object" || typeof after === "object") {
     return objectEntry(before, after, key);
   } else {
     return valueEntry(before, after, key);
   }
 };
-
 _module_$8.exports = performDiff$1;
 var _widgetDiffPerformerJsx = _module_$8.exports;
 
@@ -3436,11 +3258,9 @@ var React$4 = _react__default["default"];
 var _$6 = _underscore__default["default"];
 var performDiff = _widgetDiffPerformerJsx;
 var SvgImage$1 = perseus._componentsSvgImageJsx;
-
 var indentationFromDepth = function indentationFromDepth(depth) {
   return (depth - 1) * 20;
 };
-
 var BEFORE$1 = "before";
 var AFTER$1 = "after";
 var UNCHANGED = "unchanged";
@@ -3500,8 +3320,9 @@ var CollapsedRow = createReactClass({
       }, /*#__PURE__*/React$4.createElement("span", null, " [ show unmodified ] ")));
     }));
   }
-}); // Component representing a single property that may be nested.
+});
 
+// Component representing a single property that may be nested.
 var DiffEntry = createReactClass({
   displayName: "DiffEntry",
   propTypes: {
@@ -3546,7 +3367,6 @@ var DiffEntry = createReactClass({
       "blank-space": propertyDeleted
     });
     var shownChildren;
-
     if (this.state.expanded) {
       shownChildren = entry.children;
     } else {
@@ -3554,14 +3374,13 @@ var DiffEntry = createReactClass({
         return child.status !== UNCHANGED;
       });
     }
+    var collapsed = shownChildren.length < entry.children.length;
 
-    var collapsed = shownChildren.length < entry.children.length; // don't hide just one entry
-
+    // don't hide just one entry
     if (entry.children.length === shownChildren.length + 1) {
       shownChildren = entry.children;
       collapsed = false;
     }
-
     var self = this;
     return /*#__PURE__*/React$4.createElement("div", null, entry.key && /*#__PURE__*/React$4.createElement("div", {
       style: {
@@ -3593,8 +3412,9 @@ var DiffEntry = createReactClass({
       onClick: this.expand
     }));
   }
-}); // For image widgets, show the actual image
+});
 
+// For image widgets, show the actual image
 var ImageWidgetDiff = createReactClass({
   displayName: "ImageWidgetDiff",
   propTypes: {
@@ -3737,19 +3557,15 @@ var JsDiff = function () {
       components: path.components.slice(0)
     };
   }
-
   function removeEmpty(array) {
     var ret = [];
-
     for (var i = 0; i < array.length; i++) {
       if (array[i]) {
         ret.push(array[i]);
       }
     }
-
     return ret;
   }
-
   function escapeHTML(s) {
     var n = s;
     n = n.replace(/&/g, '&amp;');
@@ -3758,11 +3574,9 @@ var JsDiff = function () {
     n = n.replace(/"/g, '&quot;');
     return n;
   }
-
   var Diff = function Diff(ignoreWhitespace) {
     this.ignoreWhitespace = ignoreWhitespace;
   };
-
   Diff.prototype = {
     diff: function diff(oldString, newString) {
       // Handle the identity case (this is due to unrolling editLength == 0
@@ -3771,60 +3585,53 @@ var JsDiff = function () {
           value: newString
         }];
       }
-
       if (!newString) {
         return [{
           value: oldString,
           removed: true
         }];
       }
-
       if (!oldString) {
         return [{
           value: newString,
           added: true
         }];
       }
-
       newString = this.tokenize(newString);
       oldString = this.tokenize(oldString);
       var newLen = newString.length,
-          oldLen = oldString.length;
+        oldLen = oldString.length;
       var maxEditLength = newLen + oldLen;
       var bestPath = [{
         newPos: -1,
         components: []
-      }]; // Seed editLength = 0
+      }];
 
+      // Seed editLength = 0
       var oldPos = this.extractCommon(bestPath[0], newString, oldString, 0);
-
       if (bestPath[0].newPos + 1 >= newLen && oldPos + 1 >= oldLen) {
         return bestPath[0].components;
       }
-
       for (var editLength = 1; editLength <= maxEditLength; editLength++) {
         for (var diagonalPath = -1 * editLength; diagonalPath <= editLength; diagonalPath += 2) {
           var basePath;
           var addPath = bestPath[diagonalPath - 1],
-              removePath = bestPath[diagonalPath + 1];
+            removePath = bestPath[diagonalPath + 1];
           oldPos = (removePath ? removePath.newPos : 0) - diagonalPath;
-
           if (addPath) {
             // No one else is going to attempt to use this value, clear it
             bestPath[diagonalPath - 1] = undefined;
           }
-
           var canAdd = addPath && addPath.newPos + 1 < newLen;
           var canRemove = removePath && 0 <= oldPos && oldPos < oldLen;
-
           if (!canAdd && !canRemove) {
             bestPath[diagonalPath] = undefined;
             continue;
-          } // Select the diagonal that we want to branch from. We select the prior
+          }
+
+          // Select the diagonal that we want to branch from. We select the prior
           // path whose position in the new string is the farthest from the origin
           // and does not pass the bounds of the diff graph
-
-
           if (!canAdd || canRemove && addPath.newPos < removePath.newPos) {
             basePath = clonePath(removePath);
             this.pushComponent(basePath.components, oldString[oldPos], undefined, true);
@@ -3833,9 +3640,7 @@ var JsDiff = function () {
             basePath.newPos++;
             this.pushComponent(basePath.components, newString[basePath.newPos], true, undefined);
           }
-
           var oldPos = this.extractCommon(basePath, newString, oldString, diagonalPath);
-
           if (basePath.newPos + 1 >= newLen && oldPos + 1 >= oldLen) {
             return basePath.components;
           } else {
@@ -3846,7 +3651,6 @@ var JsDiff = function () {
     },
     pushComponent: function pushComponent(components, value, added, removed) {
       var last = components[components.length - 1];
-
       if (last && last.added === added && last.removed === removed) {
         // We need to clone here as the component clone operation is just
         // as shallow array clone
@@ -3865,22 +3669,19 @@ var JsDiff = function () {
     },
     extractCommon: function extractCommon(basePath, newString, oldString, diagonalPath) {
       var newLen = newString.length,
-          oldLen = oldString.length,
-          newPos = basePath.newPos,
-          oldPos = newPos - diagonalPath;
-
+        oldLen = oldString.length,
+        newPos = basePath.newPos,
+        oldPos = newPos - diagonalPath;
       while (newPos + 1 < newLen && oldPos + 1 < oldLen && this.equals(newString[newPos + 1], oldString[oldPos + 1])) {
         newPos++;
         oldPos++;
         this.pushComponent(basePath.components, newString[newPos], undefined, undefined);
       }
-
       basePath.newPos = newPos;
       return oldPos;
     },
     equals: function equals(left, right) {
       var reWhitespace = /\S/;
-
       if (this.ignoreWhitespace && !reWhitespace.test(left) && !reWhitespace.test(right)) {
         return true;
       } else {
@@ -3897,37 +3698,30 @@ var JsDiff = function () {
   var CharDiff = new Diff();
   var WordDiff = new Diff(true);
   var WordWithSpaceDiff = new Diff();
-
   WordDiff.tokenize = WordWithSpaceDiff.tokenize = function (value) {
     return removeEmpty(value.split(/(\s+|\b)/));
   };
-
   var CssDiff = new Diff(true);
-
   CssDiff.tokenize = function (value) {
     return removeEmpty(value.split(/([{}:;,]|\s+)/));
   };
-
   var LineDiff = new Diff();
-
   LineDiff.tokenize = function (value) {
     var retLines = [],
-        lines = value.split(/^/m);
-
+      lines = value.split(/^/m);
     for (var i = 0; i < lines.length; i++) {
       var line = lines[i],
-          lastLine = lines[i - 1]; // Merge lines that may contain windows new lines
+        lastLine = lines[i - 1];
 
+      // Merge lines that may contain windows new lines
       if (line == '\n' && lastLine && lastLine[lastLine.length - 1] === '\r') {
         retLines[retLines.length - 1] += '\n';
       } else if (line) {
         retLines.push(line);
       }
     }
-
     return retLines;
   };
-
   return {
     Diff: Diff,
     diffChars: function diffChars(oldStr, newStr) {
@@ -3952,11 +3746,9 @@ var JsDiff = function () {
       ret.push('--- ' + fileName + (typeof oldHeader === 'undefined' ? '' : '\t' + oldHeader));
       ret.push('+++ ' + fileName + (typeof newHeader === 'undefined' ? '' : '\t' + newHeader));
       var diff = LineDiff.diff(oldStr, newStr);
-
       if (!diff[diff.length - 1].value) {
         diff.pop(); // Remove trailing newline add
       }
-
       diff.push({
         value: '',
         lines: []
@@ -3967,46 +3759,40 @@ var JsDiff = function () {
           return ' ' + entry;
         });
       }
-
       function eofNL(curRange, i, current) {
         var last = diff[diff.length - 2],
-            isLast = i === diff.length - 2,
-            isLastOfType = i === diff.length - 3 && (current.added !== last.added || current.removed !== last.removed); // Figure out if this is the last line for the given file and missing NL
+          isLast = i === diff.length - 2,
+          isLastOfType = i === diff.length - 3 && (current.added !== last.added || current.removed !== last.removed);
 
+        // Figure out if this is the last line for the given file and missing NL
         if (!/\n$/.test(current.value) && (isLast || isLastOfType)) {
           curRange.push('\\ No newline at end of file');
         }
       }
-
       var oldRangeStart = 0,
-          newRangeStart = 0,
-          curRange = [],
-          oldLine = 1,
-          newLine = 1;
-
+        newRangeStart = 0,
+        curRange = [],
+        oldLine = 1,
+        newLine = 1;
       for (var i = 0; i < diff.length; i++) {
         var current = diff[i],
-            lines = current.lines || current.value.replace(/\n$/, '').split('\n');
+          lines = current.lines || current.value.replace(/\n$/, '').split('\n');
         current.lines = lines;
-
         if (current.added || current.removed) {
           if (!oldRangeStart) {
             var prev = diff[i - 1];
             oldRangeStart = oldLine;
             newRangeStart = newLine;
-
             if (prev) {
               curRange = contextLines(prev.lines.slice(-4));
               oldRangeStart -= curRange.length;
               newRangeStart -= curRange.length;
             }
           }
-
           curRange.push.apply(curRange, lines.map(function (entry) {
             return (current.added ? '+' : '-') + entry;
           }));
           eofNL(curRange, i, current);
-
           if (current.added) {
             newLine += lines.length;
           } else {
@@ -4024,30 +3810,25 @@ var JsDiff = function () {
               ret.push('@@ -' + oldRangeStart + ',' + (oldLine - oldRangeStart + contextSize) + ' +' + newRangeStart + ',' + (newLine - newRangeStart + contextSize) + ' @@');
               ret.push.apply(ret, curRange);
               ret.push.apply(ret, contextLines(lines.slice(0, contextSize)));
-
               if (lines.length <= 4) {
                 eofNL(ret, i, current);
               }
-
               oldRangeStart = 0;
               newRangeStart = 0;
               curRange = [];
             }
           }
-
           oldLine += lines.length;
           newLine += lines.length;
         }
       }
-
       return ret.join('\n') + '\n';
     },
     applyPatch: function applyPatch(oldStr, uniDiff) {
       var diffstr = uniDiff.split('\n');
       var diff = [];
       var remEOFNL = false,
-          addEOFNL = false;
-
+        addEOFNL = false;
       for (var i = diffstr[0][0] === 'I' ? 4 : 0; i < diffstr.length; i++) {
         if (diffstr[i][0] === '@') {
           var meh = diffstr[i].split(/@@ -(\d+),(\d+) \+(\d+),(\d+) @@/);
@@ -4073,21 +3854,16 @@ var JsDiff = function () {
           }
         }
       }
-
       var str = oldStr.split('\n');
-
       for (var i = diff.length - 1; i >= 0; i--) {
         var d = diff[i];
-
         for (var j = 0; j < d.oldlength; j++) {
           if (str[d.start - 1 + j] !== d.oldlines[j]) {
             return false;
           }
         }
-
         Array.prototype.splice.apply(str, [d.start - 1, +d.oldlength].concat(d.newlines));
       }
-
       if (remEOFNL) {
         while (!str[str.length - 1]) {
           str.pop();
@@ -4095,42 +3871,34 @@ var JsDiff = function () {
       } else if (addEOFNL) {
         str.push('');
       }
-
       return str.join('\n');
     },
     convertChangesToXML: function convertChangesToXML(changes) {
       var ret = [];
-
       for (var i = 0; i < changes.length; i++) {
         var change = changes[i];
-
         if (change.added) {
           ret.push('<ins>');
         } else if (change.removed) {
           ret.push('<del>');
         }
-
         ret.push(escapeHTML(change.value));
-
         if (change.added) {
           ret.push('</ins>');
         } else if (change.removed) {
           ret.push('</del>');
         }
       }
-
       return ret.join('');
     },
     // See: http://code.google.com/p/google-diff-match-patch/wiki/API
     convertChangesToDMP: function convertChangesToDMP(changes) {
       var ret = [],
-          change;
-
+        change;
       for (var i = 0; i < changes.length; i++) {
         change = changes[i];
         ret.push([change.added ? 1 : change.removed ? -1 : 0, change.value]);
       }
-
       return ret;
     }
   };
@@ -4141,7 +3909,6 @@ var _module_$6 = {
 };
 var jsdiff = JsDiff;
 var _$5 = _underscore__default["default"];
-
 var statusFor = function statusFor(chunk) {
   if (chunk.added) {
     return "added";
@@ -4150,41 +3917,38 @@ var statusFor = function statusFor(chunk) {
   } else {
     return "unchanged";
   }
-}; // Turn a chunk (which contains an array of values and a status)
+};
+
+// Turn a chunk (which contains an array of values and a status)
 // into an array of values, each with the same status
-
-
 var splitUpChunk = chunk => _$5.map(chunk.value, value => {
   return {
     value: value,
     status: statusFor(chunk)
   };
-}); // Apply `fn` to every element in `lst` and then concatenate all the results
+});
+
+// Apply `fn` to every element in `lst` and then concatenate all the results
 // http://clojuredocs.org/clojure_core/clojure.core/mapcat
-
-
 var mapcat = function mapcat(lst, fn) {
-  return _$5.flatten(_$5.map(lst, fn), true
-  /* only flatten one level */
-  );
-}; // > ArrayDiff.diff([1,2,3], [2,3,4]);
+  return _$5.flatten(_$5.map(lst, fn), true /* only flatten one level */);
+};
+
+// > ArrayDiff.diff([1,2,3], [2,3,4]);
 // = [{ "value": [1],
 //      "removed": true },
 //    { "value": [2, 3] },
 //    { "value": [4],
 //      "added": true }]
-
-
 var ArrayDiff = new jsdiff.Diff();
-
-ArrayDiff.tokenize = array => _$5.map(array, elem => [elem]); // The default is `+` for string concatenation, which doesn't work for array
+ArrayDiff.tokenize = array => _$5.map(array, elem => [elem]);
+// The default is `+` for string concatenation, which doesn't work for array
 // concatenation.
+ArrayDiff.join = (a, b) => a.concat(b);
+// By default jsDiff uses ===
+ArrayDiff.equals = _$5.isEqual;
 
-
-ArrayDiff.join = (a, b) => a.concat(b); // By default jsDiff uses ===
-
-
-ArrayDiff.equals = _$5.isEqual; // Take the output of jsdiff's function (which concatenates adjacent entries)
+// Take the output of jsdiff's function (which concatenates adjacent entries)
 // and make it just one entry per chunk
 // > flattenChunks([{ "value": [1],
 //                    "removed": true },
@@ -4195,12 +3959,11 @@ ArrayDiff.equals = _$5.isEqual; // Take the output of jsdiff's function (which c
 //    { "value":2, "status":"unchanged"},
 //    { "value":3, "status":"unchanged"},
 //    { "value":4, "status":"added"}]
+var flattenChunks = chunks => mapcat(chunks, splitUpChunk);
 
-var flattenChunks = chunks => mapcat(chunks, splitUpChunk); // Take two arrays and create a diff for them. The result is two arrays of
+// Take two arrays and create a diff for them. The result is two arrays of
 // objects, one for the things that should be included in a 'before', and one
 // for 'after'
-
-
 var stringArrayDiff$1 = function stringArrayDiff(a, b) {
   var diffResult = ArrayDiff.diff(a, b);
   var flattened = flattenChunks(diffResult);
@@ -4209,47 +3972,40 @@ var stringArrayDiff$1 = function stringArrayDiff(a, b) {
     after: _$5.filter(flattened, entry => entry.status !== "removed")
   };
 };
-
 _module_$6.exports = stringArrayDiff$1;
 var _stringArrayDiffJsx = _module_$6.exports;
 
 var _module_$5 = {
   exports: {}
 };
-var _$4 = _underscore__default["default"]; // Split a word-wise diff generated by jsdiff into multiple lines, for the
+var _$4 = _underscore__default["default"];
+
+// Split a word-wise diff generated by jsdiff into multiple lines, for the
 // purpose of breaking up the diffs into lines, so that modified lines can be
 // faintly highlighted
 
 var splitDiff$1 = function splitDiff(diffEntries) {
   var lines = [];
   var currentLine = [];
-
   _$4.each(diffEntries, entry => {
     var values = entry.value.split("\n");
-
     _$4.each(values, (value, i) => {
       var isNewline = i > 0;
-
       if (isNewline) {
         lines.push(currentLine);
         currentLine = [];
       }
-
       var newEntry = _$4.extend({}, entry, {
         value: value
       });
-
       currentLine.push(newEntry);
     });
   });
-
   if (currentLine.length) {
     lines.push(currentLine);
   }
-
   return lines;
 };
-
 _module_$5.exports = splitDiff$1;
 var _splitDiffJsx = _module_$5.exports;
 
@@ -4266,11 +4022,9 @@ var SvgImage = perseus._componentsSvgImageJsx;
 var BEFORE = "before";
 var AFTER = "after";
 var IMAGE_REGEX = /http.*?\.png|web\+graphie[^)]*/g;
-
 var imagesInString = function imagesInString(str) {
   return str.match(IMAGE_REGEX) || [];
 };
-
 var classFor = function classFor(entry, ifAdded, ifRemoved) {
   if (entry.added) {
     return ifAdded;
@@ -4280,7 +4034,6 @@ var classFor = function classFor(entry, ifAdded, ifRemoved) {
     return "";
   }
 };
-
 var ImageDiffSide = createReactClass({
   displayName: "ImageDiffSide",
   propTypes: {
@@ -4339,7 +4092,6 @@ var TextDiff$1 = createReactClass({
     var beforeImages = imagesInString(this.props.before);
     var afterImages = imagesInString(this.props.after);
     var images = stringArrayDiff(beforeImages, afterImages);
-
     var renderedLines = _$3.map(lines, line => {
       var contents = {};
       contents.before = _$3.map(line, function (entry, i) {
@@ -4356,7 +4108,6 @@ var TextDiff$1 = createReactClass({
       });
       return contents;
     });
-
     var className = classNames({
       "diff-row": true,
       "collapsed": this.state.collapsed
@@ -4415,8 +4166,9 @@ var rendererProps$1 = PropTypes.shape({
   content: PropTypes.string,
   images: PropTypes.object,
   widgets: PropTypes.object
-}); // In diffs, only show the widgetInfo props that can change
+});
 
+// In diffs, only show the widgetInfo props that can change
 var filterWidgetInfo = function filterWidgetInfo(widgetInfo, showAlignmentOptions) {
   var {
     alignment,
@@ -4426,23 +4178,20 @@ var filterWidgetInfo = function filterWidgetInfo(widgetInfo, showAlignmentOption
   } = widgetInfo || {};
   var filteredWidgetInfo = {
     options
-  }; // Show alignment options iff multiple valid ones exist for this widget
+  };
 
+  // Show alignment options iff multiple valid ones exist for this widget
   if (showAlignmentOptions && Widgets$1.getSupportedAlignments(type).length > 1) {
     filteredWidgetInfo.alignment = alignment;
   }
-
   if (type === "transformer") {
     filteredWidgetInfo.graded = graded;
   }
-
   if (Widgets$1.supportsStaticMode(type)) {
     filteredWidgetInfo.static = widgetInfo.static || undefined;
   }
-
   return filteredWidgetInfo;
 };
-
 var RendererDiff$2 = createReactClass({
   displayName: "RendererDiff",
   propTypes: {
@@ -4484,7 +4233,6 @@ var RendererDiff$2 = createReactClass({
     } = this.props;
     var textDiff;
     var widgetsDiff;
-
     if (before.content || after.content) {
       textDiff = /*#__PURE__*/React$2.createElement(TextDiff, {
         before: before.content,
@@ -4492,13 +4240,10 @@ var RendererDiff$2 = createReactClass({
         title: title
       });
     }
-
     var beforeWidgets = Object.keys(before.widgets).filter(widget => before.content.includes(widget));
     var afterWidgets = Object.keys(after.widgets).filter(widget => after.content.includes(widget));
-
     if (beforeWidgets.length || afterWidgets.length) {
       var widgets = _$2.union(beforeWidgets, afterWidgets);
-
       widgetsDiff = widgets.map(widget => /*#__PURE__*/React$2.createElement(WidgetDiff$1, {
         before: filterWidgetInfo(before.widgets[widget], showAlignmentOptions),
         after: filterWidgetInfo(after.widgets[widget], showAlignmentOptions),
@@ -4507,7 +4252,6 @@ var RendererDiff$2 = createReactClass({
         key: widget
       }));
     }
-
     return /*#__PURE__*/React$2.createElement("div", null, textDiff, widgetsDiff, showSeparator && /*#__PURE__*/React$2.createElement("div", {
       className: "diff-separator"
     }));
@@ -4561,7 +4305,6 @@ var ArticleDiff$1 = createReactClass({
       after
     } = this.state;
     var sectionCount = Math.max(before.length, after.length);
-
     var sections = _$1.times(sectionCount, n => /*#__PURE__*/React$1.createElement(RendererDiff$1, {
       before: n < before.length ? before[n] : undefined,
       after: n < after.length ? after[n] : undefined,
@@ -4570,7 +4313,6 @@ var ArticleDiff$1 = createReactClass({
       showSeparator: n < sectionCount - 1,
       key: n
     }));
-
     return /*#__PURE__*/React$1.createElement("div", {
       className: "framework-perseus"
     }, sections);
@@ -4619,7 +4361,6 @@ var ItemDiff$1 = createReactClass({
       after: after.answerArea,
       title: "Question extras"
     });
-
     var hints = _.times(hintCount, function (n) {
       return /*#__PURE__*/React.createElement(RendererDiff, {
         before: n < before.hints.length ? before.hints[n] : undefined,
@@ -4630,7 +4371,6 @@ var ItemDiff$1 = createReactClass({
         key: n
       });
     });
-
     return /*#__PURE__*/React.createElement("div", {
       className: "framework-perseus"
     }, question, extras, hints && /*#__PURE__*/React.createElement("div", {
