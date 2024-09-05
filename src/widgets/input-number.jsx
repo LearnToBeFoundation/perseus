@@ -132,7 +132,7 @@ var InputNumber = createReactClass({
     },
 
     render: function() {
-        if (this.props.apiOptions.customKeypad) {
+        if (true) {
             // TODO(charlie): Support "Review Mode".
             return (
                 <SimpleKeypadInput
