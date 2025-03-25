@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var perseus = require('./perseus-d413416e.js');
+var perseus = require('./perseus-01e0a811.js');
 var aphrodite = require('aphrodite');
 var _react = require('react');
 var _underscore = require('underscore');
@@ -4702,6 +4702,7 @@ exports.MultiItems = perseus.MultiItems;
 exports.QuestionRenderer = perseus.QuestionRenderer;
 exports.Renderer = perseus.Renderer$1;
 exports.ServerItemRenderer = perseus.ServerItemRenderer;
+exports.Widgets = perseus.Widgets;
 exports.apiVersion = perseus.apiVersion;
 exports.init = perseus.init;
 exports.itemDataVersion = perseus.itemDataVersion;
