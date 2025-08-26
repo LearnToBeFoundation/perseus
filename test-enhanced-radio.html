@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Radio Widget Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .test-section h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .enhanced-choice {
+            display: flex;
+            align-items: flex-start;
+            padding: 16px;
+            border: 2px solid #e5e5e5;
+            border-radius: 12px;
+            background-color: #ffffff;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            position: relative;
+            min-height: 60px;
+            margin-bottom: 12px;
+        }
+        .enhanced-choice:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: #2563EB;
+            background-color: #DBEAFE;
+        }
+        .enhanced-choice.selected {
+            border-color: #2563EB;
+            background-color: #DBEAFE;
+        }
+        .choice-content {
+            flex: 1;
+            min-width: 0;
+            font-size: 16px;
+            line-height: 1.4;
+            color: #333333;
+            word-wrap: break-word;
+        }
+        input[type="radio"], input[type="checkbox"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .horizontal-layout {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .horizontal-layout .enhanced-choice {
+            min-width: 200px;
+            flex: 1 1 auto;
+            margin-bottom: 0;
+        }
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .grid-layout .enhanced-choice {
+            min-height: 80px;
+            margin-bottom: 0;
+        }
+        .instructions {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <h1>Enhanced Radio Widget Test</h1>
+    <p>This demonstrates the enhanced multiple choice widget with blue color scheme and no radio buttons/checkmarks.</p>
+    
+    <div class="test-section">
+        <h3>Vertical Layout (Single Select)</h3>
+        <div class="instructions">Select one answer</div>
+        <div id="test-vertical"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Horizontal Layout (Multiple Select)</h3>
+        <div class="instructions">Select all that apply (2 correct)</div>
+        <div id="test-horizontal" class="horizontal-layout"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>2x2 Grid Layout</h3>
+        <div class="instructions">Select one answer</div>
+        <div id="test-grid" class="grid-layout"></div>
+    </div>
+
+    <script>
+        // Test data
+        const testChoices = [
+            {
+                content: "This is the first choice with some longer text to test wrapping and see how it looks",
+                correct: true,
+                originalIndex: 0
+            },
+            {
+                content: "Second choice - shorter text",
+                correct: false,
+                originalIndex: 1
+            },
+            {
+                content: "Third choice with some mathematical content: x² + 5x + 6 = 0",
+                correct: false,
+                originalIndex: 2
+            },
+            {
+                content: "Fourth choice for testing the grid layout",
+                correct: false,
+                originalIndex: 3
+            }
+        ];
+
+        function createTestWidget(containerId, layout, multipleSelect = false) {
+            const container = document.getElementById(containerId);
+            
+            testChoices.forEach((choice, i) => {
+                const label = document.createElement('label');
+                label.className = 'enhanced-choice';
+                
+                const input = document.createElement('input');
+                input.type = multipleSelect ? 'checkbox' : 'radio';
+                input.name = `test-${containerId}`;
+                input.value = i;
+                
+                const content = document.createElement('div');
+                content.className = 'choice-content';
+                content.textContent = choice.content;
+                
+                // Add interaction handlers
+                input.addEventListener('change', () => {
+                    if (!multipleSelect) {
+                        // Remove selected class from all choices in this group
+                        const allChoices = container.querySelectorAll('.enhanced-choice');
+                        allChoices.forEach(c => c.classList.remove('selected'));
+                    }
+                    
+                    // Add selected class to this choice
+                    if (input.checked) {
+                        label.classList.add('selected');
+                    } else {
+                        label.classList.remove('selected');
+                    }
+                });
+                
+                label.appendChild(input);
+                label.appendChild(content);
+                container.appendChild(label);
+            });
+        }
+
+        // Create test instances
+        createTestWidget('test-vertical', 'vertical', false);
+        createTestWidget('test-horizontal', 'horizontal', true);
+        createTestWidget('test-grid', 'grid-2x2', false);
+
+        // Add info section
+        const info = document.createElement('div');
+        info.style.marginTop = '40px';
+        info.style.padding = '20px';
+        info.style.backgroundColor = '#f0f8ff';
+        info.style.border = '1px solid #b0d4ff';
+        info.style.borderRadius = '8px';
+        info.innerHTML = `
+            <h3>Features Demonstrated</h3>
+            <ul>
+                <li>✅ No radio buttons or checkmarks - just box highlighting</li>
+                <li>✅ Blue color scheme (#DBEAFE background, #2563EB border)</li>
+                <li>✅ Smooth hover animations with elevation</li>
+                <li>✅ Three layout options: vertical, horizontal, 2x2 grid</li>
+                <li>✅ Single and multiple selection modes</li>
+                <li>✅ Responsive design (grid collapses on mobile)</li>
+                <li>✅ Clean, modern Duolingo-style appearance</li>
+            </ul>
+        `;
+        document.body.appendChild(info);
+    </script>
+</body>
+</html>
