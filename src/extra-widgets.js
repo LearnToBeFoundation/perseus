@@ -72,6 +72,8 @@ import LikertScaleEditor from "./widgets/likert-scale-editor.jsx";
 import LikertScale from "./widgets/likert-scale.jsx";
 import _widgetsEnhancedRadioJsx from "./widgets/enhanced-radio.jsx";
 import _widgetsEnhancedRadioEditorJsx from "./widgets/enhanced-radio-editor.jsx";
+import _widgetsAudioPlayerJsx from "./widgets/audio-player.jsx";
+import _widgetsAudioPlayerEditorJsx from "./widgets/audio-player-editor.jsx";
 
 // TODO(aria): Env variable & bundling magic?
 const __EDITOR__ = true;
@@ -113,6 +115,7 @@ const allWidgets = [
     [_widgetsVideoJsx, __EDITOR__ && _widgetsVideoEditorJsx],
     [LikertScale, LikertScaleEditor],
     [_widgetsEnhancedRadioJsx, __EDITOR__ && _widgetsEnhancedRadioEditorJsx],
+    [_widgetsAudioPlayerJsx, __EDITOR__ && _widgetsAudioPlayerEditorJsx]
     // These widgets are only used when testing things, so remove them in the
     // non-editor bundle.
     //__EDITOR__ && [

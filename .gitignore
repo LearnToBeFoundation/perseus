@@ -7,3 +7,6 @@ perseus.sublime-workspace
 
 # Ignore emacs backup files
 *~
+
+# Ignore IntelliJ IDEs
+.idea

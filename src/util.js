@@ -458,7 +458,12 @@ const Util = {
      * Deep approximate equality on primitives, numbers, arrays, and objects.
      */
     deepEq: function(x, y) {
-        if (_.isArray(x) && _.isArray(y)) {
+        // _owner on React objects contains circular references so we must avoid it.
+        const bannedReactField = (fieldName, obj) => 
+            (fieldName == "_owner" && obj.$$typeof)
+        if (x === y) {
+            return true;
+        } else if (_.isArray(x) && _.isArray(y)) {
             if (x.length !== y.length) {
                 return false;
             }
@@ -477,10 +482,10 @@ const Util = {
         } else if (_.isObject(x) && _.isObject(y)) {
             return x === y ||
             (_.all(x, function(v, k) {
-                return Util.deepEq(y[k], v);
+                return bannedReactField(k, x) || Util.deepEq(y[k], v);
             }) &&
                 _.all(y, function(v, k) {
-                    return Util.deepEq(x[k], v);
+                    return bannedReactField(k, y) || Util.deepEq(x[k], v);
                 }));
         } else if (_.isObject(x) || _.isObject(y)) {
             return false;

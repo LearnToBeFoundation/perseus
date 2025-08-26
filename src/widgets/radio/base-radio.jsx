@@ -110,6 +110,7 @@ const BaseRadio = createReactClass({
         countChoices: PropTypes.bool,
         numCorrect: PropTypes.number,
         multipleSelect: PropTypes.bool,
+        horizontalChoices: PropTypes.bool,
         reviewModeRubric: PropTypes.shape({
             choices: ChoicesType,
         }),
@@ -371,6 +372,7 @@ const BaseRadio = createReactClass({
         const className = classNames(
             "perseus-widget-radio",
             !this.props.editMode && "perseus-rendered-radio",
+            this.props.horizontalChoices && "perseus-widget-radio-horizontal",
             css(
                 styles.radio,
                 // SAT doesn't use the "responsive styling" as it conflicts
@@ -436,6 +438,7 @@ const BaseRadio = createReactClass({
                             onChange: newValues => {
                                 this.updateChoice(i, newValues);
                             },
+                            horizontalChoices: this.props.horizontalChoices,
                         };
 
                         if (choice.isNoneOfTheAbove) {

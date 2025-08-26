@@ -1,6 +1,6 @@
 {
   "name": "openperseus",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Open-source community fork of Khan Academy's Perseus questions/exercises/articles framework",
   "keywords": [
     "khan",
@@ -18,6 +18,7 @@
   "main": "perseus.js",
   "scripts": {
     "start": "react-scripts start",
+    "prebuild": "lessc stylesheets/exercise-content-package/perseus.less > src/lib/perseus.css",
     "build": "rollup -c && react-scripts build",
     "postbuild": "rm -rf ./docs/; mv ./build/ ./docs",
     "prepare": "rollup -c",

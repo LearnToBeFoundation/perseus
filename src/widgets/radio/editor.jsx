@@ -115,7 +115,7 @@ var RadioEditor = createReactClass({
         hasNoneOfTheAbove: PropTypes.bool,
         multipleSelect: PropTypes.bool,
         countChoices: PropTypes.bool,
-
+        horizontalOptions: PropTypes.bool,
         // TODO(kevinb): DEPRECATED: This is be used to force deselectEnabled
         // behavior on mobile but not on desktop.  When enabled, the user can
         // deselect a radio input by tapping on it again.
@@ -133,6 +133,7 @@ var RadioEditor = createReactClass({
             multipleSelect: false,
             countChoices: false,
             deselectEnabled: false,
+            horizontalChoices: false,
         };
     },
 
@@ -156,18 +157,26 @@ var RadioEditor = createReactClass({
                     <br />
                     <div className="perseus-widget-left-col">
                         <PropCheckBox
-                            label="Multiple selections"
-                            labelAlignment="right"
-                            multipleSelect={this.props.multipleSelect}
-                            onChange={this.onMultipleSelectChange}
-                        />
-                    </div>
-                    <div className="perseus-widget-right-col">
-                        <PropCheckBox
                             label="Randomize order"
                             labelAlignment="right"
                             randomize={this.props.randomize}
                             onChange={this.props.onChange}
+                        />
+                    </div>
+                    <div className="perseus-widget-left-col">
+                        <PropCheckBox
+                            label="Horizontal Choices"
+                            labelAlignment="right"
+                            horizontalChoices={this.props.horizontalChoices}
+                            onChange={this.props.onChange}
+                        />
+                    </div>
+                    <div className="perseus-widget-right-col">
+                        <PropCheckBox
+                            label="Multiple selections"
+                            labelAlignment="right"
+                            multipleSelect={this.props.multipleSelect}
+                            onChange={this.onMultipleSelectChange}
                         />
                     </div>
                     {this.props.multipleSelect &&
@@ -385,7 +394,8 @@ var RadioEditor = createReactClass({
             "countChoices",
             "displayCount",
             "hasNoneOfTheAbove",
-            "deselectEnabled"
+            "deselectEnabled",
+            "horizontalChoices"
         );
     },
 });

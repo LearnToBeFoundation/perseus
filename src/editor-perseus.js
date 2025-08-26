@@ -26,7 +26,28 @@ var _module_ = {
 var exports = _module_.exports;
 const Perseus = _perseusJs;
 
-_module_.exports = {
+export const itemVersion = _itemVersion;
+export const ItemDiff = _diffsItemDiffJsx;
+export const ArticleDiff = _diffsArticleDiffJsx;
+export const StatefulArticleEditor = _statefulArticleEditorJsx;
+export const StatefulEditorPage = _statefulEditorPageJsx;
+export const ClassNames = _perseusApiJsx.ClassNames;
+export const Util = _utilJs;
+export const ViewportResizer = _componentsViewportResizerJsx;
+export const DeviceFramer = _componentsDeviceFramerJsx;
+export const renderability = _renderabilityJsx;
+export const accessibility = _a11yJs;
+export const i18n = _i18nJsx;
+export const ArticleEditor = _articleEditorJsx;
+export const Editor = _editorJsx;
+export const EditorPage = _editorPageJsx;
+export const IframeContentRenderer = _iframeContentRendererJsx;
+export const MultiRendererEditor = _multirendererEditorJsx;
+export const Gorgon = _gorgonGorgonJs;
+export const JiptHack = _jiptHackJsx;
+export * from './perseus.js';
+
+export default {
     itemVersion: _itemVersion,
     ItemDiff: _diffsItemDiffJsx,
     ArticleDiff: _diffsArticleDiffJsx,
@@ -48,4 +69,4 @@ _module_.exports = {
     JiptHack: _jiptHackJsx,
     ...Perseus,
 };
-export default _module_.exports;
+

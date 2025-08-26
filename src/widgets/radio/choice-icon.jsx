@@ -170,7 +170,7 @@ class LibraryChoiceIcon extends React.Component {
 
 class ChoiceIcon extends React.Component {
     static defaultProps = {
-        primaryProductColor: styleConstants.kaGreen,
+        primaryProductColor: styleConstants.ltbBlue,
     };
 
     a11yText(letter) {

@@ -13,8 +13,11 @@ const localModules = fs.readdirSync('src/node_modules')
     .map(filename => filename.replace(/\.js$/, ''));
 
 export default {
-  input: 'src/perseus.js',
-    external: (filepath) => 
+  input: [
+    'src/perseus.js', 
+    'src/editor-perseus.js'
+  ],
+  external: (filepath) => 
     {
         // TODO(aria): I'm not sure why the paths we're given here are so complex
         // Would be nice to simplify this.
@@ -48,7 +51,8 @@ export default {
         return true;
     },
   output: {
-    file: 'perseus.js',
+    dir: '.',
+    //file: 'perseus.js',
     format: 'cjs',
   },
   plugins: [

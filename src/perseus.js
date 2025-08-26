@@ -16,7 +16,7 @@ import _questionRendererJsx from "./question-renderer.jsx";
 import _articleRendererJsx from "./article-renderer.jsx";
 import _initJs from "./init.js";
 import initialWidgets from "./all-widgets.js";
-import Widgets from "./widgets.js";
+import _Widgets from "./widgets.js";
 import _versionJson from "./version.json";
 
 /**
@@ -26,6 +26,7 @@ const version = _versionJson;
 
 // TODO(aria): This registers all widgets for now, but we could go back to only
 // registering basic widgets
+export const Widgets = _Widgets;
 Widgets.registerMany(initialWidgets);
 
 export const apiVersion = version.apiVersion;
@@ -50,4 +51,5 @@ export default {
     HintsRenderer: _hintsRendererJsx,
     Renderer: _rendererJsx,
     MultiItems: _multiItemsJs,
+    Widgets: Widgets,
 };
