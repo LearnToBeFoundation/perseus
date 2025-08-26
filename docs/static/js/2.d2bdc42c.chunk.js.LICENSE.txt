@@ -5,6 +5,12 @@ object-assign
 */
 
 /*!
+	Copyright (c) 2018 Jed Watson.
+	Licensed under the MIT License (MIT), see
+	http://jedwatson.github.io/classnames
+*/
+
+/*!
    * Sizzle CSS Selector Engine v2.2.1
    * http://sizzlejs.com/
    *
@@ -14,12 +20,6 @@ object-assign
    *
    * Date: 2015-10-17
    */
-
-/*!
-  Copyright (c) 2018 Jed Watson.
-  Licensed under the MIT License (MIT), see
-  http://jedwatson.github.io/classnames
-*/
 
 /*!
  * jQuery JavaScript Library v2.2.4
