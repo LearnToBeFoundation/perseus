@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var perseus = require('./perseus-876e2635.js');
+var perseus = require('./perseus-acbacaa3.js');
 var aphrodite = require('aphrodite');
 var _react = require('react');
 var _underscore = require('underscore');
@@ -757,7 +757,7 @@ var _module_$m = {
 };
 var React$d = _react__default["default"];
 var ReactDOM = _reactDom__default["default"];
-var lens = perseus.lens;
+var lens = perseus._lens;
 var ApiOptions$2 = perseus._perseusApiJsx.Options;
 var Editor$2 = perseus._editorJsx;
 var InlineIcon$2 = perseus._componentsInlineIconJsx;
@@ -2012,7 +2012,7 @@ var objective_ = perseus._interactive2Objective_Js;
 var Widgets$4 = perseus._widgetsJs;
 var noop = function noop() {};
 var deepCallbackFor = function deepCallbackFor(contentCallback, widgetCallback, optionsCallback) {
-  var deepCallback = function deepCallback(widgetInfo, widgetId) {
+  var _deepCallback = function deepCallback(widgetInfo, widgetId) {
     // This doesn't modify the widget info if the widget info
     // is at a later version than is supported, which is important
     // for our latestVersion test below.
@@ -2039,7 +2039,7 @@ var deepCallbackFor = function deepCallbackFor(contentCallback, widgetCallback, 
       newWidgetInfo = Widgets$4.traverseChildWidgets(upgradedWidgetInfo, rendererOptions => {
         return traverseRenderer$1(rendererOptions, contentCallback,
         // so that we traverse grandchildren, too:
-        deepCallback, optionsCallback);
+        _deepCallback, optionsCallback);
       });
     } else {
       newWidgetInfo = upgradedWidgetInfo;
@@ -2051,7 +2051,7 @@ var deepCallbackFor = function deepCallbackFor(contentCallback, widgetCallback, 
       return newWidgetInfo;
     }
   };
-  return deepCallback;
+  return _deepCallback;
 };
 var traverseRenderer$1 = function traverseRenderer(rendererOptions, contentCallback, deepWidgetCallback, optionsCallback) {
   var newContent = rendererOptions.content;
