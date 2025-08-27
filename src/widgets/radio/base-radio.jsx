@@ -427,7 +427,7 @@ const BaseRadio = createReactClass({
             css(styles.instructions, isMobile && styles.instructionsMobile)
         );
         const instructions = this.getInstructionsText();
-        const shouldShowInstructions = !sat;
+        const shouldShowInstructions = false; // Hide instructions for enhanced UI
 
         const responsiveClassName = css(styles.responsiveFieldset);
         const fieldset = (

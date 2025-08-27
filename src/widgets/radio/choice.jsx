@@ -301,9 +301,19 @@ const Choice = createReactClass({
                 marginLeft: "12px",
             },
 
+            enhancedChoiceHorizontal: {
+                marginRight: "16px",
+                marginBottom: "0px",
+            },
+
             enhancedInput: {
                 margin: 0,
                 flexShrink: 0,
+                // Hide the radio button icon
+                opacity: 0,
+                position: "absolute",
+                width: 0,
+                height: 0,
             },
         }),
     },
@@ -456,6 +466,8 @@ const Choice = createReactClass({
                 this.state.isInputFocused && styles.enhancedChoiceFocused,
                 isPressed && !disabled && styles.enhancedChoicePressed,
                 disabled && styles.choiceDisabled,
+                // Apply layout-specific styles
+                this.props.horizontalChoices && styles.enhancedChoiceHorizontal,
                 // Apply selected styles last so they take priority
                 checked && styles.enhancedChoiceSelected,
                 choiceState === 'correct' && styles.enhancedChoiceCorrect,
@@ -480,7 +492,9 @@ const Choice = createReactClass({
                     name={this.props.groupName}
                     checked={this.props.checked}
                     disabled={this.props.disabled}
-                    onChange={this.onInputChange}
+                    onChange={(event) => {
+                        this._sendChange({checked: event.target.checked});
+                    }}
                     onFocus={this.onInputFocus}
                     onBlur={this.onInputBlur}
                     className={css(styles.enhancedInput)}
