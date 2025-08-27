@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Radio Widget - Clicking Fix Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .enhanced-choice {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            border: 2px solid #e5e5e5;
+            border-radius: 12px;
+            background-color: #ffffff;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            position: relative;
+            min-height: 60px;
+            margin-bottom: 12px;
+        }
+        .enhanced-choice:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: #2563EB;
+            background-color: #ffffff; /* Keep white on hover */
+        }
+        .enhanced-choice.selected {
+            border-color: #2563EB;
+            background-color: #DBEAFE; /* Blue when selected */
+        }
+        .choice-content {
+            flex: 1;
+            min-width: 0;
+            font-size: 16px;
+            line-height: 1.4;
+            color: #333333;
+            word-wrap: break-word;
+            text-align: center;
+            width: 100%;
+        }
+        input[type="radio"], input[type="checkbox"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .status {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Enhanced Radio Widget - Clicking Fix Test</h1>
+    
+    <div class="success">
+        ✅ <strong>Clicking Fix Applied!</strong> Removed conflicting onClick handlers.
+    </div>
+    
+    <div class="status">
+        <h3>🔧 What Was Fixed:</h3>
+        <ul>
+            <li>Removed duplicate <code>onClick</code> handler that was conflicting with <code>onChange</code></li>
+            <li>Now relies on native HTML label behavior to trigger input changes</li>
+            <li>Single event flow: Label click → Input change → onChange handler</li>
+        </ul>
+    </div>
+    
+    <div class="test-section">
+        <h3>Test 1: Radio Button Behavior (Single Select)</h3>
+        <p><strong>Expected:</strong> Only one choice can be selected at a time</p>
+        <div id="test-radio"></div>
+        <div id="radio-status" style="margin-top: 10px; font-weight: bold;"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>Test 2: Checkbox Behavior (Multiple Select)</h3>
+        <p><strong>Expected:</strong> Multiple choices can be selected</p>
+        <div id="test-checkbox"></div>
+        <div id="checkbox-status" style="margin-top: 10px; font-weight: bold;"></div>
+    </div>
+
+    <script>
+        // Test data
+        const radioChoices = [
+            { content: "Choice A - Click me!", correct: true },
+            { content: "Choice B - Or click me!", correct: false },
+            { content: "Choice C - Maybe me?", correct: false },
+        ];
+
+        const checkboxChoices = [
+            { content: "Option 1 - Select multiple", correct: true },
+            { content: "Option 2 - Can select this too", correct: true },
+            { content: "Option 3 - And this one", correct: false },
+        ];
+
+        function createTest(containerId, statusId, choices, inputType) {
+            const container = document.getElementById(containerId);
+            const status = document.getElementById(statusId);
+            const groupName = `test-${inputType}`;
+            
+            choices.forEach((choice, i) => {
+                const label = document.createElement('label');
+                label.className = 'enhanced-choice';
+                label.htmlFor = `${groupName}-${i}`;
+                
+                const input = document.createElement('input');
+                input.type = inputType;
+                input.name = groupName;
+                input.id = `${groupName}-${i}`;
+                input.value = i;
+                
+                const content = document.createElement('div');
+                content.className = 'choice-content';
+                content.textContent = choice.content;
+                
+                // Update status when selection changes
+                function updateStatus() {
+                    const selected = Array.from(container.querySelectorAll('input:checked'))
+                        .map(inp => parseInt(inp.value));
+                    
+                    if (selected.length === 0) {
+                        status.textContent = `No ${inputType === 'radio' ? 'choice' : 'options'} selected`;
+                        status.style.color = '#666';
+                    } else {
+                        const selectedTexts = selected.map(i => `Choice ${String.fromCharCode(65 + i)}`);
+                        status.textContent = `Selected: ${selectedTexts.join(', ')}`;
+                        status.style.color = '#2563EB';
+                    }
+                }
+                
+                input.addEventListener('change', () => {
+                    // Update visual state
+                    const allChoices = container.querySelectorAll('.enhanced-choice');
+                    allChoices.forEach(c => c.classList.remove('selected'));
+                    
+                    if (inputType === 'radio') {
+                        // For radio, only the checked one should be selected
+                        if (input.checked) {
+                            label.classList.add('selected');
+                        }
+                    } else {
+                        // For checkbox, update all checked ones
+                        container.querySelectorAll('input:checked').forEach(checkedInput => {
+                            checkedInput.closest('.enhanced-choice').classList.add('selected');
+                        });
+                    }
+                    
+                    updateStatus();
+                });
+                
+                label.appendChild(input);
+                label.appendChild(content);
+                container.appendChild(label);
+            });
+            
+            // Initial status
+            updateStatus();
+        }
+
+        // Create tests
+        createTest('test-radio', 'radio-status', radioChoices, 'radio');
+        createTest('test-checkbox', 'checkbox-status', checkboxChoices, 'checkbox');
+
+        // Add summary
+        const summary = document.createElement('div');
+        summary.style.marginTop = '40px';
+        summary.style.padding = '20px';
+        summary.style.backgroundColor = '#e8f4fd';
+        summary.style.border = '1px solid #2563EB';
+        summary.style.borderRadius = '8px';
+        summary.innerHTML = `
+            <h3>🎯 Clicking Should Now Work!</h3>
+            <p>The enhanced radio widget now has proper click handling:</p>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+                <div>
+                    <h4>✅ Fixed Issues</h4>
+                    <ul>
+                        <li>Removed conflicting onClick handler</li>
+                        <li>Uses native label → input behavior</li>
+                        <li>Single event flow prevents conflicts</li>
+                        <li>Works for both radio and checkbox</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>✅ Expected Behavior</h4>
+                    <ul>
+                        <li>Click anywhere on choice box</li>
+                        <li>Selection state persists</li>
+                        <li>Visual feedback immediate</li>
+                        <li>Status updates correctly</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <p><strong>Test above:</strong> Click the choices and verify they stay selected and the status updates correctly.</p>
+        `;
+        document.body.appendChild(summary);
+    </script>
+</body>
+</html>

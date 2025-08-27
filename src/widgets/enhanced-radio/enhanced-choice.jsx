@@ -100,14 +100,7 @@ const EnhancedChoice = createReactClass({
         }
     },
 
-    onClick: function() {
-        if (!this.props.disabled) {
-            // Toggle the selection for both radio and checkbox
-            this.props.onChange({
-                checked: !this.props.checked,
-            });
-        }
-    },
+
 
     render: function() {
         const {
@@ -166,7 +159,6 @@ const EnhancedChoice = createReactClass({
                 onMouseLeave={this.onMouseLeave}
                 onMouseDown={this.onMouseDown}
                 onMouseUp={this.onMouseUp}
-                onClick={this.onClick}
             >
                 <input
                     type={type}
