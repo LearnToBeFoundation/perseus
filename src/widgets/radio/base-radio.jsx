@@ -282,12 +282,11 @@ const BaseRadio = createReactClass({
                 gap: "16px !important",
                 listStyle: "none !important",
                 padding: "0 !important",
-                margin: "0 auto !important",
-                // Override flexbox centering for grid layout
-                flexDirection: "unset !important",
-                alignItems: "unset !important",
+                margin: "0 !important",
                 width: "100% !important",
-                maxWidth: "600px !important",
+                border: "none !important",
+                borderTop: "none !important",
+                borderBottom: "none !important",
                 [mediaQueries.smOrSmaller]: {
                     gridTemplateColumns: "1fr !important",
                 },
@@ -297,33 +296,18 @@ const BaseRadio = createReactClass({
                 minHeight: "60px",
             },
 
-            // Horizontal layout centering
+            // Horizontal layout - remove borders only
             enhancedHorizontalContainer: {
                 border: "none !important",
                 borderTop: "none !important",
                 borderBottom: "none !important",
-                // Center horizontal choices
-                display: "flex !important",
-                flexDirection: "row !important",
-                justifyContent: "center !important",
-                alignItems: "center !important",
-                flexWrap: "wrap !important",
-                width: "100% !important",
-                margin: "0 auto !important",
             },
 
-            // Enhanced UI overrides to remove borders and center content
+            // Enhanced UI overrides to remove borders only
             enhancedRadioContainer: {
                 border: "none !important",
                 borderTop: "none !important",
                 borderBottom: "none !important",
-                // Center the choices
-                display: "flex !important",
-                flexDirection: "column !important",
-                alignItems: "center !important",
-                width: "100% !important",
-                maxWidth: "600px !important",
-                margin: "0 auto !important",
             },
 
             // Remove all borders from list items in enhanced UI
@@ -467,9 +451,8 @@ const BaseRadio = createReactClass({
                 // SAT doesn't use the "responsive styling" as it conflicts
                 // with their custom theming.
                 !sat && styles.responsiveRadioContainer,
-                // Enhanced UI overrides to remove borders and center
-                (this.props.layout === 'vertical' || !this.props.layout) && styles.enhancedRadioContainer,
-                this.props.layout === 'horizontal' && styles.enhancedHorizontalContainer,
+                // Enhanced UI overrides to remove borders
+                styles.enhancedRadioContainer,
                 // Grid layout styles - apply to the ul element
                 this.props.layout === 'grid-2x2' && styles.gridContainer,
                 !sat &&
