@@ -139,13 +139,16 @@ const EnhancedChoice = createReactClass({
             `enhanced-choice-${choiceState}`,
             css(
                 styles.choice,
-                styles[`choice${choiceState.charAt(0).toUpperCase() + choiceState.slice(1)}`],
-                isHovered && !disabled && styles.choiceHovered,
+                // Apply hover styles only if NOT selected
+                isHovered && !disabled && !checked && styles.choiceHovered,
                 isFocused && styles.choiceFocused,
                 isPressed && !disabled && styles.choicePressed,
                 disabled && styles.choiceDisabled,
                 layout === 'horizontal' && styles.choiceHorizontal,
-                layout === 'grid-2x2' && styles.choiceGrid
+                layout === 'grid-2x2' && styles.choiceGrid,
+                // Apply selected styles last so they take priority
+                checked && styles.choiceSelected,
+                styles[`choice${choiceState.charAt(0).toUpperCase() + choiceState.slice(1)}`]
             )
         );
 
@@ -224,8 +227,14 @@ const styles = StyleSheet.create({
     },
 
     choiceSelected: {
-        borderColor: "#2563EB",
-        backgroundColor: "#DBEAFE",
+        borderColor: "#2563EB !important",
+        backgroundColor: "#DBEAFE !important",
+
+        // Ensure selected state is maintained even on hover
+        ":hover": {
+            borderColor: "#2563EB !important",
+            backgroundColor: "#DBEAFE !important",
+        },
     },
 
     choiceCorrect: {
