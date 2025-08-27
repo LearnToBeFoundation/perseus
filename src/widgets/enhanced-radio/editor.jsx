@@ -234,12 +234,39 @@ const EnhancedRadioEditor = createReactClass({
     },
 
     onContentChange: function(choiceIndex, newProps) {
-        const choices = this.props.choices.slice();
-        choices[choiceIndex] = _.extend({}, choices[choiceIndex], {
-            content: newProps.content,
-            widgets: newProps.widgets,
-            images: newProps.images,
+        console.log('🔄 Enhanced Radio Editor - onContentChange START:', {
+            choiceIndex,
+            'newProps.content': newProps.content,
+            'newProps.widgets': newProps.widgets,
+            'newProps.images': newProps.images,
+            'oldChoice.content': this.props.choices[choiceIndex]?.content,
+            'oldChoice.widgets': this.props.choices[choiceIndex]?.widgets,
+            widgetKeysOld: Object.keys(this.props.choices[choiceIndex]?.widgets || {}),
+            widgetKeysNew: Object.keys(newProps.widgets || {}),
+            hasWidgetsOld: Object.keys(this.props.choices[choiceIndex]?.widgets || {}).length > 0,
+            hasWidgetsNew: Object.keys(newProps.widgets || {}).length > 0
         });
+
+        const choices = this.props.choices.slice();
+        const oldChoice = choices[choiceIndex];
+        const newChoice = _.extend({}, oldChoice, {
+            // Only update content if it's not undefined
+            content: newProps.content !== undefined ? newProps.content : oldChoice.content,
+            // Only update widgets if it's not undefined
+            widgets: newProps.widgets !== undefined ? newProps.widgets : oldChoice.widgets,
+            // Only update images if it's not undefined
+            images: newProps.images !== undefined ? newProps.images : oldChoice.images,
+        });
+        choices[choiceIndex] = newChoice;
+
+        console.log('🔄 Enhanced Radio Editor - onContentChange END:', {
+            'oldChoice': oldChoice,
+            'newChoice': newChoice,
+            'contentChanged': oldChoice.content !== newChoice.content,
+            'widgetsChanged': JSON.stringify(oldChoice.widgets) !== JSON.stringify(newChoice.widgets),
+            'allChoices': choices.map(c => ({content: c.content, widgetKeys: Object.keys(c.widgets || {})}))
+        });
+
         this.props.onChange({choices: choices});
     },
 

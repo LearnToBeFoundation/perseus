@@ -74,7 +74,7 @@ const EnhancedRadio = createReactClass({
         this.props.onChange({selectedChoices});
     },
 
-    _renderRenderer: function(content, widgets = {}, images = {}) {
+    _renderRenderer: function(content, widgets = {}, images = {}, refName = "renderer") {
         if (!content) {
             return null;
         }
@@ -82,18 +82,24 @@ const EnhancedRadio = createReactClass({
         // Follow the same pattern as hints - just pass everything to Renderer
         return (
             <Renderer
-                ref="renderer"
+                ref={refName}
                 content={content || ""}
                 widgets={widgets || {}}
                 images={images || {}}
                 apiOptions={this.props.apiOptions}
-                findExternalWidgets={this.props.findExternalWidgets}
+                findExternalWidgets={this.props.findWidgets}
                 linterContext={this.props.linterContext}
             />
         );
     },
 
     render: function() {
+        console.log('Enhanced Radio render - props:', {
+            choices: this.props.choices,
+            choicesLength: this.props.choices ? this.props.choices.length : 0,
+            firstChoice: this.props.choices ? this.props.choices[0] : null
+        });
+
         const choices = this.props.choices.map((choice, i) => {
             const selected = this.state.selectedChoices[i];
             const rationaleShown = choice.clue && selected;
@@ -103,11 +109,17 @@ const EnhancedRadio = createReactClass({
                 content: this._renderRenderer(
                     choice.content,
                     choice.widgets,
-                    choice.images
+                    choice.images,
+                    `choice-renderer-${i}`
                 ),
                 checked: selected,
                 correct: choice.correct,
-                rationale: this._renderRenderer(choice.clue),
+                rationale: this._renderRenderer(
+                    choice.clue,
+                    {},
+                    {},
+                    `clue-renderer-${i}`
+                ),
                 showRationale: rationaleShown,
                 showCorrectness: correctnessShown,
                 originalIndex: choice.originalIndex,
@@ -121,7 +133,7 @@ const EnhancedRadio = createReactClass({
                 multipleSelect={this.props.multipleSelect}
                 numCorrect={this.props.numCorrect}
                 choices={choices}
-                onChange={this.updateChoices}
+                onChange={(selectedChoices) => this.updateChoices(selectedChoices)}
                 reviewModeRubric={this.props.reviewModeRubric}
                 apiOptions={this.props.apiOptions}
             />
@@ -162,6 +174,30 @@ const EnhancedRadio = createReactClass({
                 message: null,
             };
         }
+    },
+
+    /**
+     * Expose nested widgets to Perseus widget discovery system.
+     * This allows nested widgets to be found for editing and interaction.
+     */
+    findWidgets: function(filterCriterion) {
+        // Collect all widgets from all choice renderers
+        const widgets = [];
+
+        // Get widgets from each choice's content renderer
+        this.props.choices.forEach((choice, i) => {
+            const choiceRenderer = this.refs[`choice-renderer-${i}`];
+            if (choiceRenderer && choiceRenderer.findInternalWidgets) {
+                widgets.push(...choiceRenderer.findInternalWidgets(filterCriterion));
+            }
+
+            const clueRenderer = this.refs[`clue-renderer-${i}`];
+            if (clueRenderer && clueRenderer.findInternalWidgets) {
+                widgets.push(...clueRenderer.findInternalWidgets(filterCriterion));
+            }
+        });
+
+        return widgets;
     },
 });
 

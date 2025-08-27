@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var perseus = require('./perseus-09b631a8.js');
+var perseus = require('./perseus-06878a94.js');
 require('react-addons-pure-render-mixin');
 require('jquery');
 require('react');
