@@ -277,16 +277,26 @@ const BaseRadio = createReactClass({
 
             // Grid layout styles for 2x2 grid
             gridContainer: {
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "16px",
+                display: "grid !important",
+                gridTemplateColumns: "1fr 1fr !important",
+                gap: "16px !important",
+                listStyle: "none !important",
+                padding: "0 !important",
+                margin: "0 !important",
                 [mediaQueries.smOrSmaller]: {
-                    gridTemplateColumns: "1fr",
+                    gridTemplateColumns: "1fr !important",
                 },
             },
 
             gridItem: {
                 minHeight: "60px",
+            },
+
+            // Enhanced UI overrides to remove borders
+            enhancedRadioContainer: {
+                border: "none !important",
+                borderTop: "none !important",
+                borderBottom: "none !important",
             },
         }),
     },
@@ -408,7 +418,9 @@ const BaseRadio = createReactClass({
                 // SAT doesn't use the "responsive styling" as it conflicts
                 // with their custom theming.
                 !sat && styles.responsiveRadioContainer,
-                // Grid layout styles
+                // Enhanced UI overrides to remove borders
+                styles.enhancedRadioContainer,
+                // Grid layout styles - apply to the ul element
                 this.props.layout === 'grid-2x2' && styles.gridContainer,
                 !sat &&
                     firstChoiceHighlighted &&
