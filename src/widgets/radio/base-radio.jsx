@@ -298,6 +298,25 @@ const BaseRadio = createReactClass({
                 borderTop: "none !important",
                 borderBottom: "none !important",
             },
+
+            // Remove all borders from list items in enhanced UI
+            enhancedListItem: {
+                border: "none !important",
+                borderTop: "none !important",
+                borderBottom: "none !important",
+                borderLeft: "none !important",
+                borderRight: "none !important",
+
+                ":not(:last-child)": {
+                    border: "none !important",
+                    borderBottom: "none !important",
+                },
+
+                ":first-child": {
+                    border: "none !important",
+                    borderTop: "none !important",
+                },
+            },
         }),
     },
 
@@ -560,7 +579,11 @@ const BaseRadio = createReactClass({
                             reviewMode &&
                                 !rubric.choices[i].correct &&
                                 ApiClassNames.INCORRECT,
-                            css(this.props.layout === 'grid-2x2' && styles.gridItem)
+                            css(
+                                this.props.layout === 'grid-2x2' && styles.gridItem,
+                                // Remove all borders for enhanced UI
+                                styles.enhancedListItem
+                            )
                         );
 
                         // In edit mode, the Choice renders a Div in order to
