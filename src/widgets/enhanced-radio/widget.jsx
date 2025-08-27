@@ -3,6 +3,7 @@ import _rendererJsx from "../../renderer.jsx";
 import _underscore from "underscore";
 import _react from "react";
 import PropTypes from "prop-types";
+import createReactClass from "create-react-class";
 
 var _module_ = {
     exports: {}
@@ -12,14 +13,19 @@ var exports = _module_.exports;
 
 const _ = _underscore;
 const React = _react;
-const createReactClass = React.createClass;
 
 const BaseEnhancedRadio = _baseEnhancedRadioJsx;
 const Renderer = _rendererJsx;
 
 const EnhancedRadio = createReactClass({
     propTypes: {
-        apiOptions: BaseEnhancedRadio.propTypes.apiOptions,
+        apiOptions: PropTypes.shape({
+            readOnly: PropTypes.bool,
+            isMobile: PropTypes.bool,
+            styling: PropTypes.shape({
+                primaryProductColor: PropTypes.string,
+            }),
+        }),
         choices: PropTypes.arrayOf(
             PropTypes.shape({
                 content: PropTypes.string,

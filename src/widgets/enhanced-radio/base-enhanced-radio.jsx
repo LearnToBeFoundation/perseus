@@ -8,6 +8,7 @@ import _react from "react";
 import _underscore from "underscore";
 import { StyleSheet, css } from "aphrodite";
 import PropTypes from "prop-types";
+import createReactClass from "create-react-class";
 
 var _module_ = {
     exports: {}
@@ -17,7 +18,6 @@ var exports = _module_.exports;
 
 const _ = _underscore;
 const React = _react;
-const createReactClass = React.createClass;
 const classNames = _classnames;
 
 const sharedStyles = _stylesSharedJs;

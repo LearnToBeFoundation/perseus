@@ -16,6 +16,12 @@
   ],
   "license": "MIT",
   "main": "perseus.js",
+  "exports": {
+    ".": "./perseus.js",
+    "./editor-perseus.js": "./editor-perseus.js",
+    "./perseus.js": "./perseus.js",
+    "./perseus.css": "./perseus.css"
+  },
   "scripts": {
     "start": "react-scripts start",
     "prebuild": "lessc stylesheets/exercise-content-package/perseus.less > src/lib/perseus.css",
