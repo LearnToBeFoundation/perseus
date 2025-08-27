@@ -471,6 +471,7 @@ const BaseRadio = createReactClass({
                                 this.updateChoice(i, newValues);
                             },
                             horizontalChoices: this.props.horizontalChoices,
+                            enhancedUI: true, // Enable enhanced UI for all choices
                         };
 
                         if (choice.isNoneOfTheAbove) {

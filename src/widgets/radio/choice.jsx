@@ -87,6 +87,8 @@ const Choice = createReactClass({
         // this choice.
         onChange: PropTypes.func,
         horizontalChoices: PropTypes.bool,
+        // Enable enhanced UI styling
+        enhancedUI: PropTypes.bool,
     },
 
     statics: {
@@ -237,6 +239,72 @@ const Choice = createReactClass({
                 alignSelf: "center",
                 width: 100,
             },
+
+            // Enhanced UI styles
+            enhancedChoice: {
+                display: "flex",
+                alignItems: "center",
+                padding: "16px",
+                border: "2px solid #e5e5e5",
+                borderRadius: "12px",
+                backgroundColor: "#ffffff",
+                cursor: "pointer",
+                transition: "all 0.2s ease-in-out",
+                position: "relative",
+                minHeight: "60px",
+                marginBottom: "8px",
+
+                ":hover": {
+                    transform: "translateY(-1px)",
+                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                },
+            },
+
+            enhancedChoiceHovered: {
+                borderColor: "#2563EB",
+                backgroundColor: "#ffffff",
+            },
+
+            enhancedChoiceFocused: {
+                outline: "2px solid #2563EB",
+                outlineOffset: "2px",
+            },
+
+            enhancedChoicePressed: {
+                transform: "translateY(0px)",
+                boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
+            },
+
+            enhancedChoiceSelected: {
+                borderColor: "#2563EB !important",
+                backgroundColor: "#DBEAFE !important",
+
+                // Ensure selected state is maintained even on hover
+                ":hover": {
+                    borderColor: "#2563EB !important",
+                    backgroundColor: "#DBEAFE !important",
+                },
+            },
+
+            enhancedChoiceCorrect: {
+                borderColor: "#10B981 !important",
+                backgroundColor: "#D1FAE5 !important",
+            },
+
+            enhancedChoiceIncorrect: {
+                borderColor: "#EF4444 !important",
+                backgroundColor: "#FEE2E2 !important",
+            },
+
+            enhancedChoiceContent: {
+                flex: 1,
+                marginLeft: "12px",
+            },
+
+            enhancedInput: {
+                margin: 0,
+                flexShrink: 0,
+            },
         }),
     },
 
@@ -250,6 +318,7 @@ const Choice = createReactClass({
             type: "radio",
             pos: 0,
             horizontalChoices: false,
+            enhancedUI: true, // Enable enhanced UI by default
         };
     },
 
@@ -257,6 +326,9 @@ const Choice = createReactClass({
         return {
             isInputFocused: false,
             isInputActive: false,
+            // Enhanced UI states
+            isHovered: false,
+            isPressed: false,
         };
     },
 
@@ -335,6 +407,99 @@ const Choice = createReactClass({
         this._input = ref;
     },
 
+    // Enhanced UI event handlers
+    onMouseEnter: function() {
+        if (!this.props.disabled) {
+            this.setState({isHovered: true});
+        }
+    },
+
+    onMouseLeave: function() {
+        this.setState({isHovered: false, isPressed: false});
+    },
+
+    onMouseDown: function() {
+        if (!this.props.disabled) {
+            this.setState({isPressed: true});
+        }
+    },
+
+    onMouseUp: function() {
+        this.setState({isPressed: false});
+    },
+
+    // Helper method to render enhanced UI
+    renderEnhancedChoice: function() {
+        const styles = Choice.styles;
+        const {isHovered, isPressed} = this.state;
+        const {checked, correct, reviewMode, showCorrectness, disabled} = this.props;
+
+        // Determine the choice state for styling
+        let choiceState = 'default';
+        if (reviewMode && showCorrectness) {
+            if (checked && correct) {
+                choiceState = 'correct';
+            } else if (checked && !correct) {
+                choiceState = 'incorrect';
+            }
+        } else if (checked) {
+            choiceState = 'selected';
+        }
+
+        const choiceClassName = classNames(
+            "enhanced-choice",
+            `enhanced-choice-${choiceState}`,
+            css(
+                styles.enhancedChoice,
+                // Apply hover styles only if NOT selected
+                isHovered && !disabled && !checked && styles.enhancedChoiceHovered,
+                this.state.isInputFocused && styles.enhancedChoiceFocused,
+                isPressed && !disabled && styles.enhancedChoicePressed,
+                disabled && styles.choiceDisabled,
+                // Apply selected styles last so they take priority
+                checked && styles.enhancedChoiceSelected,
+                choiceState === 'correct' && styles.enhancedChoiceCorrect,
+                choiceState === 'incorrect' && styles.enhancedChoiceIncorrect
+            )
+        );
+
+        const inputId = `${this.props.groupName}-choice-${this.props.pos}`;
+
+        return (
+            <label
+                htmlFor={inputId}
+                className={choiceClassName}
+                onMouseEnter={this.onMouseEnter}
+                onMouseLeave={this.onMouseLeave}
+                onMouseDown={this.onMouseDown}
+                onMouseUp={this.onMouseUp}
+            >
+                <input
+                    type={this.props.type}
+                    id={inputId}
+                    name={this.props.groupName}
+                    checked={this.props.checked}
+                    disabled={this.props.disabled}
+                    onChange={this.onInputChange}
+                    onFocus={this.onInputFocus}
+                    onBlur={this.onInputBlur}
+                    className={css(styles.enhancedInput)}
+                    ref={this.inputRef}
+                />
+
+                <div className={css(styles.enhancedChoiceContent)}>
+                    {this.props.content}
+
+                    {this.props.showRationale && this.props.rationale && (
+                        <div className={css(styles.rationale)}>
+                            {this.props.rationale}
+                        </div>
+                    )}
+                </div>
+            </label>
+        );
+    },
+
     renderOptionStatus() {
         const {correct, checked, reviewMode} = this.props;
         // Option status is shown only in review mode, and excluded for SAT
@@ -409,6 +574,11 @@ const Choice = createReactClass({
     },
 
     render: function() {
+        // Use enhanced UI if enabled
+        if (this.props.enhancedUI) {
+            return this.renderEnhancedChoice();
+        }
+
         const styles = Choice.styles;
         const sat = this.props.apiOptions.satStyling;
         const isMobile = this.props.apiOptions.isMobile;
