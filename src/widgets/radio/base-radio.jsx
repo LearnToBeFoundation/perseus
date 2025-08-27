@@ -111,6 +111,7 @@ const BaseRadio = createReactClass({
         numCorrect: PropTypes.number,
         multipleSelect: PropTypes.bool,
         horizontalChoices: PropTypes.bool,
+        layout: PropTypes.oneOf(['vertical', 'horizontal', 'grid-2x2']),
         reviewModeRubric: PropTypes.shape({
             choices: ChoicesType,
         }),
@@ -273,6 +274,20 @@ const BaseRadio = createReactClass({
             responsiveFieldset: {
                 paddingRight: styleConstants.phoneMargin,
             },
+
+            // Grid layout styles for 2x2 grid
+            gridContainer: {
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "16px",
+                [mediaQueries.smOrSmaller]: {
+                    gridTemplateColumns: "1fr",
+                },
+            },
+
+            gridItem: {
+                minHeight: "60px",
+            },
         }),
     },
 
@@ -355,6 +370,21 @@ const BaseRadio = createReactClass({
         return this.props.apiOptions.isMobile || this.props.deselectEnabled;
     },
 
+    // Helper method to get layout classes
+    getLayoutClasses: function() {
+        const layout = this.props.layout || (this.props.horizontalChoices ? 'horizontal' : 'vertical');
+
+        switch (layout) {
+            case 'horizontal':
+                return 'perseus-widget-radio-horizontal';
+            case 'grid-2x2':
+                return 'perseus-widget-radio-grid-2x2';
+            case 'vertical':
+            default:
+                return '';
+        }
+    },
+
     render: function() {
         const inputType = this.props.multipleSelect ? "checkbox" : "radio";
         const rubric = this.props.reviewModeRubric;
@@ -372,12 +402,14 @@ const BaseRadio = createReactClass({
         const className = classNames(
             "perseus-widget-radio",
             !this.props.editMode && "perseus-rendered-radio",
-            this.props.horizontalChoices && "perseus-widget-radio-horizontal",
+            this.getLayoutClasses(),
             css(
                 styles.radio,
                 // SAT doesn't use the "responsive styling" as it conflicts
                 // with their custom theming.
                 !sat && styles.responsiveRadioContainer,
+                // Grid layout styles
+                this.props.layout === 'grid-2x2' && styles.gridContainer,
                 !sat &&
                     firstChoiceHighlighted &&
                     isMobile &&
@@ -514,7 +546,8 @@ const BaseRadio = createReactClass({
                                 ApiClassNames.CORRECT,
                             reviewMode &&
                                 !rubric.choices[i].correct &&
-                                ApiClassNames.INCORRECT
+                                ApiClassNames.INCORRECT,
+                            css(this.props.layout === 'grid-2x2' && styles.gridItem)
                         );
 
                         // In edit mode, the Choice renders a Div in order to
