@@ -91,6 +91,7 @@ const EnhancedRadio = createReactClass({
                 content={content}
                 widgets={widgets || {}}
                 images={images || {}}
+                apiOptions={this.props.apiOptions}
                 findExternalWidgets={this.props.findWidgets}
                 alwaysUpdate={true}
                 linterContext={this.props.linterContext}

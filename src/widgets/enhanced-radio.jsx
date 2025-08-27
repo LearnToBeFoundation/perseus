@@ -81,6 +81,17 @@ _module_.exports = {
     version: {major: 1, minor: 0},
     propUpgrades: propUpgrades,
     isLintable: true,
+
+    // This function allows Perseus to discover and manage nested widgets
+    traverseChildWidgets: function(props, traverseRenderer) {
+        return _.extend({}, props, {
+            choices: _.map(props.choices, (choice) => {
+                return _.extend({}, choice, {
+                    content: traverseRenderer(choice.content, choice.widgets, choice.images),
+                });
+            }),
+        });
+    },
 };
 
 export default _module_.exports;
