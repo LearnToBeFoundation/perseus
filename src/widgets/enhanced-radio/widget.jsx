@@ -79,21 +79,15 @@ const EnhancedRadio = createReactClass({
             return null;
         }
 
-        // If content is just a string, render it directly
-        if (typeof content === 'string' && !widgets) {
-            return content;
-        }
-
-        // Use Renderer for complex content with potential widgets
+        // Follow the same pattern as hints - just pass everything to Renderer
         return (
             <Renderer
-                key="choiceContentRenderer"
-                content={content}
+                ref="renderer"
+                content={content || ""}
                 widgets={widgets || {}}
                 images={images || {}}
                 apiOptions={this.props.apiOptions}
-                findExternalWidgets={this.props.findWidgets}
-                alwaysUpdate={true}
+                findExternalWidgets={this.props.findExternalWidgets}
                 linterContext={this.props.linterContext}
             />
         );
@@ -107,8 +101,8 @@ const EnhancedRadio = createReactClass({
 
             return {
                 content: this._renderRenderer(
-                    choice.content, 
-                    choice.widgets, 
+                    choice.content,
+                    choice.widgets,
                     choice.images
                 ),
                 checked: selected,
