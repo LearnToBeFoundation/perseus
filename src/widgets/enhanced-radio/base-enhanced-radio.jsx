@@ -80,13 +80,7 @@ const BaseEnhancedRadio = createReactClass({
         this.props.onChange(selectedChoices);
     },
 
-    getInstructionsText: function() {
-        if (this.props.multipleSelect) {
-            return `Select all that apply (${this.props.numCorrect} correct)`;
-        } else {
-            return "Select one answer";
-        }
-    },
+
 
     render: function() {
         const isMobile = this.props.apiOptions.isMobile;
@@ -104,22 +98,12 @@ const BaseEnhancedRadio = createReactClass({
             )
         );
 
-        const instructionsClassName = classNames(
-            "instructions",
-            css(styles.instructions, isMobile && styles.instructionsMobile)
-        );
-
-        const instructions = this.getInstructionsText();
-
         return (
             <div className={css(styles.responsiveContainer)}>
                 <fieldset className="perseus-widget-enhanced-radio-fieldset">
                     <legend className="perseus-sr-only">
-                        {instructions}
+                        Enhanced Multiple Choice
                     </legend>
-                    <div className={instructionsClassName}>
-                        {instructions}
-                    </div>
                     <ul className={containerClassName}>
                         {this.props.choices.map((choice, i) => {
                             const elementProps = {

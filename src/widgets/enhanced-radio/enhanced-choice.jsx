@@ -101,8 +101,8 @@ const EnhancedChoice = createReactClass({
     },
 
     onClick: function() {
-        if (!this.props.disabled && this.props.type === 'radio') {
-            // For radio buttons, toggle the selection
+        if (!this.props.disabled) {
+            // Toggle the selection for both radio and checkbox
             this.props.onChange({
                 checked: !this.props.checked,
             });
@@ -199,7 +199,8 @@ const EnhancedChoice = createReactClass({
 const styles = StyleSheet.create({
     choice: {
         display: "flex",
-        alignItems: "flex-start",
+        alignItems: "center",
+        justifyContent: "center",
         padding: "16px",
         border: "2px solid #e5e5e5",
         borderRadius: "12px",
@@ -208,7 +209,7 @@ const styles = StyleSheet.create({
         transition: "all 0.2s ease-in-out",
         position: "relative",
         minHeight: "60px",
-        
+
         ":hover": {
             transform: "translateY(-1px)",
             boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
@@ -217,7 +218,7 @@ const styles = StyleSheet.create({
 
     choiceHovered: {
         borderColor: "#2563EB",
-        backgroundColor: "#DBEAFE",
+        backgroundColor: "#ffffff",
     },
 
     choiceFocused: {
@@ -286,7 +287,9 @@ const styles = StyleSheet.create({
         lineHeight: "1.4",
         color: "#333333",
         wordWrap: "break-word",
-        
+        textAlign: "center",
+        width: "100%",
+
         [mediaQueries.smOrSmaller]: {
             fontSize: "14px",
         },
