@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var perseus = require('./perseus-6a8351a7.js');
+var perseus = require('./perseus-9a5ee0f4.js');
 var aphrodite = require('aphrodite');
 var _react = require('react');
 var _underscore = require('underscore');
