@@ -253,9 +253,12 @@ const Choice = createReactClass({
                 position: "relative",
                 minHeight: "60px",
                 marginBottom: "8px",
+                // Add extra margin to prevent visual artifacts
+                marginTop: "4px",
 
                 ":hover": {
-                    transform: "translateY(-1px)",
+                    // Remove transform to prevent visual artifacts
+                    // transform: "translateY(-1px)",
                     boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
                 },
             },
