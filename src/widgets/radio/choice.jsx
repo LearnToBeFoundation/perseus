@@ -244,6 +244,7 @@ const Choice = createReactClass({
             enhancedChoice: {
                 display: "flex",
                 alignItems: "center",
+                justifyContent: "center", // Center content horizontally
                 padding: "16px",
                 border: "2px solid #e5e5e5",
                 borderRadius: "12px",
@@ -301,7 +302,13 @@ const Choice = createReactClass({
 
             enhancedChoiceContent: {
                 flex: 1,
-                marginLeft: "12px",
+                // Remove left margin that pushes content to the right
+                marginLeft: "0px",
+                // Center the content inside the choice box
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                textAlign: "center",
             },
 
             enhancedChoiceHorizontal: {
