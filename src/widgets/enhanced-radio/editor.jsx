@@ -4,6 +4,7 @@ import _componentsInfoTipJsx from "../../components/info-tip.jsx";
 import _componentsInlineIconJsx from "../../components/inline-icon.jsx";
 import { iconTrash, iconPlus } from "../../icon-paths.js";
 import _mixinsChangeableJsx from "../../mixins/changeable.jsx";
+import _mixinsEditorJsonifyJsx from "../../mixins/editor-jsonify.jsx";
 import _perseusApiJsx from "../../perseus-api.jsx";
 import _underscore from "underscore";
 import _react from "react";
@@ -24,6 +25,7 @@ const Editor = _editorJsx;
 const InfoTip = _componentsInfoTipJsx;
 const InlineIcon = _componentsInlineIconJsx;
 const Changeable = _mixinsChangeableJsx;
+const EditorJsonify = _mixinsEditorJsonifyJsx;
 
 const ChoiceEditor = createReactClass({
     propTypes: {
@@ -293,6 +295,10 @@ const EnhancedRadioEditor = createReactClass({
         }
 
         return issues;
+    },
+
+    serialize: function() {
+        return EditorJsonify.serialize.call(this);
     },
 });
 

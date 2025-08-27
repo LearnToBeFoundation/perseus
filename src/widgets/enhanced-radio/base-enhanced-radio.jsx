@@ -159,6 +159,12 @@ const BaseEnhancedRadio = createReactClass({
             </div>
         );
     },
+
+    serialize: function() {
+        return {
+            selectedChoices: this.props.choices.map(choice => choice.checked || false),
+        };
+    },
 });
 
 const styles = StyleSheet.create({
