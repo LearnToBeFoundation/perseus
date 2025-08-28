@@ -1,0 +1,211 @@
+@import "../util.less";
+
+.perseus-widget-enhanced-radio {
+    &.perseus-enhanced-radio-vertical {
+        .enhanced-choice {
+            margin-bottom: 12px;
+            
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    &.perseus-enhanced-radio-horizontal {
+        .enhanced-choice {
+            margin-right: 16px;
+            margin-bottom: 12px;
+            
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+
+    &.perseus-enhanced-radio-grid-2x2 {
+        .enhanced-choice {
+            margin-bottom: 16px;
+        }
+    }
+
+    .enhanced-choice {
+        // Ensure text content within choices displays properly
+        div,
+        div > p {
+            display: block;
+        }
+
+        // Handle images and tables within choices
+        img, table {
+            display: inline-block;
+            vertical-align: middle;
+            max-width: 100%;
+        }
+
+        table {
+            border: 1px solid #ccc;
+        }
+
+        // Handle SVG images
+        .unresponsive-svg-image div, .svg-image div {
+            display: block;
+        }
+
+        // Rationale styling
+        .perseus-enhanced-radio-rationale-content {
+            .perseus-renderer {
+                .paragraph {
+                    display: table;
+                    margin: 0;
+
+                    &:not(:last-child) {
+                        margin-bottom: 8px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.perseus-widget-enhanced-radio-editor {
+    .perseus-widget-enhanced-radio-options {
+        background-color: #f7f7f7;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 16px;
+        margin-bottom: 20px;
+
+        .perseus-widget-row {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            label {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-weight: 500;
+            }
+
+            select {
+                padding: 4px 8px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                background-color: white;
+            }
+
+            input[type="checkbox"] {
+                margin: 0;
+            }
+        }
+    }
+
+    .perseus-widget-enhanced-radio-choice-editor {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 16px;
+        margin-bottom: 12px;
+        background-color: white;
+
+        .perseus-widget-enhanced-radio-choice-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+
+            label {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-weight: 500;
+
+                input[type="checkbox"] {
+                    margin: 0;
+                }
+
+                .choice-correctness {
+                    &.correct {
+                        color: #2563EB;
+                    }
+
+                    &.incorrect {
+                        color: #666;
+                    }
+                }
+            }
+
+            .delete-choice {
+                padding: 6px 12px;
+                font-size: 12px;
+                
+                .inline-icon {
+                    width: 12px;
+                    height: 12px;
+                }
+            }
+        }
+
+        .perseus-widget-enhanced-radio-clue-container {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #eee;
+
+            label {
+                display: block;
+                font-weight: 500;
+                margin-bottom: 8px;
+                color: #666;
+                font-size: 14px;
+            }
+        }
+    }
+
+    .perseus-widget-enhanced-radio-add-choice {
+        text-align: center;
+        margin-top: 16px;
+
+        .simple-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            
+            .inline-icon {
+                width: 14px;
+                height: 14px;
+            }
+        }
+    }
+}
+
+// Mobile responsive adjustments
+@media (max-width: 480px) {
+    .perseus-widget-enhanced-radio {
+        &.perseus-enhanced-radio-horizontal {
+            // Stack horizontally on mobile
+            flex-direction: column;
+            
+            .enhanced-choice {
+                margin-right: 0;
+                margin-bottom: 12px;
+            }
+        }
+
+        &.perseus-enhanced-radio-grid-2x2 {
+            // Single column on mobile
+            grid-template-columns: 1fr !important;
+        }
+    }
+
+    .perseus-widget-enhanced-radio-editor {
+        .perseus-widget-enhanced-radio-choice-container {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+        }
+    }
+}

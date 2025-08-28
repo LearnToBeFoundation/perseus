@@ -41,20 +41,7 @@ const defaultBackgroundImage = {
     height: 0,
 };
 
-// Match any image URL (including "web+graphie" links) that is hosted by KA.
-// We're somewhat generous in our AWS URL matching
-// ("ka-<something>.s3.amazonaws.com") so that we don't have to update Perseus
-// every time we add a new proxied AWS bucket.
-const INTERNALLY_HOSTED_DOMAINS =
-    "(" +
-    "ka-.*.s3.amazonaws.com|" +
-    "(fastly|cdn).kastatic.org|" +
-    "khanacademy.org|" +
-    "kasandbox.org" +
-    ")";
-const INTERNALLY_HOSTED_URL_RE = new RegExp(
-    "^(https?|web\\+graphie)://[^/]*" + INTERNALLY_HOSTED_DOMAINS
-);
+// Domain restrictions removed - allow any image URL
 
 /**
  * Alignment option for captions, relative to specified coordinates.
@@ -284,18 +271,8 @@ const ImageEditor = createReactClass({
     // silently update url and sizes when the image loads
     // noisily load the image in response to the author changing it
     onUrlChange: function(url, silent) {
-        // All article content must be KA-owned!
-        if (!INTERNALLY_HOSTED_URL_RE.test(url)) {
-            this.setState({
-                backgroundImageError:
-                    "Images must be from sites hosted by Khan Academy. " +
-                    "Please input a Khan Academy-owned address, or use the " +
-                    "Add Image tool to rehost an existing image",
-            });
-            return;
-        } else {
-            this.setState({backgroundImageError: ""});
-        }
+        // Allow any valid image URL
+        this.setState({backgroundImageError: ""});
 
         // We update our background image prop after the image loads below. To
         // avoid weirdness when we change to a very slow URL, then a much

@@ -53,7 +53,9 @@ var ChoiceEditor = createReactClass({
                 ref={"content-editor"}
                 apiOptions={this.props.apiOptions}
                 content={this.props.choice.content || ""}
-                widgetEnabled={false}
+                widgets={this.props.choice.widgets || {}}
+                images={this.props.choice.images || {}}
+                widgetEnabled={true}
                 placeholder={placeholder}
                 disabled={
                     this.props.choice.isNoneOfTheAbove &&
@@ -68,7 +70,9 @@ var ChoiceEditor = createReactClass({
                 ref={"clue-editor"}
                 apiOptions={this.props.apiOptions}
                 content={this.props.choice.clue || ""}
-                widgetEnabled={false}
+                widgets={this.props.choice.clueWidgets || {}}
+                images={this.props.choice.clueImages || {}}
+                widgetEnabled={true}
                 placeholder={i18n._(`Why is this choice ${checkedClass}?`)}
                 onChange={this.props.onClueChange}
             />
@@ -137,6 +141,26 @@ var RadioEditor = createReactClass({
         };
     },
 
+    // Helper method to get current layout value
+    // Maps legacy horizontalChoices to new layout system for backward compatibility
+    getLayoutValue: function() {
+        // If we have a layout prop, use it
+        if (this.props.layout) {
+            return this.props.layout;
+        }
+        // Otherwise, map from legacy horizontalChoices
+        return this.props.horizontalChoices ? 'horizontal' : 'vertical';
+    },
+
+    // Handle layout changes and maintain backward compatibility
+    onLayoutChange: function(newLayout) {
+        this.props.onChange({
+            layout: newLayout,
+            // Also update horizontalChoices for backward compatibility
+            horizontalChoices: newLayout === 'horizontal'
+        });
+    },
+
     render: function() {
         var numCorrect = _.reduce(
             this.props.choices,
@@ -188,6 +212,20 @@ var RadioEditor = createReactClass({
                                 onChange={this.onCountChoicesChange}
                             />
                         </div>}
+
+                    <div className="perseus-widget-left-col">
+                        <label>
+                            Layout:
+                            <select
+                                value={this.getLayoutValue()}
+                                onChange={(e) => this.onLayoutChange(e.target.value)}
+                            >
+                                <option value="vertical">Vertical</option>
+                                <option value="horizontal">Horizontal</option>
+                                <option value="grid-2x2">2x2 Grid</option>
+                            </select>
+                        </label>
+                    </div>
                 </div>
 
                 <BaseRadio
@@ -197,6 +235,8 @@ var RadioEditor = createReactClass({
                     numCorrect={numCorrect}
                     editMode={true}
                     labelWrap={false}
+                    layout={this.getLayoutValue()}
+                    horizontalChoices={this.props.horizontalChoices}
                     apiOptions={this.props.apiOptions}
                     choices={this.props.choices.map(function(choice, i) {
                         return {
@@ -206,20 +246,10 @@ var RadioEditor = createReactClass({
                                     apiOptions={this.props.apiOptions}
                                     choice={choice}
                                     onContentChange={newProps => {
-                                        if ("content" in newProps) {
-                                            this.onContentChange(
-                                                i,
-                                                newProps.content
-                                            );
-                                        }
+                                        this.onContentChange(i, newProps);
                                     }}
                                     onClueChange={newProps => {
-                                        if ("content" in newProps) {
-                                            this.onClueChange(
-                                                i,
-                                                newProps.content
-                                            );
-                                        }
+                                        this.onClueChange(i, newProps);
                                     }}
                                     onDelete={this.onDelete.bind(this, i)}
                                     showDelete={this.props.choices.length >= 2}
@@ -312,20 +342,32 @@ var RadioEditor = createReactClass({
         this.props.onChange({choices: choices});
     },
 
-    onContentChange: function(choiceIndex, newContent) {
+    onContentChange: function(choiceIndex, newProps) {
         var choices = this.props.choices.slice();
-        choices[choiceIndex] = _.extend({}, choices[choiceIndex], {
-            content: newContent,
+        const oldChoice = choices[choiceIndex];
+        choices[choiceIndex] = _.extend({}, oldChoice, {
+            // Only update content if it's not undefined
+            content: newProps.content !== undefined ? newProps.content : oldChoice.content,
+            // Only update widgets if it's not undefined
+            widgets: newProps.widgets !== undefined ? newProps.widgets : oldChoice.widgets,
+            // Only update images if it's not undefined
+            images: newProps.images !== undefined ? newProps.images : oldChoice.images,
         });
         this.props.onChange({choices: choices});
     },
 
-    onClueChange: function(choiceIndex, newClue) {
+    onClueChange: function(choiceIndex, newProps) {
         var choices = this.props.choices.slice();
-        choices[choiceIndex] = _.extend({}, choices[choiceIndex], {
-            clue: newClue,
+        const oldChoice = choices[choiceIndex];
+        choices[choiceIndex] = _.extend({}, oldChoice, {
+            // Only update clue content if it's not undefined
+            clue: newProps.content !== undefined ? newProps.content : oldChoice.clue,
+            // Only update clue widgets if it's not undefined
+            clueWidgets: newProps.widgets !== undefined ? newProps.widgets : oldChoice.clueWidgets,
+            // Only update clue images if it's not undefined
+            clueImages: newProps.images !== undefined ? newProps.images : oldChoice.clueImages,
         });
-        if (newClue === "") {
+        if (choices[choiceIndex].clue === "") {
             delete choices[choiceIndex].clue;
         }
         this.props.onChange({choices: choices});
@@ -395,7 +437,8 @@ var RadioEditor = createReactClass({
             "displayCount",
             "hasNoneOfTheAbove",
             "deselectEnabled",
-            "horizontalChoices"
+            "horizontalChoices",
+            "layout"
         );
     },
 });

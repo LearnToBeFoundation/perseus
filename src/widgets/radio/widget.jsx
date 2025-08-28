@@ -34,6 +34,11 @@ const Radio = createReactClass({
                 correct: PropTypes.bool,
                 isNoneOfTheAbove: PropTypes.bool,
                 originalIndex: PropTypes.number.isRequired,
+                // New props for nested widgets support
+                widgets: PropTypes.object,
+                images: PropTypes.object,
+                clueWidgets: PropTypes.object,
+                clueImages: PropTypes.object,
             }).isRequired
         ).isRequired,
 
@@ -43,6 +48,7 @@ const Radio = createReactClass({
         multipleSelect: PropTypes.bool,
         countChoices: PropTypes.bool,
         horizontalChoices: PropTypes.bool,
+        layout: PropTypes.oneOf(['vertical', 'horizontal', 'grid-2x2']),
         numCorrect: PropTypes.number,
         onChange: PropTypes.func.isRequired,
 
@@ -85,11 +91,13 @@ const Radio = createReactClass({
         };
     },
 
-    _renderRenderer: function(content) {
-        content = content || "";
+    _renderRenderer: function(content, widgets = {}, images = {}, refName = "choiceContentRenderer") {
+        if (!content) {
+            return null;
+        }
 
         let nextPassageRefId = 1;
-        const widgets = {};
+        const passageRefWidgets = {};
 
         const modContent = content.replace(
             /\{\{passage-ref (\d+) (\d+)(?: "([^"]*)")?\}\}/g,
@@ -97,7 +105,7 @@ const Radio = createReactClass({
                 const widgetId = "passage-ref " + nextPassageRefId;
                 nextPassageRefId++;
 
-                widgets[widgetId] = {
+                passageRefWidgets[widgetId] = {
                     type: "passage-ref",
                     graded: false,
                     options: {
@@ -112,26 +120,31 @@ const Radio = createReactClass({
             }
         );
 
-        // alwaysUpdate={true} so that passage-refs findWidgets
-        // get called when the outer passage updates the renderer
-        // TODO(aria): This is really hacky
-        // We pass in a key here so that we avoid a semi-spurious
-        // react warning when the ChoiceNoneAbove renders a
-        // different renderer in the same place. Note this destroys
-        // state, but since all we're doing is outputting
-        // "None of the above", that is okay.
-        // TODO(mdr): Widgets inside this Renderer are not discoverable through
-        //     the parent Renderer's `findWidgets` function.
+        // Merge passage-ref widgets with provided widgets
+        const allWidgets = {...widgets, ...passageRefWidgets};
+
         return (
             <Renderer
-                key="choiceContentRenderer"
-                content={modContent}
-                widgets={widgets}
+                ref={refName}
+                content={modContent || ""}
+                widgets={allWidgets || {}}
+                images={images || {}}
+                apiOptions={this.props.apiOptions}
                 findExternalWidgets={this.props.findWidgets}
-                alwaysUpdate={true}
                 linterContext={this.props.linterContext}
             />
         );
+    },
+
+    // Helper method to get current layout value
+    // Maps legacy horizontalChoices to new layout system for backward compatibility
+    getLayoutValue: function() {
+        // If we have a layout prop, use it
+        if (this.props.layout) {
+            return this.props.layout;
+        }
+        // Otherwise, map from legacy horizontalChoices
+        return this.props.horizontalChoices ? 'horizontal' : 'vertical';
     },
 
     focus: function(i) {
@@ -390,7 +403,12 @@ const Radio = createReactClass({
                 this.props.reviewModeRubric.choices[i];
 
             return {
-                content: this._renderRenderer(content),
+                content: this._renderRenderer(
+                    content,
+                    choice.widgets,
+                    choice.images,
+                    `choice-renderer-${i}`
+                ),
                 checked: selected,
                 // Current versions of the radio widget always pass in the
                 // "correct" value through the choices. Old serialized state
@@ -408,7 +426,12 @@ const Radio = createReactClass({
                         : choice.correct,
                 disabled: readOnly,
                 hasRationale: !!choice.clue,
-                rationale: this._renderRenderer(choice.clue),
+                rationale: this._renderRenderer(
+                    choice.clue,
+                    choice.clueWidgets,
+                    choice.clueImages,
+                    `clue-renderer-${i}`
+                ),
                 showRationale: rationaleShown,
                 showCorrectness: correctnessShown,
                 isNoneOfTheAbove: choice.isNoneOfTheAbove,
@@ -426,6 +449,7 @@ const Radio = createReactClass({
                 multipleSelect={this.props.multipleSelect}
                 countChoices={this.props.countChoices}
                 horizontalChoices={this.props.horizontalChoices}
+                layout={this.getLayoutValue()}
                 numCorrect={this.props.numCorrect}
                 choices={choices}
                 onChange={this.updateChoices}
@@ -434,6 +458,30 @@ const Radio = createReactClass({
                 apiOptions={this.props.apiOptions}
             />
         );
+    },
+
+    /**
+     * Expose nested widgets to Perseus widget discovery system.
+     * This allows nested widgets to be found for editing and interaction.
+     */
+    findWidgets: function(filterCriterion) {
+        // Collect all widgets from all choice renderers
+        const widgets = [];
+
+        // Get widgets from each choice's content renderer
+        this.props.choices.forEach((choice, i) => {
+            const choiceRenderer = this.refs[`choice-renderer-${i}`];
+            if (choiceRenderer && choiceRenderer.findInternalWidgets) {
+                widgets.push(...choiceRenderer.findInternalWidgets(filterCriterion));
+            }
+
+            const clueRenderer = this.refs[`clue-renderer-${i}`];
+            if (clueRenderer && clueRenderer.findInternalWidgets) {
+                widgets.push(...clueRenderer.findInternalWidgets(filterCriterion));
+            }
+        });
+
+        return widgets;
     },
 });
 

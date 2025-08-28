@@ -111,6 +111,7 @@ const BaseRadio = createReactClass({
         numCorrect: PropTypes.number,
         multipleSelect: PropTypes.bool,
         horizontalChoices: PropTypes.bool,
+        layout: PropTypes.oneOf(['vertical', 'horizontal', 'grid-2x2']),
         reviewModeRubric: PropTypes.shape({
             choices: ChoicesType,
         }),
@@ -273,6 +274,63 @@ const BaseRadio = createReactClass({
             responsiveFieldset: {
                 paddingRight: styleConstants.phoneMargin,
             },
+
+            // Grid layout styles for 2x2 grid
+            gridContainer: {
+                display: "grid !important",
+                gridTemplateColumns: "1fr 1fr !important",
+                gap: "16px !important",
+                listStyle: "none !important",
+                padding: "0 !important",
+                margin: "0 !important",
+                width: "100% !important",
+                border: "none !important",
+                borderTop: "none !important",
+                borderBottom: "none !important",
+                [mediaQueries.smOrSmaller]: {
+                    gridTemplateColumns: "1fr !important",
+                },
+            },
+
+            gridItem: {
+                minHeight: "60px",
+            },
+
+            // Horizontal layout - remove borders only
+            enhancedHorizontalContainer: {
+                border: "none !important",
+                borderTop: "none !important",
+                borderBottom: "none !important",
+            },
+
+            // Enhanced UI overrides to remove borders only
+            enhancedRadioContainer: {
+                border: "none !important",
+                borderTop: "none !important",
+                borderBottom: "none !important",
+            },
+
+            // Remove all borders from list items in enhanced UI
+            enhancedListItem: {
+                border: "none !important",
+                borderTop: "none !important",
+                borderBottom: "none !important",
+                borderLeft: "none !important",
+                borderRight: "none !important",
+                // Remove left margin/padding that pushes items to the right
+                marginLeft: "0 !important",
+                paddingLeft: "0 !important",
+
+                ":not(:last-child)": {
+                    border: "none !important",
+                    borderBottom: "none !important",
+                },
+
+                ":first-child": {
+                    border: "none !important",
+                    borderTop: "none !important",
+                },
+            },
         }),
     },
 
@@ -355,6 +413,21 @@ const BaseRadio = createReactClass({
         return this.props.apiOptions.isMobile || this.props.deselectEnabled;
     },
 
+    // Helper method to get layout classes
+    getLayoutClasses: function() {
+        const layout = this.props.layout || (this.props.horizontalChoices ? 'horizontal' : 'vertical');
+
+        switch (layout) {
+            case 'horizontal':
+                return 'perseus-widget-radio-horizontal';
+            case 'grid-2x2':
+                return 'perseus-widget-radio-grid-2x2';
+            case 'vertical':
+            default:
+                return '';
+        }
+    },
+
     render: function() {
         const inputType = this.props.multipleSelect ? "checkbox" : "radio";
         const rubric = this.props.reviewModeRubric;
@@ -372,12 +445,16 @@ const BaseRadio = createReactClass({
         const className = classNames(
             "perseus-widget-radio",
             !this.props.editMode && "perseus-rendered-radio",
-            this.props.horizontalChoices && "perseus-widget-radio-horizontal",
+            this.getLayoutClasses(),
             css(
                 styles.radio,
                 // SAT doesn't use the "responsive styling" as it conflicts
                 // with their custom theming.
                 !sat && styles.responsiveRadioContainer,
+                // Enhanced UI overrides to remove borders
+                styles.enhancedRadioContainer,
+                // Grid layout styles - apply to the ul element
+                this.props.layout === 'grid-2x2' && styles.gridContainer,
                 !sat &&
                     firstChoiceHighlighted &&
                     isMobile &&
@@ -395,7 +472,7 @@ const BaseRadio = createReactClass({
             css(styles.instructions, isMobile && styles.instructionsMobile)
         );
         const instructions = this.getInstructionsText();
-        const shouldShowInstructions = !sat;
+        const shouldShowInstructions = false; // Hide instructions for enhanced UI
 
         const responsiveClassName = css(styles.responsiveFieldset);
         const fieldset = (
@@ -439,6 +516,7 @@ const BaseRadio = createReactClass({
                                 this.updateChoice(i, newValues);
                             },
                             horizontalChoices: this.props.horizontalChoices,
+                            enhancedUI: true, // Enable enhanced UI for all choices
                         };
 
                         if (choice.isNoneOfTheAbove) {
@@ -514,7 +592,12 @@ const BaseRadio = createReactClass({
                                 ApiClassNames.CORRECT,
                             reviewMode &&
                                 !rubric.choices[i].correct &&
-                                ApiClassNames.INCORRECT
+                                ApiClassNames.INCORRECT,
+                            css(
+                                this.props.layout === 'grid-2x2' && styles.gridItem,
+                                // Remove all borders for enhanced UI
+                                styles.enhancedListItem
+                            )
                         );
 
                         // In edit mode, the Choice renders a Div in order to
