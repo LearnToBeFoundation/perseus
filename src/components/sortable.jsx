@@ -624,52 +624,88 @@ const styles = StyleSheet.create({
 
     card: {
         boxSizing: "border-box",
-        background: "#fff",
-        border: "1px solid #ddd",
-        borderRadius: 4,
+        background: "#ffffff",
+        border: "2px solid #e5e5e5",
+        borderRadius: 12,
         cursor: "pointer",
-        minWidth: 25,
-        minHeight: 44,
-        padding: 10,
+        minWidth: 60,
+        minHeight: 60,
+        padding: 16,
+        // Only transition visual properties, not transforms or position
+        transition: "border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out",
 
         listStyleType: "none",
 
         userSelect: "none",
         touchAction: "none",
+
+        // Enhanced hover effect
+        ":hover": {
+            borderColor: "#2563EB",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+            // Remove transform on hover to prevent drag interference
+        },
     },
 
     placeholder: {
-        background: "#ddd",
-        border: "1px solid #ccc",
+        background: "#DBEAFE",
+        border: "2px dashed #2563EB",
+        borderRadius: 12,
+
+        ":hover": {
+            background: "#DBEAFE",
+            borderColor: "#2563EB",
+            transform: "none",
+            boxShadow: "none",
+        },
     },
 
     draggable: {
         textAlign: "center",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: "16px",
+        fontWeight: "500",
     },
 
     horizontalCard: {
         float: "left",
         cursor: "ew-resize",
+        marginRight: 8,
     },
 
     verticalCard: {
         maxWidth: "100%",
         cursor: "ns-resize",
+        marginBottom: 8,
     },
 
     unpaddedCard: {
-        padding: 0,
+        padding: 8,
     },
 
     dragging: {
-        background: "#ffedcd",
-        opacity: "0.8",
+        background: "#DBEAFE",
+        borderColor: "#2563EB",
+        opacity: "0.9",
+        transform: "rotate(2deg)",
+        boxShadow: "0 8px 24px rgba(0, 0, 0, 0.15)",
+        // Disable all transitions during dragging for better performance
+        transition: "none !important",
     },
 
     disabled: {
-        backgroundColor: "inherit",
-        border: "1px solid transparent",
+        backgroundColor: "#f8f9fa",
+        border: "2px solid #e5e5e5",
         cursor: "default",
+        opacity: 0.6,
+
+        ":hover": {
+            borderColor: "#e5e5e5",
+            transform: "none",
+            boxShadow: "none",
+        },
     },
 });
 

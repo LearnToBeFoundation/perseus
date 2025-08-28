@@ -190,6 +190,7 @@ _.extend(Matcher, {
 });
 
 const padding = 5;
+const columnSpacing = 24; // Increased spacing between columns
 const border = "1px solid #444";
 
 const styles = StyleSheet.create({
@@ -199,6 +200,10 @@ const styles = StyleSheet.create({
 
         // Need to override minWidth in CSS :(
         minWidth: "auto",
+
+        // Remove table borders
+        borderCollapse: "separate",
+        borderSpacing: 0,
     },
 
     row: {
@@ -208,18 +213,22 @@ const styles = StyleSheet.create({
 
     column: {
         // TODO(benkomalo): constraint to half width?
-        padding: 0,
+        padding: `0 ${columnSpacing / 2}px`, // Add horizontal padding for breathing room
         border: 0,
+        verticalAlign: "top",
     },
 
     columnRight: {
-        borderLeft: border,
+        // Remove the left border to eliminate vertical line
+        // borderLeft: border,
+        paddingLeft: `${columnSpacing / 2}px`, // Maintain spacing without border
     },
 
     columnLabel: {
         fontWeight: "inherit",
-        borderBottom: border,
-        padding: `0 ${padding}px ${padding}px ${padding}px`,
+        // Remove bottom border to eliminate horizontal line
+        // borderBottom: border,
+        padding: `0 ${columnSpacing / 2}px ${padding}px ${columnSpacing / 2}px`,
         textAlign: "center",
     },
 });
