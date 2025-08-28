@@ -631,7 +631,8 @@ const styles = StyleSheet.create({
         minWidth: 60,
         minHeight: 60,
         padding: 16,
-        transition: "all 0.2s ease-in-out",
+        // Only transition visual properties, not transforms or position
+        transition: "border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out",
 
         listStyleType: "none",
 
@@ -642,7 +643,7 @@ const styles = StyleSheet.create({
         ":hover": {
             borderColor: "#2563EB",
             boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-            transform: "translateY(-1px)",
+            // Remove transform on hover to prevent drag interference
         },
     },
 
@@ -690,6 +691,8 @@ const styles = StyleSheet.create({
         opacity: "0.9",
         transform: "rotate(2deg)",
         boxShadow: "0 8px 24px rgba(0, 0, 0, 0.15)",
+        // Disable all transitions during dragging for better performance
+        transition: "none !important",
     },
 
     disabled: {
