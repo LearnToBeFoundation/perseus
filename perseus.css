@@ -5780,34 +5780,88 @@ body.mobile .perseus-matrix .math-output {
 .orderer.layout-horizontal .draggable-box {
   margin-left: 0;
   margin-top: 30px;
-  padding: 13px;
+  padding: 16px;
+  background: #DBEAFE;
+  border: 2px solid #2563EB;
+  border-radius: 12px;
+  min-height: 80px;
 }
 .orderer .card {
-  padding: 0 10px;
+  padding: 16px;
   cursor: pointer;
   position: relative;
   user-select: none;
   width: auto;
+  background: #ffffff;
+  border: 2px solid #e5e5e5;
+  border-radius: 12px;
+  transition: all 0.2s ease-in-out;
+  min-width: 60px;
+  min-height: 60px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+}
+.orderer .card:hover {
+  border-color: #2563EB;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+.orderer .card.dragging {
+  background: #DBEAFE;
+  border-color: #2563EB;
+  opacity: 0.9;
+  transform: rotate(2deg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+.orderer .card.placeholder {
+  background: #DBEAFE;
+  border: 2px dashed #2563EB;
+}
+.orderer .card.placeholder:hover {
+  background: #DBEAFE;
+  border-color: #2563EB;
+  transform: none;
+  box-shadow: none;
+}
+.orderer .card.stack:after {
+  content: " ";
+  background: #ffffff;
+  border: 2px solid #e5e5e5;
+  border-radius: 12px;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  top: 2px;
+  left: 2px;
+  position: absolute;
 }
 .orderer.height-normal.layout-horizontal .card {
-  height: 65px;
+  height: 80px;
+  min-width: 80px;
 }
 .orderer.height-normal.layout-vertical .card {
-  padding: 5px;
+  padding: 16px;
+  min-height: 60px;
 }
 .orderer.height-auto .card {
-  padding: 0;
+  padding: 12px;
+  min-height: 50px;
 }
 .orderer.height-auto.layout-horizontal .drag-hint {
-  min-height: 65px;
-  min-width: 22px;
+  min-height: 80px;
+  min-width: 80px;
+  background: none;
+  border: 2px dashed #2563EB;
+  border-radius: 12px;
 }
 .orderer.layout-horizontal .bank {
   padding: 0;
-  margin: 0px 13px;
+  margin: 0px 16px;
 }
 .orderer div.paragraph {
   margin: 0;
@@ -5821,14 +5875,14 @@ body.mobile .perseus-matrix .math-output {
   float: left;
 }
 .orderer.layout-horizontal .card-wrap:not(:first-child) {
-  margin-left: 8px;
+  margin-left: 12px;
 }
 .orderer.layout-vertical .card-wrap {
   float: none;
   text-align: center;
 }
 .orderer.layout-vertical .card-wrap:not(:first-child) {
-  margin-top: 8px;
+  margin-top: 12px;
 }
 .orderer.layout-vertical .bank,
 .orderer.layout-vertical .draggable-box {
@@ -5838,18 +5892,24 @@ body.mobile .perseus-matrix .math-output {
   max-width: 50%;
 }
 .orderer.layout-vertical .bank {
-  padding: 11px 20px 11px 0;
+  padding: 16px 20px 16px 0;
   margin: 0;
 }
 .orderer.layout-vertical .draggable-box {
   margin-top: 0;
-  padding: 10px;
-  min-height: 170px;
+  padding: 16px;
+  min-height: 200px;
+  background: #DBEAFE;
+  border: 2px solid #2563EB;
+  border-radius: 12px;
 }
 .orderer.layout-vertical .draggable-box .drag-hint {
   box-sizing: border-box;
-  min-width: 140px;
-  min-height: 34px;
+  min-width: 160px;
+  min-height: 60px;
+  background: none;
+  border: 2px dashed #2563EB;
+  border-radius: 12px;
 }
 .orderer.layout-vertical .draggable-box .placeholder {
   box-sizing: border-box;
@@ -6041,12 +6101,13 @@ body.sat-section .perseus-widget-passage {
 }
 .draggy-boxy-thing .draggable-box,
 .draggy-boxy-thing .cards-area {
-  background: #eee;
-  border: 1px solid #ccc;
-  border-bottom: 1px solid #aaa;
-  box-shadow: 0 1px 2px #ccc;
-  -moz-box-shadow: 0 1px 2px #ccc;
-  -webkit-box-shadow: 0 1px 2px #ccc;
+  background: #DBEAFE;
+  border: 2px solid #2563EB;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
 }
 .draggy-boxy-thing .cards-area {
   position: relative;
@@ -6055,62 +6116,75 @@ body.sat-section .perseus-widget-passage {
 .draggy-boxy-thing .card {
   position: relative;
   z-index: 3;
-  background-color: #fff;
-  border: 1px solid #b9b9b9;
-  border-bottom-color: #939393;
-  border-radius: 4px;
-  -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
+  background-color: #ffffff;
+  border: 2px solid #e5e5e5;
+  border-radius: 12px;
+  -moz-border-radius: 12px;
+  -webkit-border-radius: 12px;
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
   -o-user-select: none;
   cursor: pointer;
   touch-action: none;
+  transition: all 0.2s ease-in-out;
+  min-width: 60px;
+  min-height: 60px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
 }
 .draggy-boxy-thing .card.placeholder {
-  background: #ddd;
-  border: 1px solid #ccc;
+  background: #DBEAFE;
+  border: 2px dashed #2563EB;
 }
 .draggy-boxy-thing .card.drag-hint {
   background: none;
-  border: 1px dashed #aaa;
+  border: 2px dashed #2563EB;
   cursor: auto;
 }
 .draggy-boxy-thing .card.drag-hint:hover {
-  border-color: #aaa;
+  border-color: #2563EB;
   box-shadow: none;
+  transform: none;
 }
 .draggy-boxy-thing .card.dragging {
-  background-color: #ffedcd;
-  opacity: 0.8;
-  filter: opacity(0.8);
+  background-color: #DBEAFE;
+  border-color: #2563EB;
+  opacity: 0.9;
+  filter: opacity(0.9);
+  transform: rotate(2deg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 .draggy-boxy-thing .card.stack {
   z-index: auto;
 }
 .draggy-boxy-thing .card.stack:after {
   content: " ";
-  background-color: #fff;
-  border: 1px solid #b9b9b9;
-  border-bottom-color: #939393;
-  border-radius: 4px;
-  -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
+  background-color: #ffffff;
+  border: 2px solid #e5e5e5;
+  border-radius: 12px;
+  -moz-border-radius: 12px;
+  -webkit-border-radius: 12px;
   height: 100%;
   width: 100%;
   z-index: -1;
-  top: 1px;
-  left: 1px;
+  top: 2px;
+  left: 2px;
   position: absolute;
 }
 .draggy-boxy-thing .card:hover {
-  border-color: #ffa500;
-  box-shadow: 0 0 4px #c78100;
-  -moz-box-shadow: 0 0 4px #c78100;
-  -ms-box-shadow: 0 0 4px #c78100;
-  -o-box-shadow: 0 0 4px #c78100;
-  -webkit-box-shadow: 0 0 4px #c78100;
+  border-color: #2563EB;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  -ms-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  -o-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
 }
 .perseus-sortable div.paragraph {
   margin: 0;
@@ -6123,7 +6197,8 @@ body.sat-section .perseus-widget-passage {
 }
 .perseus-sortable .perseus-sortable-draggable > div {
   display: inline-block;
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 500;
   max-width: 100%;
   vertical-align: middle;
 }
