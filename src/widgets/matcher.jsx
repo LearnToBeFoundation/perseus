@@ -41,6 +41,12 @@ const Matcher = createReactClass({
         right: PropTypes.array,
         trackInteraction: PropTypes.func.isRequired,
         linterContext: linterContextProps,
+        // New props for nested widgets support
+        leftWidgets: PropTypes.arrayOf(PropTypes.object),
+        leftImages: PropTypes.arrayOf(PropTypes.object),
+        rightWidgets: PropTypes.arrayOf(PropTypes.object),
+        rightImages: PropTypes.arrayOf(PropTypes.object),
+        findWidgets: PropTypes.func,
     },
 
     getDefaultProps: function() {
@@ -53,7 +59,29 @@ const Matcher = createReactClass({
             problemNum: 0,
             onChange: function() {},
             linterContext: linterContextDefault,
+            leftWidgets: [],
+            leftImages: [],
+            rightWidgets: [],
+            rightImages: [],
         };
+    },
+
+    _renderRenderer: function(content, widgets = {}, images = {}, refName) {
+        if (!content) {
+            return null;
+        }
+
+        return (
+            <Renderer
+                ref={refName}
+                content={content || ""}
+                widgets={widgets || {}}
+                images={images || {}}
+                apiOptions={this.props.apiOptions}
+                findExternalWidgets={this.props.findWidgets}
+                linterContext={this.props.linterContext}
+            />
+        );
     },
 
     getInitialState: function() {
@@ -76,6 +104,28 @@ const Matcher = createReactClass({
         }
 
         var right = shuffle(this.props.right, rng, /* ensurePermuted */ true);
+
+        // Transform left options to include widgets and images
+        const leftOptions = left.map((content, i) => ({
+            option: this._renderRenderer(
+                content,
+                this.props.leftWidgets && this.props.leftWidgets[i] ? this.props.leftWidgets[i] : {},
+                this.props.leftImages && this.props.leftImages[i] ? this.props.leftImages[i] : {},
+                `left-renderer-${i}`
+            ),
+            key: `left-${i}`,
+        }));
+
+        // Transform right options to include widgets and images
+        const rightOptions = right.map((content, i) => ({
+            option: this._renderRenderer(
+                content,
+                this.props.rightWidgets && this.props.rightWidgets[i] ? this.props.rightWidgets[i] : {},
+                this.props.rightImages && this.props.rightImages[i] ? this.props.rightImages[i] : {},
+                `right-renderer-${i}`
+            ),
+            key: `right-${i}`,
+        }));
 
         var showLabels = _.any(this.props.labels);
         var constraints = {
@@ -116,7 +166,7 @@ const Matcher = createReactClass({
                     <tr className={css(styles.row)}>
                         <td className={css(styles.column)}>
                             <Sortable
-                                options={left}
+                                options={leftOptions}
                                 layout="vertical"
                                 padding={this.props.padding}
                                 disabled={!this.props.orderMatters}
@@ -130,7 +180,7 @@ const Matcher = createReactClass({
                         </td>
                         <td className={css(styles.column, styles.columnRight)}>
                             <Sortable
-                                options={right}
+                                options={rightOptions}
                                 layout="vertical"
                                 padding={this.props.padding}
                                 constraints={constraints}
@@ -171,6 +221,33 @@ const Matcher = createReactClass({
 
     simpleValidate: function(rubric) {
         return Matcher.validate(this.getUserInput(), rubric);
+    },
+
+    /**
+     * Expose nested widgets to Perseus widget discovery system.
+     * This allows nested widgets to be found for editing and interaction.
+     */
+    findWidgets: function(filterCriterion) {
+        // Collect all widgets from all renderers
+        const widgets = [];
+
+        // Get widgets from left column renderers
+        this.props.left.forEach((content, i) => {
+            const leftRenderer = this.refs[`left-renderer-${i}`];
+            if (leftRenderer && leftRenderer.findInternalWidgets) {
+                widgets.push(...leftRenderer.findInternalWidgets(filterCriterion));
+            }
+        });
+
+        // Get widgets from right column renderers
+        this.props.right.forEach((content, i) => {
+            const rightRenderer = this.refs[`right-renderer-${i}`];
+            if (rightRenderer && rightRenderer.findInternalWidgets) {
+                widgets.push(...rightRenderer.findInternalWidgets(filterCriterion));
+            }
+        });
+
+        return widgets;
     },
 });
 

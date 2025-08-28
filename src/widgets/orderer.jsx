@@ -250,6 +250,10 @@ var Orderer = createReactClass({
         options: PropTypes.array,
         trackInteraction: PropTypes.func.isRequired,
         linterContext: linterContextProps,
+        // New props for nested widgets support
+        optionWidgets: PropTypes.arrayOf(PropTypes.object),
+        optionImages: PropTypes.arrayOf(PropTypes.object),
+        findWidgets: PropTypes.func,
     },
 
     getDefaultProps: function() {
@@ -260,7 +264,46 @@ var Orderer = createReactClass({
             height: NORMAL,
             layout: HORIZONTAL,
             linterContext: linterContextDefault,
+            optionWidgets: [],
+            optionImages: [],
         };
+    },
+
+    _renderRenderer: function(content, widgets = {}, images = {}, refName) {
+        if (!content) {
+            return null;
+        }
+
+        return (
+            <Renderer
+                ref={refName}
+                content={content || ""}
+                widgets={widgets || {}}
+                images={images || {}}
+                apiOptions={this.props.apiOptions}
+                findExternalWidgets={this.props.findWidgets}
+                linterContext={this.props.linterContext}
+            />
+        );
+    },
+
+    _prepareOptions: function(options) {
+        // Transform options to include rendered content with widgets and images
+        return options.map((option, i) => {
+            const originalContent = typeof option === 'string' ? option : option.content;
+            const renderedContent = this._renderRenderer(
+                originalContent,
+                this.props.optionWidgets && this.props.optionWidgets[i] ? this.props.optionWidgets[i] : {},
+                this.props.optionImages && this.props.optionImages[i] ? this.props.optionImages[i] : {},
+                `option-renderer-${i}`
+            );
+
+            return {
+                ...option,
+                content: renderedContent || originalContent,
+                originalContent: originalContent, // Keep original for comparison
+            };
+        });
     },
 
     getInitialState: function() {
@@ -278,6 +321,10 @@ var Orderer = createReactClass({
     },
 
     render: function() {
+        // Prepare options with rendered content
+        const preparedOptions = this._prepareOptions(this.props.options);
+        const preparedCurrent = this._prepareOptions(this.state.current);
+
         // This is the card we are currently dragging
         var dragging =
             this.state.dragging &&
@@ -312,7 +359,7 @@ var Orderer = createReactClass({
 
         // This is the list of draggable, rearrangable cards
         var sortableCards = _.map(
-            this.state.current,
+            preparedCurrent,
             function(opt, i) {
                 return (
                     <Card
@@ -363,7 +410,7 @@ var Orderer = createReactClass({
         var bank = (
             <div ref="bank" className="bank perseus-clearfix">
                 {_.map(
-                    this.props.options,
+                    preparedOptions,
                     (opt, i) => {
                         return (
                             <Card
@@ -621,6 +668,25 @@ var Orderer = createReactClass({
 
     simpleValidate: function(rubric) {
         return Orderer.validate(this.getUserInput(), rubric);
+    },
+
+    /**
+     * Expose nested widgets to Perseus widget discovery system.
+     * This allows nested widgets to be found for editing and interaction.
+     */
+    findWidgets: function(filterCriterion) {
+        // Collect all widgets from all option renderers
+        const widgets = [];
+
+        // Get widgets from option renderers
+        this.props.options.forEach((option, i) => {
+            const optionRenderer = this.refs[`option-renderer-${i}`];
+            if (optionRenderer && optionRenderer.findInternalWidgets) {
+                widgets.push(...optionRenderer.findInternalWidgets(filterCriterion));
+            }
+        });
+
+        return widgets;
     },
 });
 

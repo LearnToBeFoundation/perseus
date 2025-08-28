@@ -69,7 +69,7 @@ const Placeholder = createReactClass({
 // [Dis|en]abling:  Static|Dragging|Animating -> Disabled -> Static
 const Draggable = createReactClass({
     propTypes: {
-        content: PropTypes.string.isRequired,
+        content: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
         endPosition: PropTypes.object.isRequired,
         includePadding: PropTypes.bool,
         layout: PropTypes.oneOf([HORIZONTAL, VERTICAL]),
@@ -175,15 +175,19 @@ const Draggable = createReactClass({
                 onTouchEnd={this.onMouseUp}
                 onTouchCancel={this.onMouseUp}
             >
-                <Renderer
-                    content={this.props.content}
-                    linterContext={
-                        Gorgon.pushContextStack(
-                            this.props.linterContext, 'draggable'
-                        )
-                    }
-                    onRender={this.props.onRender}
-                />
+                {typeof this.props.content === 'string' ? (
+                    <Renderer
+                        content={this.props.content}
+                        linterContext={
+                            Gorgon.pushContextStack(
+                                this.props.linterContext, 'draggable'
+                            )
+                        }
+                        onRender={this.props.onRender}
+                    />
+                ) : (
+                    this.props.content
+                )}
             </li>
         );
     },
