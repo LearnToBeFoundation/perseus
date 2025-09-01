@@ -245,6 +245,7 @@ var Orderer = createReactClass({
     propTypes: {
         correctOptions: PropTypes.array,
         current: PropTypes.array,
+        defaultCards: PropTypes.array,
         height: PropTypes.oneOf([NORMAL, AUTO]),
         layout: PropTypes.oneOf([HORIZONTAL, VERTICAL]),
         options: PropTypes.array,
@@ -257,6 +258,7 @@ var Orderer = createReactClass({
             current: [],
             options: [],
             correctOptions: [],
+            defaultCards: [],
             height: NORMAL,
             layout: HORIZONTAL,
             linterContext: linterContextDefault,
@@ -264,8 +266,13 @@ var Orderer = createReactClass({
     },
 
     getInitialState: function() {
+        // Initialize with default cards if current is empty and defaultCards exist
+        var initialCurrent = this.props.current && this.props.current.length > 0
+            ? this.props.current
+            : this.props.defaultCards || [];
+
         return {
-            current: [],
+            current: initialCurrent,
             dragging: false,
             placeholderIndex: null,
         };
@@ -273,7 +280,11 @@ var Orderer = createReactClass({
 
     componentWillReceiveProps: function(nextProps) {
         if (!_.isEqual(this.props.current, nextProps.current)) {
-            this.setState({current: nextProps.current});
+            // Use default cards if current becomes empty and defaultCards exist
+            var newCurrent = nextProps.current && nextProps.current.length > 0
+                ? nextProps.current
+                : nextProps.defaultCards || [];
+            this.setState({current: newCurrent});
         }
     },
 
@@ -404,8 +415,8 @@ var Orderer = createReactClass({
                 }
                 ref="orderer"
             >
-                {bank}
                 {sortable}
+                {bank}
             </div>
         );
     },
