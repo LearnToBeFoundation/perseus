@@ -610,9 +610,10 @@ var Orderer = createReactClass({
             draggableWidth = $draggable.outerWidth(true);
 
         if (isHorizontal) {
+            // Since bank is now below the dropzone, check if dragged card is in the bank area
             return (
-                draggableOffset.top + draggableHeight / 2 <
-                bankOffset.top + bankHeight
+                draggableOffset.top + draggableHeight / 2 >
+                bankOffset.top
             );
         } else {
             return (
