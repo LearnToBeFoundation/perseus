@@ -339,6 +339,8 @@ var Orderer = createReactClass({
                                 ? $.noop
                                 : this.onClick.bind(null, "current", i)
                         }
+                        onMouseMove={this.onMouseMove}
+                        onMouseUp={this.onRelease}
                     />
                 );
             },

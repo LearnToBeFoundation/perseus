@@ -1,3 +1,10 @@
+## 
+
+Build `NODE_OPTIONS="--openssl-legacy-provider" npm run build`
+In our Rails app to pull in dev changes: `yarn upgrade perseus@LearnToBeFoundation/perseus#orderer-glitch` (change orderer-glitch to the name of your branch)
+
+
+
 # OpenPerseus
 
 OpenPerseus is an open-source community fork of Khan Academy's Perseus
