@@ -275,6 +275,7 @@ var Orderer = createReactClass({
             current: initialCurrent,
             dragging: false,
             placeholderIndex: null,
+            dragFromIndex: null,
         };
     },
 
@@ -325,6 +326,9 @@ var Orderer = createReactClass({
         var sortableCards = _.map(
             this.state.current,
             function(opt, i) {
+                // Hide the card that's currently being dragged to avoid duplication
+                var isBeingDragged = this.state.dragging && this.state.dragFromIndex === i;
+
                 return (
                     <Card
                         ref={"sortable" + i}
@@ -335,12 +339,13 @@ var Orderer = createReactClass({
                         key={opt.key}
                         linterContext={this.props.linterContext}
                         onMouseDown={
-                            this.state.animating
+                            this.state.animating || isBeingDragged
                                 ? $.noop
                                 : this.onClick.bind(null, "current", i)
                         }
                         onMouseMove={this.onMouseMove}
                         onMouseUp={this.onRelease}
+                        style={isBeingDragged ? {visibility: 'hidden'} : {}}
                     />
                 );
             },
@@ -431,9 +436,8 @@ var Orderer = createReactClass({
         var placeholderIndex = null;
 
         if (type === "current") {
-            // If this is coming from the original list, remove the original
-            // card from the list
-            list.splice(index, 1);
+            // Don't remove the card from the list immediately - keep it until drag completes
+            // This prevents the component from unmounting and breaking event handlers
             opt = this.state.current[index];
             placeholderIndex = index;
         } else if (type === "bank") {
@@ -441,7 +445,7 @@ var Orderer = createReactClass({
         }
 
         this.setState({
-            current: list,
+            current: list, // For "current" type, this is unchanged; for "bank" type, this is unchanged
             dragging: true,
             placeholderIndex: placeholderIndex,
             dragKey: opt.key,
@@ -451,6 +455,7 @@ var Orderer = createReactClass({
             grabPos: loc,
             mousePos: loc,
             offsetPos: $draggable.position(),
+            dragFromIndex: type === "current" ? index : null, // Track which index we're dragging from
         });
     },
 
@@ -466,6 +471,11 @@ var Orderer = createReactClass({
         // done animating
         var onAnimationEnd = () => {
             var list = this.state.current.slice();
+
+            // If we were dragging from the current list, remove the original card now
+            if (this.state.dragFromIndex !== null) {
+                list.splice(this.state.dragFromIndex, 1);
+            }
 
             if (!inCardBank) {
                 // Insert the new card into the position
@@ -486,6 +496,7 @@ var Orderer = createReactClass({
                 dragging: false,
                 placeholderIndex: null,
                 animating: false,
+                dragFromIndex: null,
             });
             this.props.trackInteraction();
         };
