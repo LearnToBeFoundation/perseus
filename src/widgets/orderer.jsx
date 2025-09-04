@@ -288,6 +288,58 @@ var Orderer = createReactClass({
         }
     },
 
+	    componentDidMount: function() {
+	        // Stabilize defaultCards by ensuring keys and measured widths exist
+	        this.ensureStableCurrentCards();
+	    },
+
+	    componentDidUpdate: function(prevProps, prevState) {
+	        // After prop/state changes, re-check for missing keys/widths.
+	        // Guard against running during drag/animation.
+	        if (!this.state.dragging && !this.state.animating) {
+	            this.ensureStableCurrentCards();
+	        }
+	    },
+
+	    // Ensure items in current have stable keys and fixed widths so the
+	    // layout doesn't reflow on first drag (particularly for defaultCards).
+	    ensureStableCurrentCards: function() {
+	        // Do nothing while dragging/animating to avoid measuring transient DOM.
+	        if (this.state.dragging || this.state.animating) {
+	            return;
+	        }
+	        var updated = false;
+	        var newCurrent = _.map(this.state.current, (opt, i) => {
+	            if (!opt || typeof opt !== "object") {
+	                return opt;
+	            }
+	            var next = opt;
+	            if (!opt.key) {
+	                next = _.extend({}, next, {key: _.uniqueId("perseus_draggable_card_")});
+	                updated = true;
+	            }
+	            if (!opt.width) {
+	                var ref = this.refs["sortable" + i];
+	                if (ref) {
+	                    var node = ReactDOM.findDOMNode(ref);
+	                    var w = $(node).width();
+	                    if (w) {
+	                        if (next === opt) {
+	                            next = _.extend({}, next);
+	                        }
+	                        next.width = w;
+	                        updated = true;
+	                    }
+	                }
+	            }
+	            return next;
+	        });
+	        if (updated) {
+	            this.setState({current: newCurrent});
+	        }
+	    },
+
+
     render: function() {
         // This is the card we are currently dragging
         var dragging =
