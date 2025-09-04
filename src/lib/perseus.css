@@ -1570,7 +1570,8 @@ body.mobile .perseus-matrix .math-output {
 }
 .orderer.layout-horizontal .draggable-box {
   margin-left: 0;
-  margin-top: 30px;
+  margin-top: 0;
+  margin-bottom: 30px;
   padding: 16px;
   background: #DBEAFE;
   border: 2px solid #2563EB;
@@ -1653,6 +1654,7 @@ body.mobile .perseus-matrix .math-output {
 .orderer.layout-horizontal .bank {
   padding: 0;
   margin: 0px 16px;
+  margin-top: 0;
 }
 .orderer div.paragraph {
   margin: 0;
@@ -1683,11 +1685,12 @@ body.mobile .perseus-matrix .math-output {
   max-width: 50%;
 }
 .orderer.layout-vertical .bank {
-  padding: 16px 20px 16px 0;
+  padding: 16px 0 16px 20px;
   margin: 0;
 }
 .orderer.layout-vertical .draggable-box {
   margin-top: 0;
+  margin-right: 20px;
   padding: 16px;
   min-height: 200px;
   background: #DBEAFE;

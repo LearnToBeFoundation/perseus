@@ -27,6 +27,7 @@ const OrdererEditor = createReactClass({
     propTypes: {
         correctOptions: PropTypes.array,
         otherOptions: PropTypes.array,
+        defaultCards: PropTypes.array,
         height: PropTypes.oneOf([NORMAL, AUTO]),
         layout: PropTypes.oneOf([HORIZONTAL, VERTICAL]),
         onChange: PropTypes.func.isRequired,
@@ -36,6 +37,7 @@ const OrdererEditor = createReactClass({
         return {
             correctOptions: [{content: "$x$"}],
             otherOptions: [{content: "$y$"}],
+            defaultCards: [],
             height: NORMAL,
             layout: HORIZONTAL,
         };
@@ -70,6 +72,21 @@ const OrdererEditor = createReactClass({
                 <TextListEditor
                     options={_.pluck(this.props.otherOptions, "content")}
                     onChange={this.onOptionsChange.bind(this, "otherOptions")}
+                    layout={this.props.layout}
+                />
+
+                <div>
+                    {" "}Default cards in dropzone:{" "}
+                    <InfoTip>
+                        <p>
+                            Cards that will appear in the dropzone when the problem loads.
+                            These cards will still be available in the bank if moved out.
+                        </p>
+                    </InfoTip>
+                </div>
+                <TextListEditor
+                    options={_.pluck(this.props.defaultCards, "content")}
+                    onChange={this.onOptionsChange.bind(this, "defaultCards")}
                     layout={this.props.layout}
                 />
 
@@ -128,11 +145,12 @@ const OrdererEditor = createReactClass({
     },
 
     serialize: function() {
-        // We combine the correct answer and the other cards by merging them,
+        // We combine the correct answer, other cards, and default cards by merging them,
         // removing duplicates and empty cards, and sorting them into
         // categories based on their content
         var options = _.chain(_.pluck(this.props.correctOptions, "content"))
             .union(_.pluck(this.props.otherOptions, "content"))
+            .union(_.pluck(this.props.defaultCards, "content"))
             .uniq()
             .reject(function(content) {
                 return content === "";
@@ -156,6 +174,7 @@ const OrdererEditor = createReactClass({
             options: options,
             correctOptions: this.props.correctOptions,
             otherOptions: this.props.otherOptions,
+            defaultCards: this.props.defaultCards,
             height: this.props.height,
             layout: this.props.layout,
         };
