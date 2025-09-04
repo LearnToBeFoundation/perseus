@@ -438,6 +438,10 @@ var Orderer = createReactClass({
             opt = this.props.options[index];
         }
 
+        // Use offset() instead of position() to get absolute positioning
+        // relative to the document, which is needed for floating cards
+        var offset = $draggable.offset();
+
         this.setState({
             current: list,
             dragging: true,
@@ -448,7 +452,7 @@ var Orderer = createReactClass({
             dragHeight: $draggable.height(),
             grabPos: loc,
             mousePos: loc,
-            offsetPos: $draggable.position(),
+            offsetPos: offset,
         });
     },
 
@@ -490,7 +494,7 @@ var Orderer = createReactClass({
 
         // Find the position of the card we should animate to
         // TODO(alpert): Update mouse position once more before animating?
-        var offset = $(ReactDOM.findDOMNode(draggable)).position();
+        var offset = $(ReactDOM.findDOMNode(draggable)).offset();
         var finalOffset = null;
         if (inCardBank) {
             // If we're in the card bank, go through the options to find the
@@ -500,7 +504,7 @@ var Orderer = createReactClass({
                 function(opt, i) {
                     if (opt.content === this.state.dragContent) {
                         var card = ReactDOM.findDOMNode(this.refs["bank" + i]);
-                        finalOffset = $(card).position();
+                        finalOffset = $(card).offset();
                     }
                 },
                 this
@@ -509,7 +513,7 @@ var Orderer = createReactClass({
             // Otherwise, go to the position that the placeholder is at
             finalOffset = $(
                 ReactDOM.findDOMNode(this.refs.placeholder)
-            ).position();
+            ).offset();
         }
 
         if (finalOffset == null) {
