@@ -75,6 +75,8 @@ var NumericInput = createReactClass({
         currentValue: PropTypes.string,
         currentMultipleValues: PropTypes.arrayOf(PropTypes.string),
         size: PropTypes.oneOf(["normal", "small"]),
+        // Optional explicit width for the input (number = px or CSS string)
+        inputWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         apiOptions: ApiOptions.propTypes,
         coefficient: PropTypes.bool,
         answerForms: PropTypes.arrayOf(
@@ -100,6 +102,7 @@ var NumericInput = createReactClass({
             // solutions is chosen, there must be at least 1 answer
             currentMultipleValues: [""],
             size: "normal",
+            inputWidth: null,
             apiOptions: ApiOptions.defaults,
             coefficient: false,
             answerForms: [],
@@ -162,7 +165,10 @@ var NumericInput = createReactClass({
 
     getClasses: function(correct, rubric) {
         const classes = {};
-        classes["perseus-input-size-" + this.props.size] = true;
+        // Only apply legacy size class when no explicit width is provided
+        if (this.props.inputWidth == null) {
+            classes["perseus-input-size-" + this.props.size] = true;
+        }
         classes[ApiClassNames.CORRECT] =
             rubric && correct && this.props.currentValue;
         classes[ApiClassNames.INCORRECT] =
@@ -170,6 +176,22 @@ var NumericInput = createReactClass({
         classes[ApiClassNames.UNANSWERED] = rubric && !this.props.currentValue;
         return classes;
     },
+
+    _getInlineStyle: function() {
+        const {inputWidth} = this.props;
+        const style = {
+            border: `2px solid ${styleConstants.ltbBlue}`,
+            borderRadius: 12,
+            background: '#FFFFFF',
+            padding: '9px 12px',
+            outline: 'none',
+        };
+        if (inputWidth != null) {
+            style.width = typeof inputWidth === 'number' ? `${inputWidth}px` : inputWidth;
+        }
+        return style;
+    },
+
 
     render: function() {
         const rubric = this.props.reviewModeRubric;
@@ -255,7 +277,8 @@ var NumericInput = createReactClass({
                             onChange={
                                 e => this.handleMultipleInputChange(i, e)}
                             className={classNames(
-                                classes, css(styles.numberInput))}
+                                classes, css(styles.numberInputLayout))}
+                            style={this._getInlineStyle()}
                             labelText={labelText}
                             type={this._getInputType()}
                             examples={this.examples()}
@@ -292,6 +315,7 @@ var NumericInput = createReactClass({
                         value={this.props.currentValue}
                         onChange={this.handleChange}
                         className={classNames(classes)}
+                        style={this._getInlineStyle()}
                         labelText={labelText}
                         type={this._getInputType()}
                         examples={this.examples()}
@@ -750,23 +774,27 @@ const styles = StyleSheet.create({
         },
     },
 
-    numberInput: {
-        float: "right",
-        width: 170,
+    // Blue rounded input styling to match orderer widget theme
+    numberInputBase: {
         marginBottom: 10,
-        border: `1px solid ${styleConstants.gray76}`,
-        borderRadius: 4,
-        padding: `9px 25px 9px 9px`,
+        border: `2px solid ${styleConstants.ltbBlue}`,
+        borderRadius: 12,
+        background: '#FFFFFF',
+        padding: `9px 12px`,
 
         ':focus': {
             outline: 'none',
-            border: `2px solid ${styleConstants.kaGreen}`,
-            padding: `8px 25px 8px 8px`,
+            border: `2px solid ${styleConstants.ltbBlue}`,
         },
     },
 
     numberInputContainer: {
         display: "flex",
+    },
+
+    // Only used for legacy multi-input layout spacing, not width
+    numberInputLayout: {
+        float: "right",
     },
 });
 

@@ -42,6 +42,8 @@ const InputWithExamples = createReactClass({
         value: PropTypes.string,
         onChange: PropTypes.func.isRequired,
         className: PropTypes.string,
+        // Optional style object to pass through to the underlying input
+        style: PropTypes.object,
         examples: PropTypes.arrayOf(PropTypes.string).isRequired,
         shouldShowExamples: PropTypes.bool,
         convertDotToTimes: PropTypes.bool,
@@ -103,6 +105,8 @@ const InputWithExamples = createReactClass({
             "aria-describedby": this._getUniqueId(),
             ref: "input",
             className: this._getInputClassName(),
+            // Allow callers to influence width/inline styles of the input
+            style: this.props.style,
             labelText: this.props.labelText,
             value: this.props.value,
             onFocus: this._handleFocus,
