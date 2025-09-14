@@ -32,6 +32,12 @@ const SimpleKeypadInput = createReactClass({
             PropTypes.string,
             PropTypes.number,
         ]),
+        // Allow callers to choose keypad type; default to NUMBER for numeric inputs
+        keypadType: PropTypes.oneOf([
+            KeypadTypes.NUMBER,
+            KeypadTypes.FRACTION,
+            KeypadTypes.EXPRESSION,
+        ]),
     },
 
     focus() {
@@ -61,7 +67,7 @@ const SimpleKeypadInput = createReactClass({
                     if (keypadElement) {
                         keypadElement.configure(
                             {
-                                keypadType: KeypadTypes.FRACTION,
+                                keypadType: this.props.keypadType || KeypadTypes.NUMBER,
                             },
                             () => {
                                 if (this.isMounted()) {

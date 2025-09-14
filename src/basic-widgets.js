@@ -6,6 +6,8 @@ import _widgetsInputNumberEditorJsx from "./widgets/input-number-editor.jsx";
 import _widgetsInputNumberJsx from "./widgets/input-number.jsx";
 import _widgetsRadioEditorJsx from "./widgets/radio/editor.jsx";
 import _widgetsRadioJsx from "./widgets/radio.jsx";
+import _widgetsNumericKeypadJsx from "./widgets/numeric-keypad.jsx";
+import _widgetsNumericKeypadEditorJsx from "./widgets/numeric-keypad-editor.jsx";
 
 // TODO(aria): env/build var
 const __EDITOR__ = true;
@@ -17,4 +19,5 @@ export default [
   [_widgetsInputNumberJsx, __EDITOR__ && _widgetsInputNumberEditorJsx],
   [_widgetsNumericInputJsx, __EDITOR__ && _widgetsNumericInputEditorJsx],
   [_widgetsExpressionJsx, __EDITOR__ && _widgetsExpressionEditorJsx],
+  [_widgetsNumericKeypadJsx, __EDITOR__ && _widgetsNumericKeypadEditorJsx],
 ];

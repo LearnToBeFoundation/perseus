@@ -376,7 +376,18 @@ var Renderer = createReactClass({
     },
 
     getApiOptions() {
-        return ApiOptionsProps.getApiOptions.call(this);
+        const opts = ApiOptionsProps.getApiOptions.call(this);
+        // If a numeric-keypad widget is present in this renderer, and we're on
+        // mobile, automatically enable the custom keypad so numeric inputs render
+        // KeypadInput and the OS keyboard doesn’t open.
+        let hasNumericKeypad = false;
+        if (this.state && this.state.widgetInfo) {
+            hasNumericKeypad = _.some(this.state.widgetInfo, w => w && w.type === "numeric-keypad");
+        }
+        return {
+            ...opts,
+            customKeypad: opts.customKeypad || (opts.isMobile && hasNumericKeypad),
+        };
     },
 
     _getInitialWidgetState: function(props) {
