@@ -251,6 +251,7 @@ var Orderer = createReactClass({
         options: PropTypes.array,
         trackInteraction: PropTypes.func.isRequired,
         linterContext: linterContextProps,
+        useFixedSlots: PropTypes.bool,
     },
 
     getDefaultProps: function() {
@@ -262,14 +263,18 @@ var Orderer = createReactClass({
             height: NORMAL,
             layout: HORIZONTAL,
             linterContext: linterContextDefault,
+            useFixedSlots: false,
         };
     },
 
     getInitialState: function() {
-        // Initialize with default cards if current is empty and defaultCards exist
-        var initialCurrent = this.props.current && this.props.current.length > 0
+        // Initialize current from props or defaultCards.
+        var source = this.props.current && this.props.current.length > 0
             ? this.props.current
             : this.props.defaultCards || [];
+        var initialCurrent = this.props.useFixedSlots
+            ? this.padToSlots(source)
+            : source;
 
         return {
             current: initialCurrent,
@@ -279,11 +284,16 @@ var Orderer = createReactClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
-        if (!_.isEqual(this.props.current, nextProps.current)) {
+        if (!_.isEqual(this.props.current, nextProps.current) ||
+            this.props.useFixedSlots !== nextProps.useFixedSlots ||
+            !_.isEqual(this.props.correctOptions, nextProps.correctOptions)) {
             // Use default cards if current becomes empty and defaultCards exist
-            var newCurrent = nextProps.current && nextProps.current.length > 0
+            var source = nextProps.current && nextProps.current.length > 0
                 ? nextProps.current
                 : nextProps.defaultCards || [];
+            var newCurrent = nextProps.useFixedSlots
+                ? this.padToSlots(source, nextProps)
+                : source;
             this.setState({current: newCurrent});
         }
     },
@@ -339,6 +349,20 @@ var Orderer = createReactClass({
 	        }
 	    },
 
+    // For fixed slots mode, ensure the current list length equals the number of
+    // slots (based on correctOptions). Empty slots are represented by null.
+    padToSlots: function(list, props) {
+        var p = props || this.props;
+        var slots = (p.correctOptions && p.correctOptions.length) || 0;
+        if (!p.useFixedSlots || slots <= 0) {
+            return list;
+        }
+        var result = list.slice(0, slots);
+        while (result.length < slots) {
+            result.push(null);
+        }
+        return result;
+    },
 
     render: function() {
         // This is the card we are currently dragging
@@ -373,40 +397,90 @@ var Orderer = createReactClass({
                 linterContext={this.props.linterContext}
             />;
 
-        // This is the list of draggable, rearrangable cards
-        var sortableCards = _.map(
-            this.state.current,
-            function(opt, i) {
-                return (
-                    <Card
-                        ref={"sortable" + i}
-                        fakeRef={"sortable" + i}
-                        floating={false}
-                        content={opt.content}
-                        width={opt.width}
-                        key={opt.key}
-                        linterContext={this.props.linterContext}
-                        onMouseDown={
-                            this.state.animating
-                                ? $.noop
-                                : this.onClick.bind(null, "current", i)
-                        }
+        // This is the list of draggable, rearrangable cards (or fixed slots)
+        var sortableCards;
+        if (this.props.useFixedSlots) {
+            var slots = (this.props.correctOptions && this.props.correctOptions.length) || 0;
+            sortableCards = _.map(
+                _.range(slots),
+                (i) => {
+                    var opt = this.state.current[i];
+                    var isPlaceholder = this.state.placeholderIndex === i;
+                    if (opt && typeof opt === "object") {
+                        return (
+                            <Card
+                                ref={"sortable" + i}
+                                fakeRef={"sortable" + i}
+                                floating={false}
+                                content={opt.content}
+                                width={opt.width}
+                                key={opt.key}
+                                linterContext={this.props.linterContext}
+                                onMouseDown={
+                                    this.state.animating
+                                        ? $.noop
+                                        : this.onClick.bind(null, "current", i)
+                                }
+                            />
+                        );
+                    }
+                    if (isPlaceholder) {
+                        return (
+                            <PlaceholderCard
+                                ref="placeholder"
+                                width={this.state.dragWidth}
+                                height={this.state.dragHeight}
+                                key={"placeholder-" + i}
+                            />
+                        );
+                    }
+                    return (
+                        <div
+                            className={"card-wrap " + ApiClassNames.INTERACTIVE}
+                            ref={"slot" + i}
+                            key={"slot" + i}
+                        >
+                            <div className="card placeholder" />
+                        </div>
+                    );
+                },
+                this
+            );
+        } else {
+            sortableCards = _.map(
+                this.state.current,
+                function(opt, i) {
+                    return (
+                        <Card
+                            ref={"sortable" + i}
+                            fakeRef={"sortable" + i}
+                            floating={false}
+                            content={opt.content}
+                            width={opt.width}
+                            key={opt.key}
+                            linterContext={this.props.linterContext}
+                            onMouseDown={
+                                this.state.animating
+                                    ? $.noop
+                                    : this.onClick.bind(null, "current", i)
+                            }
+                        />
+                    );
+                },
+                this
+            );
+
+            if (this.state.placeholderIndex != null) {
+                var placeholder = (
+                    <PlaceholderCard
+                        ref="placeholder"
+                        width={this.state.dragWidth}
+                        height={this.state.dragHeight}
+                        key="placeholder"
                     />
                 );
-            },
-            this
-        );
-
-        if (this.state.placeholderIndex != null) {
-            var placeholder = (
-                <PlaceholderCard
-                    ref="placeholder"
-                    width={this.state.dragWidth}
-                    height={this.state.dragHeight}
-                    key="placeholder"
-                />
-            );
-            sortableCards.splice(this.state.placeholderIndex, 0, placeholder);
+                sortableCards.splice(this.state.placeholderIndex, 0, placeholder);
+            }
         }
 
         var anySortableCards = sortableCards.length > 0;
@@ -461,6 +535,7 @@ var Orderer = createReactClass({
                     "layout-" +
                     this.props.layout +
                     " " +
+                    (this.props.useFixedSlots ? "fixed-slots " : "") +
                     "above-scratchpad blank-background " +
                     "perseus-clearfix " +
                     ApiClassNames.INTERACTIVE
@@ -481,10 +556,16 @@ var Orderer = createReactClass({
         var placeholderIndex = null;
 
         if (type === "current") {
-            // If this is coming from the original list, remove the original
-            // card from the list
-            list.splice(index, 1);
-            opt = this.state.current[index];
+            // If this is coming from the drop zone, remove the original card.
+            if (this.props.useFixedSlots) {
+                // In fixed slot mode, clear the slot but keep list length.
+                opt = this.state.current[index];
+                list[index] = null;
+            } else {
+                // In free mode, remove the element to allow shifting.
+                list.splice(index, 1);
+                opt = this.state.current[index];
+            }
             placeholderIndex = index;
         } else if (type === "bank") {
             opt = this.props.options[index];
@@ -512,12 +593,18 @@ var Orderer = createReactClass({
         var inCardBank = this.isCardInBank(draggable);
         var index = this.state.placeholderIndex;
 
+        // Fallback: in fixed slot mode, if no placeholder index, choose nearest EMPTY slot
+        if (!inCardBank && this.props.useFixedSlots && index == null) {
+            index = this.findNearestSlotIndex(draggable);
+        }
+        var canPlace = !inCardBank && (!this.props.useFixedSlots || index != null);
+
         // Here, we build a callback function for the card to call when it is
         // done animating
         var onAnimationEnd = () => {
             var list = this.state.current.slice();
 
-            if (!inCardBank) {
+            if (canPlace) {
                 // Insert the new card into the position
                 var newCard = {
                     content: this.state.dragContent,
@@ -525,7 +612,11 @@ var Orderer = createReactClass({
                     width: this.state.dragWidth,
                 };
 
-                list.splice(index, 0, newCard);
+                if (this.props.useFixedSlots) {
+                    list[index] = newCard;
+                } else {
+                    list.splice(index, 0, newCard);
+                }
             }
 
             this.props.onChange({
@@ -544,9 +635,8 @@ var Orderer = createReactClass({
         // TODO(alpert): Update mouse position once more before animating?
         var offset = $(ReactDOM.findDOMNode(draggable)).position();
         var finalOffset = null;
-        if (inCardBank) {
-            // If we're in the card bank, go through the options to find the
-            // one with the same content
+        if (inCardBank || (!canPlace && this.props.useFixedSlots)) {
+            // Animate back to the bank card location
             _.each(
                 this.props.options,
                 function(opt, i) {
@@ -562,6 +652,12 @@ var Orderer = createReactClass({
             finalOffset = $(
                 ReactDOM.findDOMNode(this.refs.placeholder)
             ).position();
+        } else if (this.props.useFixedSlots && index != null) {
+            // In fixed slot mode, animate to the slot center if placeholder not mounted.
+            var slotNode = ReactDOM.findDOMNode(this.refs["slot" + index]) || ReactDOM.findDOMNode(this.refs["sortable" + index]);
+            if (slotNode) {
+                finalOffset = $(slotNode).position();
+            }
         }
 
         if (finalOffset == null) {
@@ -589,6 +685,9 @@ var Orderer = createReactClass({
         var index;
         if (this.isCardInBank(draggable)) {
             index = null;
+        } else if (this.props.useFixedSlots) {
+            // In fixed slot mode, snap to the nearest empty slot.
+            index = this.findNearestSlotIndex(draggable);
         } else {
             index = this.findCorrectIndex(draggable, this.state.current);
         }
@@ -618,6 +717,7 @@ var Orderer = createReactClass({
                 list,
                 function(opt, i) {
                     var card = ReactDOM.findDOMNode(this.refs["sortable" + i]);
+                    if (!card) { return; }
                     var outerWidth = $(card).outerWidth(true);
                     if (midWidth > sumWidth + outerWidth / 2) {
                         index += 1;
@@ -631,6 +731,7 @@ var Orderer = createReactClass({
                 list,
                 function(opt, i) {
                     var card = ReactDOM.findDOMNode(this.refs["sortable" + i]);
+                    if (!card) { return; }
                     var outerHeight = $(card).outerHeight(true);
                     if (midHeight > sumHeight + outerHeight / 2) {
                         index += 1;
@@ -642,6 +743,37 @@ var Orderer = createReactClass({
         }
 
         return index;
+    },
+
+    // In fixed slot mode, choose the nearest EMPTY slot index based on pointer position.
+    findNearestSlotIndex: function(draggable) {
+        var isHorizontal = this.props.layout === HORIZONTAL;
+        var slots = (this.props.correctOptions && this.props.correctOptions.length) || 0;
+        var $dragList = $(ReactDOM.findDOMNode(this.refs.dragList));
+        var leftEdge = $dragList.offset().left;
+        var topEdge = $dragList.offset().top;
+        var midX = $(ReactDOM.findDOMNode(draggable)).offset().left - leftEdge;
+        var midY = $(ReactDOM.findDOMNode(draggable)).offset().top - topEdge;
+        var best = null, bestDist = Infinity;
+        for (var i = 0; i < slots; i++) {
+            // Skip occupied slots
+            if (this.state.current[i] && typeof this.state.current[i] === "object") {
+                continue;
+            }
+            var slotNode = ReactDOM.findDOMNode(this.refs["slot" + i]) || ReactDOM.findDOMNode(this.refs["sortable" + i]);
+            if (!slotNode) { continue; }
+            var $node = $(slotNode);
+            var centerX = $node.position().left + $node.outerWidth(true) / 2;
+            var centerY = $node.position().top + $node.outerHeight(true) / 2;
+            var dx = centerX - midX;
+            var dy = centerY - midY;
+            var dist = isHorizontal ? Math.abs(dx) : Math.abs(dy);
+            if (dist < bestDist) {
+                bestDist = dist;
+                best = i;
+            }
+        }
+        return best;
     },
 
     isCardInBank: function(draggable) {
@@ -678,7 +810,7 @@ var Orderer = createReactClass({
     getUserInput: function() {
         return {
             current: _.map(this.props.current, function(v) {
-                return v.content;
+                return v && v.content;
             }),
         };
     },
@@ -690,7 +822,10 @@ var Orderer = createReactClass({
 
 _.extend(Orderer, {
     validate: function(state, rubric) {
-        if (state.current.length === 0) {
+        // Treat as invalid if no tiles have been placed (even if fixed slots produce
+        // an array of empty values).
+        var placedCount = _.filter(state.current, function(v) { return v != null && v !== ""; }).length;
+        if (placedCount === 0) {
             return {
                 type: "invalid",
                 message: null,
