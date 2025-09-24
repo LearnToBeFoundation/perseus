@@ -5787,18 +5787,6 @@ body.mobile .perseus-matrix .math-output {
   border-radius: 12px;
   min-height: 80px;
 }
-.orderer.fixed-slots.layout-horizontal .draggable-box {
-  padding: 0;
-  background: #ffffff;
-  border: none;
-  min-height: 0;
-}
-.orderer.fixed-slots.layout-vertical .draggable-box {
-  padding: 0;
-  background: #ffffff;
-  border: none;
-  min-height: 0;
-}
 .orderer.fixed-slots .card-wrap {
   margin: 8px;
 }
