@@ -5787,6 +5787,16 @@ body.mobile .perseus-matrix .math-output {
   border-radius: 12px;
   min-height: 80px;
 }
+.orderer.fixed-slots .card-wrap {
+  margin: 8px;
+}
+.orderer.fixed-slots .card.placeholder {
+  background: #ffffff;
+  border: 2px dashed #2563EB;
+  border-radius: 12px;
+  min-width: 80px;
+  min-height: 80px;
+}
 .orderer .card {
   padding: 16px;
   cursor: pointer;
@@ -5916,6 +5926,9 @@ body.mobile .perseus-matrix .math-output {
 }
 .orderer.layout-vertical .draggable-box .placeholder {
   box-sizing: border-box;
+}
+.orderer.fixed-slots.layout-vertical .bank {
+  padding-top: 16px;
 }
 .perseus-widget-passage-container .perseus-widget-passage {
   line-height: 22px;

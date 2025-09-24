@@ -31,6 +31,7 @@ const OrdererEditor = createReactClass({
         height: PropTypes.oneOf([NORMAL, AUTO]),
         layout: PropTypes.oneOf([HORIZONTAL, VERTICAL]),
         onChange: PropTypes.func.isRequired,
+        useFixedSlots: PropTypes.bool,
     },
 
     getDefaultProps: function() {
@@ -40,6 +41,7 @@ const OrdererEditor = createReactClass({
             defaultCards: [],
             height: NORMAL,
             layout: HORIZONTAL,
+            useFixedSlots: false,
         };
     },
 
@@ -89,6 +91,23 @@ const OrdererEditor = createReactClass({
                     onChange={this.onOptionsChange.bind(this, "defaultCards")}
                     layout={this.props.layout}
                 />
+
+                <div>
+                    <label>
+                        <input
+                            type="checkbox"
+                            checked={!!this.props.useFixedSlots}
+                            onChange={(e) => this.props.onChange({useFixedSlots: e.target.checked})}
+                        />
+                        {" "}Use fixed single-card slots (one card per slot)
+                    </label>
+                    <InfoTip>
+                        <p>
+                            When enabled, the dropzone renders as a fixed set of slots equal to the
+                            number of items in the correct answer. Each slot holds at most one card.
+                        </p>
+                    </InfoTip>
+                </div>
 
                 <div>
                     <label>
@@ -177,6 +196,7 @@ const OrdererEditor = createReactClass({
             defaultCards: this.props.defaultCards,
             height: this.props.height,
             layout: this.props.layout,
+            useFixedSlots: !!this.props.useFixedSlots,
         };
     },
 });

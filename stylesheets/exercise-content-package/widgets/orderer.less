@@ -17,6 +17,19 @@
         min-height: 80px;
     }
 
+    // Fixed slot mode: keep blue container, but placeholders are dashed white squares
+    &.fixed-slots .card-wrap {
+        margin: 8px;
+    }
+
+    &.fixed-slots .card.placeholder {
+        background: #ffffff;
+        border: 2px dashed #2563EB;
+        border-radius: 12px;
+        min-width: 80px;
+        min-height: 80px;
+    }
+
     .card {
         padding: 16px;
         cursor: pointer;
@@ -168,5 +181,9 @@
         .placeholder {
             box-sizing: border-box;
         }
+    }
+
+    &.fixed-slots.layout-vertical .bank {
+        padding-top: 16px;
     }
 }
