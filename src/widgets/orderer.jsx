@@ -597,10 +597,7 @@ var Orderer = createReactClass({
         if (this.props.useFixedSlots && index == null) {
             index = this.findNearestSlotIndex(draggable);
         }
-        // If we have a valid target slot in fixed-slot mode, force it to count as not-in-bank
-        if (this.props.useFixedSlots && index != null) {
-            inCardBank = false;
-        }
+        // Do not override bank detection here; if near the bank, removal should win
         var canPlace = !inCardBank && (!this.props.useFixedSlots || index != null);
 
         // Here, we build a callback function for the card to call when it is
@@ -829,15 +826,19 @@ var Orderer = createReactClass({
             draggableWidth = $draggable.outerWidth(true);
 
         if (isHorizontal) {
-            // Since bank is now below the dropzone, check if dragged card is in the bank area
+            // Bank is below the dropzone; consider it "in bank" once the pointer enters
+            // a buffer zone above the bank to make removal easier.
+            var buffer = 24; // px buffer above the bank
             return (
                 draggableOffset.top + draggableHeight / 2 >
-                bankOffset.top
+                bankOffset.top - buffer
             );
         } else {
+            // Bank is to the right in vertical layout; add a left-side buffer
+            var bufferV = 24;
             return (
                 draggableOffset.left + draggableWidth / 2 <
-                bankOffset.left + bankWidth
+                bankOffset.left + bankWidth + bufferV
             );
         }
     },
