@@ -755,7 +755,8 @@ var Orderer = createReactClass({
 
     // In fixed slot mode, choose the nearest EMPTY slot index based on pointer position.
     // We expand the effective target by using the slot's bounding box and a tolerance
-    // so dropping "near" a slot is accepted.
+    // and only snap if the pointer is within that expanded region OR within a small
+    // distance threshold; otherwise return null so dropping to bank is allowed.
     findNearestSlotIndex: function(draggable) {
         var isHorizontal = this.props.layout === HORIZONTAL;
         var slots = (this.props.correctOptions && this.props.correctOptions.length) || 0;
@@ -764,8 +765,10 @@ var Orderer = createReactClass({
         var topEdge = $dragList.offset().top;
         var midX = $(ReactDOM.findDOMNode(draggable)).offset().left - leftEdge;
         var midY = $(ReactDOM.findDOMNode(draggable)).offset().top - topEdge;
-        var best = null, bestDist = Infinity;
-        var tolerance = 24; // pixels of forgiveness around a slot
+        var bestIndex = null, bestDist = Infinity;
+        var bestInsideIndex = null, bestInsideDist = Infinity;
+        var tolerance = 24; // px padding around each slot
+        var snapThreshold = 40; // px max distance to snap when not inside a slot
         for (var i = 0; i < slots; i++) {
             // Skip occupied slots
             if (this.state.current[i] && typeof this.state.current[i] === "object") {
@@ -774,28 +777,38 @@ var Orderer = createReactClass({
             var slotNode = ReactDOM.findDOMNode(this.refs["slot" + i]) || ReactDOM.findDOMNode(this.refs["sortable" + i]);
             if (!slotNode) { continue; }
             var $node = $(slotNode);
-            var rectLeft = $node.position().left - tolerance;
-            var rectTop = $node.position().top - tolerance;
-            var rectRight = rectLeft + $node.outerWidth(true) + tolerance * 2;
-            var rectBottom = rectTop + $node.outerHeight(true) + tolerance * 2;
-            var centerX = $node.position().left + $node.outerWidth(true) / 2;
-            var centerY = $node.position().top + $node.outerHeight(true) / 2;
+            var left = $node.position().left;
+            var top = $node.position().top;
+            var width = $node.outerWidth(true);
+            var height = $node.outerHeight(true);
+            var rectLeft = left - tolerance;
+            var rectTop = top - tolerance;
+            var rectRight = rectLeft + width + tolerance * 2;
+            var rectBottom = rectTop + height + tolerance * 2;
+            var centerX = left + width / 2;
+            var centerY = top + height / 2;
 
-            // If pointer is inside the expanded rect, prefer this slot
             var inside = midX >= rectLeft && midX <= rectRight && midY >= rectTop && midY <= rectBottom;
             var dx = centerX - midX;
             var dy = centerY - midY;
             var dist = isHorizontal ? Math.abs(dx) : Math.abs(dy);
-            // If inside, reduce distance to strongly bias selection
-            if (inside) {
-                dist = 0.1 * dist;
+
+            if (inside && dist < bestInsideDist) {
+                bestInsideDist = dist;
+                bestInsideIndex = i;
             }
             if (dist < bestDist) {
                 bestDist = dist;
-                best = i;
+                bestIndex = i;
             }
         }
-        return best;
+        if (bestInsideIndex != null) {
+            return bestInsideIndex;
+        }
+        if (bestIndex != null && bestDist <= snapThreshold) {
+            return bestIndex;
+        }
+        return null;
     },
 
     isCardInBank: function(draggable) {
