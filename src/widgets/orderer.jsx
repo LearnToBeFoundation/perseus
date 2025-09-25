@@ -594,7 +594,7 @@ var Orderer = createReactClass({
         var index = this.state.placeholderIndex;
 
         // Fallback: in fixed slot mode, if no placeholder index, choose nearest EMPTY slot
-        if (!inCardBank && this.props.useFixedSlots && index == null) {
+        if (this.props.useFixedSlots && index == null) {
             index = this.findNearestSlotIndex(draggable);
         }
         var canPlace = !inCardBank && (!this.props.useFixedSlots || index != null);
@@ -746,6 +746,9 @@ var Orderer = createReactClass({
     },
 
     // In fixed slot mode, choose the nearest EMPTY slot index based on pointer position.
+    // We expand the effective target by using the slot's bounding box and a tolerance.
+    // Prefer targets when inside the expanded rect; otherwise snap if close to the
+    // rect's edge along the primary axis. This avoids bias toward either side.
     findNearestSlotIndex: function(draggable) {
         var isHorizontal = this.props.layout === HORIZONTAL;
         var slots = (this.props.correctOptions && this.props.correctOptions.length) || 0;
@@ -754,7 +757,10 @@ var Orderer = createReactClass({
         var topEdge = $dragList.offset().top;
         var midX = $(ReactDOM.findDOMNode(draggable)).offset().left - leftEdge;
         var midY = $(ReactDOM.findDOMNode(draggable)).offset().top - topEdge;
-        var best = null, bestDist = Infinity;
+        var bestInsideIndex = null, bestInsideDist = Infinity;
+        var bestEdgeIndex = null, bestEdgeDist = Infinity;
+        var tolerance = 24; // px padding around each slot
+        var edgeSnapThreshold = 32; // px max distance to slot edge for snap
         for (var i = 0; i < slots; i++) {
             // Skip occupied slots
             if (this.state.current[i] && typeof this.state.current[i] === "object") {
@@ -763,17 +769,50 @@ var Orderer = createReactClass({
             var slotNode = ReactDOM.findDOMNode(this.refs["slot" + i]) || ReactDOM.findDOMNode(this.refs["sortable" + i]);
             if (!slotNode) { continue; }
             var $node = $(slotNode);
-            var centerX = $node.position().left + $node.outerWidth(true) / 2;
-            var centerY = $node.position().top + $node.outerHeight(true) / 2;
+            var left = $node.position().left;
+            var top = $node.position().top;
+            var width = $node.outerWidth();
+            var height = $node.outerHeight();
+            var rectLeft = left - tolerance;
+            var rectTop = top - tolerance;
+            var rectRight = rectLeft + width + tolerance * 2;
+            var rectBottom = rectTop + height + tolerance * 2;
+            var centerX = left + width / 2;
+            var centerY = top + height / 2;
+
+            var inside = midX >= rectLeft && midX <= rectRight && midY >= rectTop && midY <= rectBottom;
             var dx = centerX - midX;
             var dy = centerY - midY;
-            var dist = isHorizontal ? Math.abs(dx) : Math.abs(dy);
-            if (dist < bestDist) {
-                bestDist = dist;
-                best = i;
+            var centerDist = isHorizontal ? Math.abs(dx) : Math.abs(dy);
+
+            // Distance to the expanded rect edge along primary axis
+            var edgeDist;
+            if (isHorizontal) {
+                if (midX < rectLeft) edgeDist = rectLeft - midX;
+                else if (midX > rectRight) edgeDist = midX - rectRight;
+                else edgeDist = 0;
+            } else {
+                if (midY < rectTop) edgeDist = rectTop - midY;
+                else if (midY > rectBottom) edgeDist = midY - rectBottom;
+                else edgeDist = 0;
+            }
+
+            if (inside && centerDist < bestInsideDist) {
+                bestInsideDist = centerDist;
+                bestInsideIndex = i;
+            }
+            if (edgeDist < bestEdgeDist) {
+                bestEdgeDist = edgeDist;
+                bestEdgeIndex = i;
             }
         }
-        return best;
+        if (bestInsideIndex != null) {
+            return bestInsideIndex;
+        }
+        if (bestEdgeIndex != null && bestEdgeDist <= edgeSnapThreshold) {
+            return bestEdgeIndex;
+        }
+        return null;
     },
 
     isCardInBank: function(draggable) {
@@ -787,17 +826,15 @@ var Orderer = createReactClass({
             draggableOffset = $draggable.offset(),
             bankOffset = $bank.offset(),
             draggableHeight = $draggable.outerHeight(true),
-            bankHeight = $bank.outerHeight(true),
             bankWidth = $bank.outerWidth(true),
-            dragList = ReactDOM.findDOMNode(this.refs.dragList),
-            dragListWidth = $(dragList).width(),
             draggableWidth = $draggable.outerWidth(true);
 
         if (isHorizontal) {
-            // Since bank is now below the dropzone, check if dragged card is in the bank area
+            // Bank is below; use a small buffer so it's easy to leave the grid
+            var buffer = 24;
             return (
                 draggableOffset.top + draggableHeight / 2 >
-                bankOffset.top
+                bankOffset.top - buffer
             );
         } else {
             return (
