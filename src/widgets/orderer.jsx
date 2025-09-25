@@ -751,9 +751,9 @@ var Orderer = createReactClass({
     },
 
     // In fixed slot mode, choose the nearest EMPTY slot index based on pointer position.
-    // We expand the effective target by using the slot's bounding box and a tolerance
-    // and only snap if the pointer is within that expanded region OR within a small
-    // distance threshold; otherwise return null so dropping to bank is allowed.
+    // We expand the effective target by using the slot's bounding box and a tolerance.
+    // Prefer targets when inside the expanded rect; otherwise snap if close to the
+    // rect's edge along the primary axis. This avoids bias toward the right side.
     findNearestSlotIndex: function(draggable) {
         var isHorizontal = this.props.layout === HORIZONTAL;
         var slots = (this.props.correctOptions && this.props.correctOptions.length) || 0;
@@ -762,10 +762,10 @@ var Orderer = createReactClass({
         var topEdge = $dragList.offset().top;
         var midX = $(ReactDOM.findDOMNode(draggable)).offset().left - leftEdge;
         var midY = $(ReactDOM.findDOMNode(draggable)).offset().top - topEdge;
-        var bestIndex = null, bestDist = Infinity;
         var bestInsideIndex = null, bestInsideDist = Infinity;
+        var bestEdgeIndex = null, bestEdgeDist = Infinity;
         var tolerance = 24; // px padding around each slot
-        var snapThreshold = 40; // px max distance to snap when not inside a slot
+        var edgeSnapThreshold = 32; // px max distance to slot edge for snap
         for (var i = 0; i < slots; i++) {
             // Skip occupied slots
             if (this.state.current[i] && typeof this.state.current[i] === "object") {
@@ -776,8 +776,9 @@ var Orderer = createReactClass({
             var $node = $(slotNode);
             var left = $node.position().left;
             var top = $node.position().top;
-            var width = $node.outerWidth(true);
-            var height = $node.outerHeight(true);
+            // Use size without margins to avoid asymmetry
+            var width = $node.outerWidth();
+            var height = $node.outerHeight();
             var rectLeft = left - tolerance;
             var rectTop = top - tolerance;
             var rectRight = rectLeft + width + tolerance * 2;
@@ -788,22 +789,34 @@ var Orderer = createReactClass({
             var inside = midX >= rectLeft && midX <= rectRight && midY >= rectTop && midY <= rectBottom;
             var dx = centerX - midX;
             var dy = centerY - midY;
-            var dist = isHorizontal ? Math.abs(dx) : Math.abs(dy);
+            var centerDist = isHorizontal ? Math.abs(dx) : Math.abs(dy);
 
-            if (inside && dist < bestInsideDist) {
-                bestInsideDist = dist;
+            // Distance to the expanded rect edge along primary axis
+            var edgeDist;
+            if (isHorizontal) {
+                if (midX < rectLeft) edgeDist = rectLeft - midX;
+                else if (midX > rectRight) edgeDist = midX - rectRight;
+                else edgeDist = 0;
+            } else {
+                if (midY < rectTop) edgeDist = rectTop - midY;
+                else if (midY > rectBottom) edgeDist = midY - rectBottom;
+                else edgeDist = 0;
+            }
+
+            if (inside && centerDist < bestInsideDist) {
+                bestInsideDist = centerDist;
                 bestInsideIndex = i;
             }
-            if (dist < bestDist) {
-                bestDist = dist;
-                bestIndex = i;
+            if (edgeDist < bestEdgeDist) {
+                bestEdgeDist = edgeDist;
+                bestEdgeIndex = i;
             }
         }
         if (bestInsideIndex != null) {
             return bestInsideIndex;
         }
-        if (bestIndex != null && bestDist <= snapThreshold) {
-            return bestIndex;
+        if (bestEdgeIndex != null && bestEdgeDist <= edgeSnapThreshold) {
+            return bestEdgeIndex;
         }
         return null;
     },
