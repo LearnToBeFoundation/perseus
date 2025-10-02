@@ -1,5 +1,5 @@
 import _mathInput from "@khanacademy/math-input";
-import _reactDom from "react-dom";
+import { createRoot } from "react-dom/client";
 import _react from "react";
 
 var _module_ = {
@@ -24,7 +24,6 @@ var exports = _module_.exports;
  */
 
 const React = _react;
-const ReactDOM = _reactDom;
 
 const { Keypad } = _mathInput.components;
 
@@ -54,7 +53,8 @@ const ProvideKeypad = {
             this._keypadContainer = document.createElement('div');
             document.body.appendChild(this._keypadContainer);
 
-            ReactDOM.render(
+            this._keypadRoot = createRoot(this._keypadContainer);
+            this._keypadRoot.render(
                 <Keypad
                     onElementMounted={element => {
                         this.setState({
@@ -65,15 +65,17 @@ const ProvideKeypad = {
                         this.blur && this.blur();
                     }}
                     style={this.props.keypadStyle}
-                />,
-                this._keypadContainer
+                />
             );
         }
     },
 
     componentWillUnmount() {
+        if (this._keypadRoot) {
+            this._keypadRoot.unmount();
+            this._keypadRoot = null;
+        }
         if (this._keypadContainer) {
-            ReactDOM.unmountComponentAtNode(this._keypadContainer);
             if (this._keypadContainer.parentNode) {
                 // Note ChildNode.remove() isn't available in older Android
                 // webviews.

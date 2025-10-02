@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var perseus = require('./perseus-5439edfd.js');
+var perseus = require('./perseus-ece8e932.js');
 require('react-addons-pure-render-mixin');
 require('jquery');
 require('react');
@@ -16,6 +16,7 @@ require('mathquill');
 require('@khanacademy/math-input');
 require('aphrodite');
 require('simple-markdown');
+require('react-dom/client');
 require('immutable');
 require('draft-js');
 

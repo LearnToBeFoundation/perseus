@@ -7,7 +7,8 @@ import _rendererJsx from "./renderer.jsx";
 import _hintsRendererJsx from "./hints-renderer.jsx";
 import _perseusApiJsx from "./perseus-api.jsx";
 import _underscore from "underscore";
-import _reactDom from "react-dom";
+import { createRoot } from "react-dom/client";
+import ReactDOM from "react-dom";
 import _react from "react";
 
 var _module_ = {
@@ -20,7 +21,6 @@ var exports = _module_.exports;
 /* To fix, remove an entry above, run ka-lint, and fix errors. */
 
 const React = _react;
-const ReactDOM = _reactDom;
 const _ = _underscore;
 
 const ApiOptions = _perseusApiJsx.Options;
@@ -121,12 +121,12 @@ const ItemRenderer = createReactClass({
 
     componentWillUnmount: function() {
         ProvideKeypad.componentWillUnmount.call(this);
-        ReactDOM.unmountComponentAtNode(
-            document.querySelector(this.props.workAreaSelector)
-        );
-        ReactDOM.unmountComponentAtNode(
-            document.querySelector(this.props.hintsAreaSelector)
-        );
+        if (this.questionRoot) {
+            this.questionRoot.unmount();
+        }
+        if (this.hintsRoot) {
+            this.hintsRoot.unmount();
+        }
 
         if (this.props.controlPeripherals) {
             var answerArea = this.props.item.answerArea || {};
@@ -163,7 +163,11 @@ const ItemRenderer = createReactClass({
         // that have completely different places in the DOM, we have to do this
         // strangeness instead of relying on React's normal render() method.
         // TODO(alpert): Figure out how to clean this up somehow
-        this.questionRenderer = ReactDOM.render(
+        const questionContainer = document.querySelector(this.props.workAreaSelector);
+        if (!this.questionRoot) {
+            this.questionRoot = createRoot(questionContainer);
+        }
+        this.questionRenderer = this.questionRoot.render(
             <Renderer
                 keypadElement={this.keypadElement()}
                 problemNum={this.props.problemNum}
@@ -179,11 +183,14 @@ const ItemRenderer = createReactClass({
                 )}
                 {...this.props.item.question}
                 legacyPerseusLint={this.props.legacyPerseusLint}
-            />,
-            document.querySelector(this.props.workAreaSelector)
+            />
         );
 
-        this.hintsRenderer = ReactDOM.render(
+        const hintsContainer = document.querySelector(this.props.hintsAreaSelector);
+        if (!this.hintsRoot) {
+            this.hintsRoot = createRoot(hintsContainer);
+        }
+        this.hintsRenderer = this.hintsRoot.render(
             <HintsRenderer
                 hints={this.props.item.hints}
                 hintsVisible={this.state.hintsVisible}
@@ -192,8 +199,7 @@ const ItemRenderer = createReactClass({
                     this.props.linterContext,
                     "hints"
                 )}
-            />,
-            document.querySelector(this.props.hintsAreaSelector)
+            />
         );
 
         var answerArea = this.props.item.answerArea || {};

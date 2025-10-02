@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var perseus = require('./perseus-5439edfd.js');
+var perseus = require('./perseus-ece8e932.js');
 var aphrodite = require('aphrodite');
 var _react = require('react');
 var _underscore = require('underscore');
@@ -16,6 +16,7 @@ require('katex');
 require('mathquill');
 require('@khanacademy/math-input');
 require('simple-markdown');
+require('react-dom/client');
 require('immutable');
 require('draft-js');
 

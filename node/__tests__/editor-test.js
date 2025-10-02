@@ -2,7 +2,7 @@
 // editors) still works, and that the editor bundle contains editors and works.
 const assert = require("assert");
 const React = require("react");
-const ReactDOM = require("react-dom");
+const { createRoot } = require("react-dom/client");
 
 const EditorPerseus = require("../../build/editor-perseus.js");
 const Perseus = require("../../build/perseus.js");
@@ -31,7 +31,8 @@ describe("No-editor-perseus", function() {
     it("renders with react", function() {
         const elem = document.createElement("div");
 
-        ReactDOM.render(
+        const root = createRoot(elem);
+        root.render(
             React.createElement(Perseus.Renderer, {
                 content: "hello world! [[\u2603 numeric-input 1]]",
                 widgets: {
@@ -53,8 +54,8 @@ describe("No-editor-perseus", function() {
                         "type": "numeric-input",
                     },
                 },
-            }),
-            elem);
+            })
+        );
 
         assert.ok(elem.querySelector("input"));
         assert(elem.innerHTML.indexOf("hello world!") > -1);

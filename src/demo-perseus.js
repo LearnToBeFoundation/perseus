@@ -1,4 +1,4 @@
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import * as Perseus from './perseus';
 import Util from './util';
 import _articleDiffDemoJsx from "./article-diff-demo.jsx";
@@ -56,9 +56,10 @@ const routes = {
 
 Perseus.init({skipMathJax: true, loadExtraWidgets: true})
     .then(function() {
-        ReactDOM.render(
-            React.createElement(...(routes[path] || routes[""])),
-            document.getElementById("root")
+        const container = document.getElementById("root");
+        const root = createRoot(container);
+        root.render(
+            React.createElement(...(routes[path] || routes[""]))
         );
     })
     .then(

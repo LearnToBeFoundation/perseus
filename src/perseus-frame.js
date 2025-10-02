@@ -1,3 +1,4 @@
+import { createRoot } from 'react-dom/client';
 import _componentsConstantsJs from "./components/constants.js";
 import _previewFrameJsx from "./preview-frame.jsx";
 import _perseusJs from "./perseus.js";
@@ -60,11 +61,12 @@ const afterMathJaxLoad = () => {
                 styles.borderStyle = "solid";
             }
 
-            ReactDOM.render(
+            const container = document.getElementById("content-container");
+            const root = createRoot(container);
+            root.render(
                 <div id="measured" style={styles}>
                     <PreviewFrame isMobile={isMobile} />
-                </div>,
-                document.getElementById("content-container")
+                </div>
             );
         })
         .then(

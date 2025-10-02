@@ -1,7 +1,7 @@
 // Demo page index for create-react-app
 /*
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import * as Perseus from './perseus';
 //import "./lib/mathquill/mathquill.css";
 
@@ -80,7 +80,9 @@ const styles = {
   },
 };
 
-ReactDOM.render(
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(
   <React.StrictMode>
     <div style={styles.container}>
       <Perseus.QuestionRenderer
@@ -89,8 +91,7 @@ ReactDOM.render(
         onHint={(num, total) => console.log(`hint ${num} taken of ${total} total`)}
       />
     </div>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );
 */
 
