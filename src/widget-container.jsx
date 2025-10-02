@@ -5,6 +5,8 @@ import { zIndexInteractiveComponent } from "./styles/constants.js";
 import _reactDom from "react-dom";
 import _react from "react";
 import _classnames from "classnames";
+import _propTypes from "prop-types";
+import _createReactClass from "create-react-class";
 
 var _module_ = {
     exports: {}
@@ -18,6 +20,8 @@ var exports = _module_.exports;
 const classNames = _classnames;
 const React = _react;
 const ReactDOM = _reactDom;
+const PropTypes = _propTypes;
+const createReactClass = _createReactClass;
 
 const Widgets = _widgetsJs;
 
@@ -36,6 +40,9 @@ const WidgetContainer = createReactClass({
     },
 
     getInitialState: function() {
+        // Create ref for React 18 compatibility
+        this.widgetRef = React.createRef();
+
         return {
             // TODO(benkomalo): before we're mounted, we don't know how big
             // we're going to be, so just default to MEDIUM for now. :/ In the
@@ -132,7 +139,7 @@ const WidgetContainer = createReactClass({
                     {...this.state.widgetProps}
                     linterContext={linterContext}
                     containerSizeClass={this.state.sizeClass}
-                    ref="widget"
+                    ref={this.widgetRef}
                 />
                 {isStatic && <div style={staticOverlayStyles} />}
             </div>
@@ -158,7 +165,7 @@ const WidgetContainer = createReactClass({
     },
 
     getWidget: function() {
-        return this.refs.widget;
+        return this.widgetRef.current;
     },
 
     replaceWidgetProps: function(newWidgetProps) {

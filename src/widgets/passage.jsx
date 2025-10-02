@@ -79,11 +79,19 @@ class Passage extends React.Component {
         linterContext: linterContextDefault,
     };
 
-    state = {
-        nLines: null,
-        startLineNumbersAfter: 0,
-        stylesAreApplied: false,
-    };
+    constructor(props) {
+        super(props);
+
+        // Create refs for React 18 compatibility
+        this.contentRef = React.createRef();
+        this.refs = {}; // For dynamic refs
+
+        this.state = {
+            nLines: null,
+            startLineNumbersAfter: 0,
+            stylesAreApplied: false,
+        };
+    }
 
     componentDidMount() {
         this._updateState();
@@ -164,7 +172,7 @@ class Passage extends React.Component {
     }
 
     _measureLines() {
-        const $renderer = $(ReactDOM.findDOMNode(this.refs.content));
+        const $renderer = $(this.contentRef.current);
         const contentsHeight = $renderer.height();
         const lineHeight = this._getLineHeight();
         const nLines = Math.round(contentsHeight / lineHeight);
@@ -269,7 +277,7 @@ class Passage extends React.Component {
     }
 
     _convertPosToLineNumber(absoluteVPos) {
-        const $content = $(ReactDOM.findDOMNode(this.refs.content));
+        const $content = $(this.contentRef.current);
         const relativeVPos = absoluteVPos - $content.offset().top;
         const lineHeight = this._getLineHeight();
 
@@ -393,7 +401,7 @@ class Passage extends React.Component {
                 }
                 serializedHighlights={this.props.highlights}
             >
-                <div ref="content">
+                <div ref={this.contentRef}>
                     <LineHeightMeasurer
                         ref={e => this._lineHeightMeasurer = e}
                     />
