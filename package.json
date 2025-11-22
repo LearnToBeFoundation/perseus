@@ -23,12 +23,12 @@
     "./perseus.css": "./perseus.css"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
     "prebuild": "lessc stylesheets/exercise-content-package/perseus.less > src/lib/perseus.css",
-    "build": "rollup -c && react-scripts build",
+    "build": "rollup -c && NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
     "postbuild": "rm -rf ./docs/; mv ./build/ ./docs",
     "prepare": "rollup -c",
-    "test": "react-scripts test",
+    "test": "NODE_OPTIONS=--openssl-legacy-provider react-scripts test",
     "eject": "react-scripts eject"
   },
   "homepage": ".",

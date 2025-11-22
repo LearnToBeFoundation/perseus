@@ -62,6 +62,7 @@ const QuestionRenderer = createReactClass({
         showSubmitButton: PropTypes.bool,
         showHintButton: PropTypes.bool,
         showOutcome: PropTypes.bool,
+        showAllHintsOnIncorrect: PropTypes.bool,
     },
 
     getDefaultProps: function() {
@@ -78,6 +79,7 @@ const QuestionRenderer = createReactClass({
             showSubmitButton: true,
             showHintButton: true,
             showOutcome: true,
+            showAllHintsOnIncorrect: false,
         };
     },
 
@@ -284,10 +286,17 @@ const QuestionRenderer = createReactClass({
 
         // TODO(aria): Add in "unfinished"/invalid suppost to answerState
         // for better check answer messages
-        this.setState({
+        const stateUpdate = {
             answerState: isCorrect ? "correct" : "incorrect",
             questionHighlightedWidgets: emptyQuestionAreaWidgets,
-        });
+        };
+
+        // Show all hints when answer is incorrect (if enabled via prop)
+        if (!isCorrect && this.props.showAllHintsOnIncorrect) {
+            stateUpdate.hintsVisible = this.getNumHints();
+        }
+
+        this.setState(stateUpdate);
 
         return [guess, score];
     },
