@@ -63,6 +63,8 @@ const QuestionRenderer = createReactClass({
         showHintButton: PropTypes.bool,
         showOutcome: PropTypes.bool,
         showAllHintsOnIncorrect: PropTypes.bool,
+        showAllHintsOnSubmit: PropTypes.bool,
+        singleAttempt: PropTypes.bool,
     },
 
     getDefaultProps: function() {
@@ -80,6 +82,8 @@ const QuestionRenderer = createReactClass({
             showHintButton: true,
             showOutcome: true,
             showAllHintsOnIncorrect: false,
+            showAllHintsOnSubmit: false,
+            singleAttempt: false,
         };
     },
 
@@ -89,6 +93,7 @@ const QuestionRenderer = createReactClass({
             hintsVisible: this.props.initialHintsVisible,
             answerState: 'unanswered',
             questionHighlightedWidgets: [],
+            hasSubmitted: false,
         };
     },
 
@@ -289,10 +294,16 @@ const QuestionRenderer = createReactClass({
         const stateUpdate = {
             answerState: isCorrect ? "correct" : "incorrect",
             questionHighlightedWidgets: emptyQuestionAreaWidgets,
+            hasSubmitted: true,
         };
 
         // Show all hints when answer is incorrect (if enabled via prop)
         if (!isCorrect && this.props.showAllHintsOnIncorrect) {
+            stateUpdate.hintsVisible = this.getNumHints();
+        }
+
+        // Show all hints on any submission (if enabled via prop)
+        if (this.props.showAllHintsOnSubmit) {
             stateUpdate.hintsVisible = this.getNumHints();
         }
 
@@ -414,7 +425,7 @@ const QuestionRenderer = createReactClass({
                             style={{
                                 backgroundColor: showOutcome && this.state.answerState === "incorrect" ? "orange" : colorLtbBlue,
                             }}
-                            disabled={this.state.answerState === "correct"}
+                            disabled={this.state.answerState === "correct" || (this.props.singleAttempt && this.state.hasSubmitted)}
                         >
                             {showOutcome ? (
                                 <>
