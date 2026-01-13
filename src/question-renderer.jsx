@@ -468,7 +468,7 @@ const QuestionRenderer = createReactClass({
                         </button>
                     )}
                 </div>
-                { showHintButton && (
+                { (showHintButton || this.props.showAllHintsOnSubmit) && (
                     <div
                         className={
                             // Avoid adding any horizontal padding when applying the
