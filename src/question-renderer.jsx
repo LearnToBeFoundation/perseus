@@ -62,6 +62,9 @@ const QuestionRenderer = createReactClass({
         showSubmitButton: PropTypes.bool,
         showHintButton: PropTypes.bool,
         showOutcome: PropTypes.bool,
+        showAllHintsOnIncorrect: PropTypes.bool,
+        showAllHintsOnSubmit: PropTypes.bool,
+        singleAttempt: PropTypes.bool,
     },
 
     getDefaultProps: function() {
@@ -78,6 +81,9 @@ const QuestionRenderer = createReactClass({
             showSubmitButton: true,
             showHintButton: true,
             showOutcome: true,
+            showAllHintsOnIncorrect: false,
+            showAllHintsOnSubmit: false,
+            singleAttempt: false,
         };
     },
 
@@ -87,6 +93,7 @@ const QuestionRenderer = createReactClass({
             hintsVisible: this.props.initialHintsVisible,
             answerState: 'unanswered',
             questionHighlightedWidgets: [],
+            hasSubmitted: false,
         };
     },
 
@@ -284,10 +291,23 @@ const QuestionRenderer = createReactClass({
 
         // TODO(aria): Add in "unfinished"/invalid suppost to answerState
         // for better check answer messages
-        this.setState({
+        const stateUpdate = {
             answerState: isCorrect ? "correct" : "incorrect",
             questionHighlightedWidgets: emptyQuestionAreaWidgets,
-        });
+            hasSubmitted: true,
+        };
+
+        // Show all hints when answer is incorrect (if enabled via prop)
+        if (!isCorrect && this.props.showAllHintsOnIncorrect) {
+            stateUpdate.hintsVisible = this.getNumHints();
+        }
+
+        // Show all hints on any submission (if enabled via prop)
+        if (this.props.showAllHintsOnSubmit) {
+            stateUpdate.hintsVisible = this.getNumHints();
+        }
+
+        this.setState(stateUpdate);
 
         return [guess, score];
     },
@@ -405,7 +425,7 @@ const QuestionRenderer = createReactClass({
                             style={{
                                 backgroundColor: showOutcome && this.state.answerState === "incorrect" ? "orange" : colorLtbBlue,
                             }}
-                            disabled={this.state.answerState === "correct"}
+                            disabled={this.state.answerState === "correct" || (this.props.singleAttempt && this.state.hasSubmitted)}
                         >
                             {showOutcome ? (
                                 <>
@@ -448,7 +468,7 @@ const QuestionRenderer = createReactClass({
                         </button>
                     )}
                 </div>
-                { showHintButton && (
+                { (showHintButton || this.props.showAllHintsOnSubmit) && (
                     <div
                         className={
                             // Avoid adding any horizontal padding when applying the
