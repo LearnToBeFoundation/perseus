@@ -305,7 +305,15 @@ const QuestionRenderer = createReactClass({
         // Show all hints on any submission (if enabled via prop)
         if (this.props.showAllHintsOnSubmit) {
             stateUpdate.hintsVisible = this.getNumHints();
+            console.log("[Perseus] showAllHintsOnSubmit triggered, setting hintsVisible to:", this.getNumHints());
         }
+
+        console.log("[Perseus] scoreInput props:", {
+            showAllHintsOnSubmit: this.props.showAllHintsOnSubmit,
+            singleAttempt: this.props.singleAttempt,
+            numHints: this.getNumHints()
+        });
+        console.log("[Perseus] scoreInput stateUpdate:", stateUpdate);
 
         this.setState(stateUpdate);
 
